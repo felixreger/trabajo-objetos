@@ -11,5 +11,13 @@ public class Archivo extends Elemento {
         super(nombre, tipo, tamanio, listaOpiniones, fechaModificacion,  fechaCreacion,  catedra);
         this.propietario = propietario;
     }
+
+    public Usuario getPropietario(){
+        return propietario;
+    }
     
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
+
 }

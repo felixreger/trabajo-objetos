@@ -12,7 +12,6 @@ public class Elemento{
     private LocalDate fechaCreacion;
     private Catedra catedra;
 
-
     public Elemento(String nombre,String tipo, Integer tamanio, List<Opinion> listaOpiniones, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
         this.nombre = nombre;
         this.tipo = tipo;
@@ -23,6 +22,58 @@ public class Elemento{
         this.catedra = catedra;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return this.tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Integer getTamanio() {
+        return this.tamanio;
+    }
+
+    public void setTamanio(Integer tamanio) {
+        this.tamanio = tamanio;
+    }
+
+    public List<Opinion> getListaOpiniones() {
+        return this.listaOpiniones;
+    }
+
+    public void setListaOpiniones(List<Opinion> listaOpiniones) {
+        this.listaOpiniones = listaOpiniones;
+    }
+
+    public LocalDate getFechaModificacion() {
+        return this.fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDate fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public LocalDate getFechaCreacion() {
+        return this.fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Catedra getCatedra() {
+        return this.catedra;
+    }
+
+    public void setCatedra(Catedra catedra) {
+        this.catedra = catedra;
+    }
+
     public void eliminarElemento(Elemento elemento){
         return;
     }
@@ -30,4 +81,7 @@ public class Elemento{
     public String getNombre(){
         return this.nombre;
     }
+
+	public void agregarComentario(String comentario) {
+	}
 }

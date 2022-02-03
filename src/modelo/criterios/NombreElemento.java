@@ -1,4 +1,4 @@
-package criterios;
+package modelo.criterios;
 
 import modelo.Elemento;
 
