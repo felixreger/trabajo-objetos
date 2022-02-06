@@ -29,7 +29,7 @@ public class UsuarioDao implements IUsuarioDao{
     public List<Usuario> getUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         try {
-			String queryString = "SELECT * FROM student";
+			String queryString = "SELECT * FROM usuario";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
@@ -59,71 +59,38 @@ public class UsuarioDao implements IUsuarioDao{
 		}
     }
 
-    @Override
+    @Override 
     public Usuario getUsuario(String mail) {
+		Usuario usuario = new Usuario();
         try {
-			connection = getConnection();
-            stmt = connection.createStatement();
-            resultSet = stmt.executeQuery("SELECT * FROM user WHERE id=" + mail);
-           
-            if(resultSet.next())
-{
-                Usuario usuario = new Usuario();
-
-                usuario.setMail( resultSet.getString("mail") );
-                usuario.setNombre( resultSet.getString("nombre") );
-                usuario.setPuntaje( resultSet.getInt("puntaje") );
-
-                return usuario;
-            }
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			
-		} finally {
-			try {
-				if (stmt != null)
-					stmt.close();
-				if (connection != null)
-					connection.close();
-			}
-
-			catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-
-			}
-		}
-		return new Usuario();
-
-    }
-
-    @Override
-    public void updateUsuario(Usuario usuario) {
-        try {
-			String queryString = "UPDATE student SET Name=? WHERE mail=?"; // todo: ver consulta
+			String queryString = "SELECT * FROM usuario WHERE mail = ?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, usuario.getNombre());
-			ptmt.setString(2, usuario.getMail());
-			ptmt.executeUpdate();
-			System.out.println("Table Updated Successfully");
+			ptmt.setString(1, mail);
+			resultSet = ptmt.executeQuery();
+			if (resultSet.next()) {
+				usuario.setNombre(resultSet.getString("nombre"));
+				usuario.setPuntaje(resultSet.getInt("puntaje"));
+				usuario.setMail(resultSet.getString("mail"));
+
+				return usuario;
+			}
+            return usuario;
 		} catch (SQLException e) {
 			e.printStackTrace();
+            return usuario;
 		} finally {
 			try {
+				if (resultSet != null)
+					resultSet.close();
 				if (ptmt != null)
 					ptmt.close();
 				if (connection != null)
 					connection.close();
-			}
-
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
-
 			}
 		}
         
@@ -132,7 +99,7 @@ public class UsuarioDao implements IUsuarioDao{
     @Override
     public void deleteUsuario(String mail) {
         try {
-			String queryString = "DELETE FROM student WHERE mail=?";
+			String queryString = "DELETE FROM usuario WHERE mail=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, mail);
@@ -161,7 +128,7 @@ public class UsuarioDao implements IUsuarioDao{
 
         try {
 
-            String queryString = "INSERT INTO usuario(Mail, Nombre, Puntaje) VALUES(?,?,?)";
+            String queryString = "INSERT INTO usuario(mail, nombre, puntaje) VALUES(?,?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 
@@ -173,7 +140,7 @@ public class UsuarioDao implements IUsuarioDao{
             System.out.println("Data Added Successfully");
     
             } catch (Exception e) {
-            e.printStackTrace();
+            	e.printStackTrace();
             }finally{
     
             try {
@@ -188,4 +155,36 @@ public class UsuarioDao implements IUsuarioDao{
                 }
             }
     }
+
+    @Override
+    public void updateUsuario(Usuario usuario) {
+        try {
+			String queryString = "UPDATE usuario SET nombre=?, puntaje=? WHERE mail=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setString(1, usuario.getNombre());
+			ptmt.setInt(2, usuario.getPuntaje());
+			ptmt.setString(3, usuario.getMail());
+			ptmt.executeUpdate();
+			System.out.println("Table Updated Successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			}
+
+			catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+
+			}
+		}
+        
+    }
+
 }

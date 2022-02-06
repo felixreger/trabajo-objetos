@@ -3,12 +3,15 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+
+import modelo.Usuario;
 
 public class Conexion {
     
-    String driverClassName = "com.mysql.jdbc.Driver";
-	String connectionUrl = "jdbc:mysql://localhost:3306/student"; // TODO cambiar por la url de la base de datos
-	String dbUser = "root";
+    String driverClassName = "org.postgresql.Driver";
+	String connectionUrl = "jdbc:postgresql://localhost:5432/postgres"; 
+	String dbUser = "postgres";
 	String dbPwd = "root";
 
 	private static Conexion connectionFactory = null;
@@ -33,5 +36,6 @@ public class Conexion {
 		}
 		return connectionFactory;
 	}
+
 
 }

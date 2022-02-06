@@ -57,4 +57,12 @@ public class Usuario {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            " mail='" + getMail() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            ", puntaje='" + getPuntaje() + "'" +
+            "}";
+    }
 }
