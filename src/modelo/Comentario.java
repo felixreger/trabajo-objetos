@@ -1,8 +1,14 @@
 package modelo;
 
-public class Opinion {
+public class Comentario {
     private String descripcion;
-
+    private Usuario autor;
+    
+    public Comentario(String descripcion, Usuario autor) {
+        this.descripcion = descripcion;
+        this.autor = autor;
+    }
+    
     public String getDescripcion() {
         return this.descripcion;
     }
@@ -18,10 +24,5 @@ public class Opinion {
     public void setAutor(Usuario autor) {
         this.autor = autor;
     }
-    private Usuario autor;
-
-    public Opinion(String descripcion, Usuario autor) {
-        this.descripcion = descripcion;
-        this.autor = autor;
-    }
+    
 }

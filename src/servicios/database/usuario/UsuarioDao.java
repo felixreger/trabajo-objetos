@@ -1,28 +1,23 @@
-package database;
+package servicios.database.usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Usuario;
+import servicios.database.Dao;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class UsuarioDao implements IUsuarioDao{
+public class UsuarioDao extends Dao implements IUsuarioDao{
 
-    
-	Connection connection = null;
-	PreparedStatement ptmt = null;
-	Statement stmt = null;
-	ResultSet resultSet = null;
+	private static IUsuarioDao usuarioDao = null;
 
-    private Connection getConnection() throws SQLException {
-		Connection conn;
-		conn = Conexion.getInstance().getConnection();
-		return conn;
+	private UsuarioDao(){}
+
+	public static IUsuarioDao getInstance(){
+		if (usuarioDao == null)
+			usuarioDao = new UsuarioDao();
+		return usuarioDao;
 	}
 
     @Override
@@ -97,7 +92,7 @@ public class UsuarioDao implements IUsuarioDao{
     }
 
     @Override
-    public void deleteUsuario(String mail) {
+    public boolean deleteUsuario(String mail) {
         try {
 			String queryString = "DELETE FROM usuario WHERE mail=?";
 			connection = getConnection();
@@ -105,8 +100,10 @@ public class UsuarioDao implements IUsuarioDao{
 			ptmt.setString(1, mail);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				if (ptmt != null)

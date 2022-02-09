@@ -45,18 +45,6 @@ public class Usuario {
         return puntaje;
     }
 
-    public void subirArchivo(){
-
-    }
-
-    public void generarComentario(String comentario, Elemento elemento){
-        elemento.agregarComentario(comentario);
-    }
-
-    public String verElemento(String nombre){
-        return null;
-    }
-
     @Override
     public String toString() {
         return "{" +

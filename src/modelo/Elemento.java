@@ -1,22 +1,39 @@
 package modelo;
 
 import java.time.LocalDate;
-import java.util.List;
+import servicios.Servicios;
 
 public class Elemento{
     private String nombre;
     private String tipo;
     private Integer tamanio;
-    private List<Opinion> listaOpiniones;
     private LocalDate fechaModificacion;
     private LocalDate fechaCreacion;
     private Catedra catedra;
 
-    public Elemento(String nombre,String tipo, Integer tamanio, List<Opinion> listaOpiniones, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
+    private Servicios servicio = Servicios.getInstance();
+
+    public boolean isValid(){
+        return 
+        nombre == null
+          && tamanio == null
+        && fechaModificacion == null
+        && fechaCreacion == null
+        && catedra ==
+         null;    }
+
+    public Elemento(){
+        this.nombre = null;
+        this.tipo = null;
+        this.fechaModificacion = null;
+        this.fechaCreacion = null;
+        this.catedra = null;
+    }
+
+    public Elemento(String nombre,String tipo, Integer tamanio, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
         this.nombre = nombre;
         this.tipo = tipo;
         this.tamanio = tamanio;
-        this.listaOpiniones.addAll(listaOpiniones);
         this.fechaModificacion = fechaModificacion;
         this.fechaCreacion = fechaCreacion;
         this.catedra = catedra;
@@ -40,14 +57,6 @@ public class Elemento{
 
     public void setTamanio(Integer tamanio) {
         this.tamanio = tamanio;
-    }
-
-    public List<Opinion> getListaOpiniones() {
-        return this.listaOpiniones;
-    }
-
-    public void setListaOpiniones(List<Opinion> listaOpiniones) {
-        this.listaOpiniones = listaOpiniones;
     }
 
     public LocalDate getFechaModificacion() {
@@ -74,14 +83,12 @@ public class Elemento{
         this.catedra = catedra;
     }
 
-    public void eliminarElemento(Elemento elemento){
-        return;
-    }
-
     public String getNombre(){
         return this.nombre;
     }
 
-	public void agregarComentario(String comentario) {
+	public void agregarComentario(Comentario comentario) {
+        servicio.addComentario(comentario);
 	}
+
 }

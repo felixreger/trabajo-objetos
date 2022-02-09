@@ -2,13 +2,14 @@ package modelo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class Carpeta extends Elemento{
     
-    private List<Elemento> listaElementos;
+    private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre,String tipo, Integer tamanio, List<Opinion> listaOpiniones, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
-        super(nombre, tipo, tamanio, listaOpiniones, fechaCreacion, fechaCreacion, catedra);  
+    public Carpeta(String nombre,String tipo, Integer tamanio, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
+        super(nombre, tipo, tamanio, fechaCreacion, fechaCreacion, catedra);  
     }
 
     public void addElemento(List<Elemento> listaElementos){

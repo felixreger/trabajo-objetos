@@ -16,6 +16,4 @@ public class And implements Criterio{
 		
 		return criterio1.cumple(e) && criterio2.cumple(e);
 	}
-
-    
 }
