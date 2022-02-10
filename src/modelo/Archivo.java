@@ -11,8 +11,11 @@ public class Archivo extends Elemento {
         this.propietario = propietario;
     }
 
-    public Usuario getPropietario(){
-        return propietario;
+    public Archivo() {
+    }
+
+    public String getPropietario(){
+        return propietario.getMail();
     }
     
     public void setPropietario(Usuario propietario) {

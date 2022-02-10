@@ -14,3 +14,5 @@ Crear base de datos :
 ### Notas
 
 > Ver si se puede heredar el contstructor privado de los DAO para GetInstances()
+
+> Los criterios para filtrar listados deberian estar incluidos dentro del servicio?

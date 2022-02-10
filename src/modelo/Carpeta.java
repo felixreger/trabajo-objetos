@@ -12,6 +12,9 @@ public class Carpeta extends Elemento{
         super(nombre, tipo, tamanio, fechaCreacion, fechaCreacion, catedra);  
     }
 
+    public Carpeta() {
+    }
+
     public void addElemento(List<Elemento> listaElementos){
         this.listaElementos.addAll(listaElementos);
     }
@@ -19,4 +22,11 @@ public class Carpeta extends Elemento{
     public void eliminarElemento(Elemento elemento){
         listaElementos.remove(elemento);
     }
+
+    @Override
+    public String getPropietario() {
+        return null;
+    }
+
+    
 }

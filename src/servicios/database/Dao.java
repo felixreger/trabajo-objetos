@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-public class Dao{
+public class Dao{ 
     protected Connection connection = null;
 	protected PreparedStatement ptmt = null;
 	protected Statement stmt = null;

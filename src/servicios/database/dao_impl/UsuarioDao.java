@@ -1,27 +1,28 @@
-package servicios.database.usuario;
+package servicios.database.dao_impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Usuario;
 import servicios.database.Dao;
+import servicios.database.IDao;
 
 import java.sql.SQLException;
 
-public class UsuarioDao extends Dao implements IUsuarioDao{
+public class UsuarioDao extends Dao implements IDao<Usuario, String>{
 
-	private static IUsuarioDao usuarioDao = null;
+	private static UsuarioDao usuarioDao = null;
 
 	private UsuarioDao(){}
 
-	public static IUsuarioDao getInstance(){
+	public static UsuarioDao getInstance(){
 		if (usuarioDao == null)
 			usuarioDao = new UsuarioDao();
 		return usuarioDao;
 	}
 
     @Override
-    public List<Usuario> getUsuarios() {
+    public List<Usuario> getAll() {
         List<Usuario> usuarios = new ArrayList<>();
         try {
 			String queryString = "SELECT * FROM usuario";
@@ -55,7 +56,7 @@ public class UsuarioDao extends Dao implements IUsuarioDao{
     }
 
     @Override 
-    public Usuario getUsuario(String mail) {
+    public Usuario get(String mail) {
 		Usuario usuario = new Usuario();
         try {
 			String queryString = "SELECT * FROM usuario WHERE mail = ?";
@@ -92,7 +93,7 @@ public class UsuarioDao extends Dao implements IUsuarioDao{
     }
 
     @Override
-    public boolean deleteUsuario(String mail) {
+    public boolean delete(String mail) {
         try {
 			String queryString = "DELETE FROM usuario WHERE mail=?";
 			connection = getConnection();
@@ -121,7 +122,7 @@ public class UsuarioDao extends Dao implements IUsuarioDao{
     }
 
     @Override
-    public void addUsuario(Usuario usuario) {
+    public void add(Usuario usuario) {
 
         try {
 
@@ -154,7 +155,7 @@ public class UsuarioDao extends Dao implements IUsuarioDao{
     }
 
     @Override
-    public void updateUsuario(Usuario usuario) {
+    public void update(Usuario usuario) {
         try {
 			String queryString = "UPDATE usuario SET nombre=?, puntaje=? WHERE mail=?";
 			connection = getConnection();

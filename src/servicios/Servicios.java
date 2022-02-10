@@ -5,18 +5,15 @@ import java.util.List;
 import modelo.Comentario;
 import modelo.Elemento;
 import modelo.Usuario;
-import servicios.database.comentario.ComentarioDao;
-import servicios.database.comentario.IComentarioDao;
-import servicios.database.elemento.ElementoDao;
-import servicios.database.elemento.IElementoDao;
-import servicios.database.usuario.IUsuarioDao;
-import servicios.database.usuario.UsuarioDao;
+import servicios.database.dao_impl.ComentarioDao;
+import servicios.database.dao_impl.ElementoDao;
+import servicios.database.dao_impl.UsuarioDao;
 
 public class Servicios {
 
-    private IElementoDao accesodbElemento = ElementoDao.getInstance();
-    private IComentarioDao accesodbComentario = ComentarioDao.getInstance();
-    private IUsuarioDao accesodbUsuario = UsuarioDao.getInstance();
+    private ElementoDao accesodbElemento = ElementoDao.getInstance();
+    private ComentarioDao accesodbComentario = ComentarioDao.getInstance();
+    private UsuarioDao accesodbUsuario = UsuarioDao.getInstance();
 
     private static Servicios servicio = null;
 
@@ -29,11 +26,11 @@ public class Servicios {
 	}
 
     public void addComentario(Comentario comentario){
-        accesodbComentario.addComentario(comentario);
+        accesodbComentario.add(comentario);
     }
 
     public boolean deleteElemento(Elemento elemento){
-        return accesodbElemento.deleteElemento(elemento);
+        return accesodbElemento.delete(elemento.getNombre());
     }
 
     public List<Comentario> getComentarios(String nombreElem){
@@ -41,15 +38,19 @@ public class Servicios {
     }
 
     public void addUsuario(Usuario usuario){
-        accesodbUsuario.addUsuario(usuario);
+        accesodbUsuario.add(usuario);
     }
 
     public boolean deleteComentario(Comentario comentarioAResolver) {
-        return accesodbComentario.deleteComentario(comentarioAResolver);
+        return accesodbComentario.delete(comentarioAResolver.getId());
     }
 
     public Usuario getUsuario(String mail) {
-        return accesodbUsuario.getUsuario(mail);
+        return accesodbUsuario.get(mail);
     }
-     
+
+    public List<Usuario> getUsuarios() {
+        return accesodbUsuario.getAll();
+    }
+
 }

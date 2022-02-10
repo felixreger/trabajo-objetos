@@ -1,6 +1,7 @@
 package modelo;
 
 public class Comentario {
+    private Integer id;
     private String descripcion;
     private Usuario autor;
     
@@ -9,6 +10,9 @@ public class Comentario {
         this.autor = autor;
     }
     
+    public Comentario() {
+    }
+
     public String getDescripcion() {
         return this.descripcion;
     }
@@ -23,6 +27,10 @@ public class Comentario {
 
     public void setAutor(Usuario autor) {
         this.autor = autor;
+    }
+
+    public Integer getId(){
+        return id;
     }
     
 }

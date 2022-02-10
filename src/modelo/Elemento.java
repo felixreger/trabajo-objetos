@@ -91,4 +91,7 @@ public class Elemento{
         servicio.addComentario(comentario);
 	}
 
+    public String getPropietario(){
+        return new String();
+    }
 }
