@@ -34,7 +34,7 @@ public class Administrador extends Usuario {
     }
 
     public void resolverComentario(Comentario comentarioAResolver){
-        if (!servicio.deleteComentario(comentarioAResolver)){
+        if (!servicio.deleteComentario(comentarioAResolver.getId())){
             System.out.println("Fallo el borrado de " + comentarioAResolver.toString());
             return;
         }

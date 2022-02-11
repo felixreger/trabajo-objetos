@@ -3,10 +3,11 @@ package modelo;
 import java.time.LocalDate;
 import servicios.Servicios;
 
-public class Elemento{
+public abstract class Elemento{
+
+    private Carpeta padre;
     private String nombre;
     private String tipo;
-    private Integer tamanio;
     private LocalDate fechaModificacion;
     private LocalDate fechaCreacion;
     private Catedra catedra;
@@ -16,11 +17,11 @@ public class Elemento{
     public boolean isValid(){
         return 
         nombre == null
-          && tamanio == null
         && fechaModificacion == null
         && fechaCreacion == null
         && catedra ==
-         null;    }
+         null;    
+    }
 
     public Elemento(){
         this.nombre = null;
@@ -30,13 +31,11 @@ public class Elemento{
         this.catedra = null;
     }
 
-    public Elemento(String nombre,String tipo, Integer tamanio, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
+    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion){
         this.nombre = nombre;
         this.tipo = tipo;
-        this.tamanio = tamanio;
         this.fechaModificacion = fechaModificacion;
         this.fechaCreacion = fechaCreacion;
-        this.catedra = catedra;
     }
 
     public void setNombre(String nombre) {
@@ -49,14 +48,6 @@ public class Elemento{
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public Integer getTamanio() {
-        return this.tamanio;
-    }
-
-    public void setTamanio(Integer tamanio) {
-        this.tamanio = tamanio;
     }
 
     public LocalDate getFechaModificacion() {
@@ -75,10 +66,6 @@ public class Elemento{
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Catedra getCatedra() {
-        return this.catedra;
-    }
-
     public void setCatedra(Catedra catedra) {
         this.catedra = catedra;
     }
@@ -91,7 +78,25 @@ public class Elemento{
         servicio.addComentario(comentario);
 	}
 
-    public String getPropietario(){
-        return new String();
+    public Carpeta getPadre(){
+        return this.padre;
+    }
+
+    public void setPadre(Carpeta carpeta){
+        this.padre = carpeta;
+    }
+
+    public abstract String getPropietario();
+
+    public abstract Catedra getCatedra();
+
+    public abstract Integer getTamanio();
+
+    public void setTamanio(int int1) {
+    }
+
+    @Override
+    public String toString() {
+        return nombre + ", " + tipo;
     }
 }

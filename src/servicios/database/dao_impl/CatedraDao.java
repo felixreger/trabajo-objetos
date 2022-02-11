@@ -31,7 +31,7 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 			while (resultSet.next()) {
-                catedras.add(new Catedra(resultSet.getString("caId")));
+                catedras.add(new Catedra(resultSet.getString("caid")));
 			}
             return catedras;
 		} catch (SQLException e) {
@@ -60,14 +60,14 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 
 		Catedra catedra = new Catedra();
         try {
-			String queryString = "SELECT * FROM catedras WHERE caId = ?";
+			String queryString = "SELECT * FROM catedras WHERE caid = ?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, id);
 			resultSet = ptmt.executeQuery();
 			if (resultSet.next()) {
-				catedra.setNombre(resultSet.getString("caId"));
-				catedra.setPaginaWeb(resultSet.getString("caUrl"));
+				catedra.setNombre(resultSet.getString("caid"));
+				catedra.setPaginaWeb(resultSet.getString("caurl"));
 
 				return catedra;
 			}
@@ -95,7 +95,7 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 	public void update(Catedra elem) {
 		
         try {
-			String queryString = "UPDATE catedras SET caId=?, caUrl=? WHERE caId=?";
+			String queryString = "UPDATE catedras SET caid=?, caurl=? WHERE caid=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, elem.getNombre());
@@ -127,7 +127,7 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 	public boolean delete(String id) {
 		
         try {
-			String queryString = "DELETE FROM catedras WHERE caId=?";
+			String queryString = "DELETE FROM catedras WHERE caid=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, id);
@@ -159,7 +159,7 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 		
         try {
 
-            String queryString = "INSERT INTO catedra(caId, caUrl) VALUES(?,?)";
+            String queryString = "INSERT INTO catedra(caid, caurl) VALUES(?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 

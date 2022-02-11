@@ -25,14 +25,14 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
     public List<Usuario> getAll() {
         List<Usuario> usuarios = new ArrayList<>();
         try {
-			String queryString = "SELECT * FROM usuario";
+			String queryString = "SELECT * FROM usuarios";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 			while (resultSet.next()) {
-                usuarios.add(new Usuario(resultSet.getString("mail"),
-                resultSet.getString("nombre"),
-                resultSet.getInt("puntaje")));
+                usuarios.add(new Usuario(resultSet.getString("usmail"),
+                resultSet.getString("usnombre"),
+                resultSet.getInt("uspuntaje")));
 			}
             return usuarios;
 		} catch (SQLException e) {
@@ -59,15 +59,15 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
     public Usuario get(String mail) {
 		Usuario usuario = new Usuario();
         try {
-			String queryString = "SELECT * FROM usuario WHERE mail = ?";
+			String queryString = "SELECT * FROM usuarios WHERE usmail = ?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, mail);
 			resultSet = ptmt.executeQuery();
 			if (resultSet.next()) {
-				usuario.setNombre(resultSet.getString("nombre"));
-				usuario.setPuntaje(resultSet.getInt("puntaje"));
-				usuario.setMail(resultSet.getString("mail"));
+				usuario.setNombre(resultSet.getString("usnombre"));
+				usuario.setPuntaje(resultSet.getInt("uspuntaje"));
+				usuario.setMail(resultSet.getString("usmail"));
 
 				return usuario;
 			}
@@ -95,7 +95,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
     @Override
     public boolean delete(String mail) {
         try {
-			String queryString = "DELETE FROM usuario WHERE mail=?";
+			String queryString = "DELETE FROM usuarios WHERE usmail=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, mail);
@@ -126,7 +126,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
 
         try {
 
-            String queryString = "INSERT INTO usuario(mail, nombre, puntaje) VALUES(?,?,?)";
+            String queryString = "INSERT INTO usuarios(usail, nusnombre, uspuntaje) VALUES(?,?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 
@@ -157,7 +157,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
     @Override
     public void update(Usuario usuario) {
         try {
-			String queryString = "UPDATE usuario SET nombre=?, puntaje=? WHERE mail=?";
+			String queryString = "UPDATE usuarios SET usnombre=?, uspuntaje=? WHERE usmail=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, usuario.getNombre());

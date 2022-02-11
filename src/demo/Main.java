@@ -7,14 +7,16 @@ public class Main {
     public static void main(String[] args) {
         Servicios servicios = Servicios.getInstance();
 
-        Usuario juan = servicios.getUsuario("juanchidure@outlook.com");
-        System.out.println(juan.toString());
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("servicios.getUsuarios()");
+        System.out.println(servicios.getUsuarios());
+                System.out.println("-----------------------------------------------------------");
 
-        //servicios.addUsuario(new Usuario("felixregert@gmail.com", "Felix Regert", 10));
-        
-        for (Usuario u : servicios.getUsuarios()) {
-            System.out.println(u.toString());
-        }
+        System.out.println(servicios.getArchivos());
+                System.out.println("-----------------------------------------------------------");
+
+        System.out.println(servicios.getCarpetas());
+        //System.out.println(servicios.getComentarios());
+        System.out.println("-----------------------------------------------------------");
     }
-    
 }

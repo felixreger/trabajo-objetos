@@ -8,8 +8,8 @@ public class Carpeta extends Elemento{
     
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre,String tipo, Integer tamanio, LocalDate fechaModificacion, LocalDate fechaCreacion, Catedra catedra){
-        super(nombre, tipo, tamanio, fechaCreacion, fechaCreacion, catedra);  
+    public Carpeta(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion){
+        super(nombre, tipo, fechaCreacion, fechaCreacion);  
     }
 
     public Carpeta() {
@@ -28,5 +28,17 @@ public class Carpeta extends Elemento{
         return null;
     }
 
-    
+    @Override
+    public Catedra getCatedra() {
+        return null;
+    }
+
+    @Override
+    public Integer getTamanio() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+
 }
