@@ -26,14 +26,19 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer>{
     
         List<Comentario> opiniones = new ArrayList<>();
         try {
-			String queryString = "SELECT * FROM comentarios c JOIN elementos e JOIN usuarios u on c.coidelemento = e.elnombre and c.coautor = u.usmail where c.elnombre = ?";
+			String queryString = "SELECT * FROM comentarios c JOIN elementos e  on c.coidelemento = e.elnombre JOIN usuarios u on c.coautor = u.usmail where c.coidelemento = ?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
             ptmt.setString(1, nombreElem);
 			resultSet = ptmt.executeQuery();
 			while (resultSet.next()) {  
-                opiniones.add(new Comentario(resultSet.getString("codescripcion"), 
-                new Usuario(resultSet.getString("usmail"), resultSet.getString("usnombre"), resultSet.getInt("uspuntaje"))));
+                opiniones.add(
+				new Comentario(
+					resultSet.getInt("coId"),
+					resultSet.getString("codescripcion"), 
+                	new Usuario(resultSet.getString("usmail"), resultSet.getString("usnombre"), resultSet.getInt("uspuntaje")),
+					resultSet.getString("elnombre")
+				));
 			}
             return opiniones;
 		} catch (SQLException e) {
@@ -153,12 +158,14 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer>{
     public void add(Comentario comentario) {
         try {
 
-            String queryString = "INSERT INTO comentario(coid, coautor) VALUES(?,?)";
+            String queryString = "INSERT INTO comentarios (coid, coautor,codescripcion,coidelemento) VALUES(?,?,?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 
-            ptmt.setString(1, comentario.getDescripcion());
+			ptmt.setInt(1, comentario.getId());
             ptmt.setString(2, comentario.getAutor().getMail());
+            ptmt.setString(3, comentario.getDescripcion());
+            ptmt.setString(4, comentario.getNombreElemento());
             ptmt.executeUpdate();
 
             System.out.println("Data Added Successfully");
@@ -182,20 +189,24 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer>{
 
     @Override
     public List<Comentario> getAll() {
-        List<Comentario> opiniones = new ArrayList<>();
+        List<Comentario> comentarios = new ArrayList<>();
         try {
-			String queryString = "SELECT * FROM Comentario c JOIN Elemento e on c.coid = e.elnombre";
+			String queryString = "SELECT * FROM comentarios c JOIN Elemento e on c.coid = e.elnombre JOIN usuarios u on u.usmail = c.coautor";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 			while (resultSet.next()) {  
-                opiniones.add(new Comentario(resultSet.getString("codescripcion"), 
-                new Usuario(resultSet.getString("coMail"), resultSet.getString("elnombre"), resultSet.getInt("puntaje"))));
+                comentarios.add(
+					new Comentario(resultSet.getInt("coid"),resultSet.getString("codescripcion"), 
+                		new Usuario(resultSet.getString("coautor"), resultSet.getString("usnombre"), resultSet.getInt("uspuntaje")),
+						resultSet.getString("elnombre")
+				));
+				// Tiene mal la ionstanciacion de ussuario 
 			}
-            return opiniones;
+            return comentarios;
 		} catch (SQLException e) {
 			e.printStackTrace();
-            return opiniones;
+            return comentarios;
 		} finally {
 			try {
 				if (resultSet != null)

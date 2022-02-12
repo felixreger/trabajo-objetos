@@ -1,7 +1,6 @@
 package modelo;
 
 import java.time.LocalDate;
-import servicios.Servicios;
 
 public abstract class Elemento{
 
@@ -11,8 +10,6 @@ public abstract class Elemento{
     private LocalDate fechaModificacion;
     private LocalDate fechaCreacion;
     private Catedra catedra;
-
-    private Servicios servicio = Servicios.getInstance();
 
     public boolean isValid(){
         return 
@@ -24,18 +21,19 @@ public abstract class Elemento{
     }
 
     public Elemento(){
-        this.nombre = null;
-        this.tipo = null;
+        this.nombre = "";
+        this.tipo = "";
         this.fechaModificacion = null;
         this.fechaCreacion = null;
-        this.catedra = null;
+        this.catedra = new Catedra(); // todo : verificar que funcione lo invalido
     }
 
-    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion){
+    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, Carpeta padre){
         this.nombre = nombre;
         this.tipo = tipo;
         this.fechaModificacion = fechaModificacion;
         this.fechaCreacion = fechaCreacion;
+        this.padre = padre;
     }
 
     public void setNombre(String nombre) {
@@ -73,10 +71,6 @@ public abstract class Elemento{
     public String getNombre(){
         return this.nombre;
     }
-
-	public void agregarComentario(Comentario comentario) {
-        servicio.addComentario(comentario);
-	}
 
     public Carpeta getPadre(){
         return this.padre;

@@ -42,7 +42,9 @@ public class CarpetaDao extends ElementoDao{
                     new Carpeta(resultSet.getString("elnombre"),
                         resultSet.getString("eltipo"),
                         LocalDate.parse(resultSet.getString("elfechamodificacion")),
-                        LocalDate.parse(resultSet.getString("elfechacreacion"))));
+                        LocalDate.parse(resultSet.getString("elfechacreacion")),
+						new Carpeta())
+						);
                         // ver como agregar los elementos que contiene. 
 			}
             return elementos;

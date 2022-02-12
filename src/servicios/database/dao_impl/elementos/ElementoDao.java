@@ -22,7 +22,7 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String>{
     @Override
     public void update(Elemento elem) {
         try {
-			String queryString = "UPDATE elemento SET(eltamanio, eltipo, elfechacreacion, elfechamodificacion) VALUES=(?,?,?,?) WHERE elnombre=?";
+			String queryString = "UPDATE elementos SET(eltamanio, eltipo, elfechacreacion, elfechamodificacion) VALUES=(?,?,?,?) WHERE elnombre=?";
             
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
@@ -55,7 +55,7 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String>{
     @Override
     public boolean delete(String id) {
         try {
-			String queryString = "DELETE FROM elemento WHERE elnombre=?";
+			String queryString = "DELETE FROM elementos WHERE elnombre=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, id);
@@ -78,24 +78,24 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String>{
 			}
 		}
     }
+    
     @Override
     public void add(Elemento elem) {
         try {
 
-            String queryString = "INSERT INTO elemento(elnombre, elcaId, elelempadre, elpropietario, eltamanio, eltipo, elfechamodificacion, elfechacreacion)"
+            String queryString = "INSERT INTO elementos (elnombre, elcaId, elelempadre, elpropietario, eltamanio, eltipo, elfechamodificacion, elfechacreacion)"
                                 + "VALUES(?,?,?,?,?,?,?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 
             ptmt.setString(1, elem.getNombre());
             ptmt.setString(2, elem.getCatedra().getNombre());
-            ptmt.setString(3, elem.getPropietario());
+            ptmt.setString(3, elem.getPadre().getNombre()); 
             ptmt.setString(4, elem.getPropietario());
             ptmt.setInt(5, elem.getTamanio());
-            ptmt.setInt(6, elem.getTamanio());
-            ptmt.setString(7, elem.getTipo());
-            ptmt.setDate(8, Date.valueOf(elem.getFechaCreacion()));
-            ptmt.setDate(9, Date.valueOf(elem.getFechaModificacion()));
+            ptmt.setString(6, elem.getTipo());
+            ptmt.setDate(7, Date.valueOf(elem.getFechaCreacion()));
+            ptmt.setDate(8, Date.valueOf(elem.getFechaModificacion()));
 
             ptmt.executeUpdate();
 

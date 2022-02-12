@@ -126,7 +126,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String>{
 
         try {
 
-            String queryString = "INSERT INTO usuarios(usail, nusnombre, uspuntaje) VALUES(?,?,?)";
+            String queryString = "INSERT INTO usuarios(usmail, usnombre, uspuntaje) VALUES(?,?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
 

@@ -4,10 +4,13 @@ public class Comentario {
     private Integer id;
     private String descripcion;
     private Usuario autor;
+    private String nombreElemento;
     
-    public Comentario(String descripcion, Usuario autor) {
+    public Comentario(Integer id, String descripcion, Usuario autor, String nombreElemento) {
+        this.id = id;
         this.descripcion = descripcion;
         this.autor = autor;
+        this.nombreElemento = nombreElemento;
     }
     
     public Comentario() {
@@ -31,6 +34,20 @@ public class Comentario {
 
     public Integer getId(){
         return id;
+    }
+
+    public void setNombreElemento(String nombreElem){
+        this.nombreElemento = nombreElem;
+    }
+
+    public String getNombreElemento(){
+        return nombreElemento;
+    }
+
+    @Override
+    public String toString() {
+        
+        return "Comentario : " + descripcion + " , " + autor;
     }
     
 }

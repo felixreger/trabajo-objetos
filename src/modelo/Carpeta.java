@@ -8,8 +8,8 @@ public class Carpeta extends Elemento{
     
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion){
-        super(nombre, tipo, fechaCreacion, fechaCreacion);  
+    public Carpeta(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, Carpeta padre){
+        super(nombre, tipo, fechaCreacion, fechaCreacion, padre);  
     }
 
     public Carpeta() {
@@ -28,9 +28,9 @@ public class Carpeta extends Elemento{
         return null;
     }
 
-    @Override
+    @Override // todo: calcular con la mayor presencia 
     public Catedra getCatedra() {
-        return null;
+        return new Catedra();
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import modelo.Archivo;
+import modelo.Carpeta;
 import modelo.Catedra;
 import modelo.Elemento;
 import modelo.Usuario;
@@ -47,7 +48,8 @@ public class ArchivoDao extends ElementoDao{
                         LocalDate.parse(resultSet.getString("elfechamodificacion")),
                         LocalDate.parse(resultSet.getString("elfechacreacion")), 
                         new Catedra(),
-                        new Usuario() //todo agregar params. 
+                        new Usuario(), //todo agregar params. 
+						new Carpeta()
 
                     ));
 			}

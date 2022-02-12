@@ -9,8 +9,8 @@ public class Archivo extends Elemento {
     private Integer tamanio;
 
     public Archivo(String nombre, String tipo, Integer tamanio, LocalDate fechaModificacion, 
-    LocalDate fechaCreacion, Catedra catedra, Usuario propietario) {
-        super(nombre, tipo, fechaModificacion,  fechaCreacion);
+    LocalDate fechaCreacion, Catedra catedra, Usuario propietario, Carpeta padre) {
+        super(nombre, tipo, fechaModificacion,  fechaCreacion, padre);
         this.propietario = propietario;
         this.catedra = catedra;
         this.tamanio = tamanio;

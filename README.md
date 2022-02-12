@@ -21,3 +21,8 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 > Ver si se puede heredar el contstructor privado de los DAO para GetInstances()
 
 > Los criterios para filtrar listados deberian estar incluidos dentro del servicio?
+
+#
+### Todo
+
+- [] Agregar Padre al modelo de elemento
