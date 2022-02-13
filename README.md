@@ -26,8 +26,8 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 ## Cosas
 
 - [X] Agregar Padre al modelo de elemento
-- [] Admin para usuarios
-- [] Ordenamiento ascendente y descendente
+- [ ] Admin para usuarios
+- [ ] Ordenamiento ascendente y descendente
 
 ## Preguntas
 1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y en primera insatncia antes de realizar la operacion se verifica que el usaurio sea administrador.2. Como manejamos el tema de los filtros (Criterios)? 
