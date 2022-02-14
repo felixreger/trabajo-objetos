@@ -30,7 +30,9 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 - [ ] Ordenamiento ascendente y descendente
 
 ## Preguntas
-1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y en primera insatncia antes de realizar la operacion se verifica que el usaurio sea administrador.2. Como manejamos el tema de los filtros (Criterios)? 
+
+1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y en primera insatncia antes de realizar la operacion se verifica que el usaurio sea administrador.
+2. Como manejamos el tema de los filtros (Criterios)? 
     * Filtros en servicio como parametro
     * En el front (main) invocandolo a partir del resultado de los servicios
     * En sql usando stored procedures "getElementosById"
@@ -40,3 +42,4 @@ No sabemos decidir qué camino tomar a la hora de retornar al usuario el catedra
 4. ¿Cómo hacemos para generar un servicio que agrega un comentario? 
     * Generamos un objeto comentario que ya tengo un atributo con el id del elemento al que esta asociado (agregando este último porque antes no estaba)
     * Generamos un servicio con dos parámetros, uno comentario y otro elemento.
+

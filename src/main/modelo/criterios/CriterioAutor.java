@@ -3,7 +3,7 @@ package main.modelo.criterios;
 import main.modelo.Elemento;
 import main.modelo.Usuario;
 
-public class Autor implements Criterio {
+public class CriterioAutor implements Criterio {
     private Usuario autor;
 
     public Usuario getAutor() {
@@ -14,7 +14,7 @@ public class Autor implements Criterio {
         this.autor = autor;
     }
 
-    public Autor(Usuario usuario){
+    public CriterioAutor(Usuario usuario){
         autor = usuario;
     }
 

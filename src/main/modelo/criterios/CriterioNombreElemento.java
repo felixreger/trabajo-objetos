@@ -2,10 +2,10 @@ package main.modelo.criterios;
 
 import main.modelo.Elemento;
 
-public class NombreElemento implements Criterio{
+public class CriterioNombreElemento implements Criterio{
     private String nombre;
 
-    public NombreElemento(String nombre) {
+    public CriterioNombreElemento(String nombre) {
         this.nombre = nombre;
     }
 

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import main.modelo.Elemento;
 
-public class FechaCreacion implements Criterio {
+public class CriterioFechaCreacion implements Criterio {
     private LocalDate fechaCreacion;
 
     public LocalDate getFechaCreacion() {
@@ -15,7 +15,7 @@ public class FechaCreacion implements Criterio {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public FechaCreacion(LocalDate fechaCreacion){
+    public CriterioFechaCreacion(LocalDate fechaCreacion){
         this.fechaCreacion = fechaCreacion;
     }
 

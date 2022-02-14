@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import main.modelo.Elemento;
 
 
-public class FechaModificacion implements Criterio {
+public class CriterioFechaModificacion implements Criterio {
     private LocalDate fechaModificacion;
 
     public LocalDate getFechaModificacion() {
@@ -16,7 +16,7 @@ public class FechaModificacion implements Criterio {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public FechaModificacion(LocalDate fechaModificacion){
+    public CriterioFechaModificacion(LocalDate fechaModificacion){
         this.fechaModificacion = fechaModificacion;
     }
 
