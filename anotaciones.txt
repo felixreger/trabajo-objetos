@@ -1,0 +1,30 @@
+------------ Directorios ----------
+
+ // A B C D F E Ordenado de mayor a menor longitud
+    
+        // F E D C B A 
+
+        /*
+                A
+            B       C
+        D     F          E
+        
+        D seria A:B:D
+        B seria A:B
+        C seria A:C
+        E seria A:C:E
+        F seria A:B:F
+        
+        -- Ordenado por longitud
+
+        B seria A:B
+        C seria A:C
+        D seria A:B:D
+        E seria A:C:E
+        F seria A:B:F
+
+
+        1ero: tengo que encontrar A. 
+        2do: encontrar a B y C o C y B
+        3ro a: tomo a B 
+

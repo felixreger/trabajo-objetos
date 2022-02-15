@@ -5,7 +5,7 @@ import java.util.List;
 
 import main.modelo.criterios.Criterio;
 
-public abstract class Elemento{
+public abstract class Elemento {
 
     private String padre;
     private String nombre;
@@ -14,16 +14,14 @@ public abstract class Elemento{
     private LocalDate fechaCreacion;
     private Catedra catedra;
 
-    public boolean isValid(){
-        return 
-        nombre == null
-        && fechaModificacion == null
-        && fechaCreacion == null
-        && catedra ==
-         null;    
+    public boolean isValid() {
+        return nombre == null
+                && fechaModificacion == null
+                && fechaCreacion == null
+                && catedra == null;
     }
 
-    public Elemento(){
+    public Elemento() {
         this.nombre = "";
         this.tipo = "";
         this.fechaModificacion = null;
@@ -31,7 +29,7 @@ public abstract class Elemento{
         this.catedra = new Catedra(); // todo : verificar que funcione lo invalido
     }
 
-    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre){
+    public Elemento(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.fechaModificacion = fechaModificacion;
@@ -71,23 +69,21 @@ public abstract class Elemento{
         this.catedra = catedra;
     }
 
-    public String getNombre(){
+    public String getNombre() {
         return this.nombre;
     }
 
-    public String getPadre(){
+    public String getPadre() {
         return this.padre;
     }
 
-    public void setPadre(String carpeta){
+    public void setPadre(String carpeta) {
         this.padre = carpeta;
     }
 
     public abstract String getPropietario();
 
     public abstract Catedra getCatedra();
-
-    public abstract String getNombrePadre();
 
     public abstract Integer getTamanio();
 
@@ -96,9 +92,13 @@ public abstract class Elemento{
 
     @Override
     public String toString() {
-        return nombre + ", " + tipo;
+        return "nombre: " + nombre + " | tipo:" + tipo + " | padre:" + padre;
     }
 
     public abstract List<Archivo> filtrar(Criterio c);
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.nombre.equals(((Elemento) obj).getNombre());
+    }
 }

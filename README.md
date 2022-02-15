@@ -28,6 +28,7 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 - [X] Agregar Padre al modelo de elemento
 - [ ] Admin para usuarios
 - [ ] Ordenamiento ascendente y descendente
+- [ ] Generalizar el getAll de catedraDao y archivo dao. Nos interesa solamente traer los elementos de la tabla elementos 
 
 ## Preguntas
 
