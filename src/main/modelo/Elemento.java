@@ -7,7 +7,7 @@ import main.modelo.criterios.Criterio;
 
 public abstract class Elemento{
 
-    private Carpeta padre;
+    private String padre;
     private String nombre;
     private String tipo;
     private LocalDate fechaModificacion;
@@ -31,7 +31,7 @@ public abstract class Elemento{
         this.catedra = new Catedra(); // todo : verificar que funcione lo invalido
     }
 
-    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, Carpeta padre){
+    public Elemento(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre){
         this.nombre = nombre;
         this.tipo = tipo;
         this.fechaModificacion = fechaModificacion;
@@ -75,17 +75,19 @@ public abstract class Elemento{
         return this.nombre;
     }
 
-    public Carpeta getPadre(){
+    public String getPadre(){
         return this.padre;
     }
 
-    public void setPadre(Carpeta carpeta){
+    public void setPadre(String carpeta){
         this.padre = carpeta;
     }
 
     public abstract String getPropietario();
 
     public abstract Catedra getCatedra();
+
+    public abstract String getNombrePadre();
 
     public abstract Integer getTamanio();
 
@@ -97,5 +99,6 @@ public abstract class Elemento{
         return nombre + ", " + tipo;
     }
 
-    public abstract List<Archivo> buscar(Criterio c);
+    public abstract List<Archivo> filtrar(Criterio c);
+
 }

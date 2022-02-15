@@ -1,19 +1,19 @@
-package main.modelo.comparadores.archivos;
+package main.modelo.comparadores.elementos;
 
-import main.modelo.Archivo;
+import main.modelo.Elemento;
 
-public class ComparadorFechaCreacion extends ComparadorArchivo {
+public class ComparadorFechaCreacion extends ComparadorElemento {
 
     public ComparadorFechaCreacion() {
         siguiente = null;
     }
 
-    public ComparadorFechaCreacion(ComparadorArchivo comparadorArchivo) {
+    public ComparadorFechaCreacion(ComparadorElemento comparadorArchivo) {
         siguiente = comparadorArchivo;
     }
 
     @Override
-    public int comparar(Archivo a1, Archivo a2) {
+    public int comparar(Elemento a1, Elemento a2) {
         if (a1.getFechaCreacion().equals(a2.getFechaCreacion()) && siguiente!=null){
             return siguiente.comparar(a1, a2);
         }

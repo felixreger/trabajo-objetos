@@ -1,19 +1,19 @@
-package main.modelo.comparadores.archivos;
+package main.modelo.comparadores.elementos;
 
-import main.modelo.Archivo;
+import main.modelo.Elemento;
 
-public class CompararNombre extends ComparadorArchivo{
+public class CompararNombre extends ComparadorElemento{
 
     public CompararNombre(){
         siguiente = null;
     }
 
-    public CompararNombre(ComparadorArchivo comparadorArchivo){
+    public CompararNombre(ComparadorElemento comparadorArchivo){
         siguiente = comparadorArchivo;
     }
     
     @Override
-    public int comparar(Archivo a1, Archivo a2) {
+    public int comparar(Elemento a1, Elemento a2) {
         
         if (a1.getNombre().compareTo(a2.getNombre()) == 0 && siguiente!=null){
             return siguiente.comparar(a1, a2);

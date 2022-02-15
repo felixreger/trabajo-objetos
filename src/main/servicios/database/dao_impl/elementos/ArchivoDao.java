@@ -3,7 +3,6 @@ package main.servicios.database.dao_impl.elementos;
 import java.util.List;
 
 import main.modelo.Archivo;
-import main.modelo.Carpeta;
 import main.modelo.Catedra;
 import main.modelo.Elemento;
 import main.modelo.Usuario;
@@ -49,7 +48,7 @@ public class ArchivoDao extends ElementoDao{
                         LocalDate.parse(resultSet.getString("elfechacreacion")), 
                         new Catedra(),
                         new Usuario(), //todo agregar params. 
-						new Carpeta()
+						resultSet.getString("elelempadre")
 
                     ));
 			}

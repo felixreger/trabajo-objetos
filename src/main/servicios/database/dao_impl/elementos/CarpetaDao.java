@@ -27,11 +27,13 @@ public class CarpetaDao extends ElementoDao{
     }
 
     @Override
-    public List<Elemento> getAll() {
+    public List<Elemento> getAll() { 
+
+
         List<Elemento> elementos = new ArrayList<>();
 
         try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid";
+			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid WHERE e.eltipo = 'carpeta'";
 		
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
@@ -43,7 +45,7 @@ public class CarpetaDao extends ElementoDao{
                         resultSet.getString("eltipo"),
                         LocalDate.parse(resultSet.getString("elfechamodificacion")),
                         LocalDate.parse(resultSet.getString("elfechacreacion")),
-						new Carpeta())
+						resultSet.getString("elelempadre"))
 						);
                         // ver como agregar los elementos que contiene. 
 			}
@@ -81,10 +83,10 @@ public class CarpetaDao extends ElementoDao{
 			if (resultSet.next()) {
 				elemento.setNombre(resultSet.getString("elnombre"));
 				elemento.setTipo(resultSet.getString("eltipo"));
-				// agregar elemento.setTamanio(resultSet.getInt("eltamanio"));
                 elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
                 elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
 				elemento.setCatedra(new Catedra(resultSet.getString("elcaId"), resultSet.getString("caurl"))); // revisar atributo
+				elemento.setPadre(resultSet.getString("elelempadre"));
 				
                 return elemento;
 			}

@@ -1,20 +1,24 @@
 package test;
 
+import main.modelo.Archivo;
 import main.modelo.Elemento;
+import main.modelo.comparadores.elementos.ComparadorTamanio;
 import main.modelo.criterios.Criterio;
 import main.modelo.criterios.CriterioNombreElemento;
 import main.servicios.Servicios;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CriterioTest {
  
     public static void main(String[] args) {
-        Criterio c1 = new CriterioNombreElemento("carpeta");
+        Criterio cr1 = new CriterioNombreElemento("carpeta 2021");
         Servicios s = Servicios.getInstance();
 
-        List<Elemento> elementos = s.getElementos(); 
+        //Elemento c1 = s.getCarpetas().get(0);
 
-        System.out.println(elementos);
+        //List<Archivo> lista = c1.filtrar(cr1);
+
+        //lista.sort(new ComparadorTamanio());
+        /* Collection.sort(lista,(Comparator) com1); */
     }
 }

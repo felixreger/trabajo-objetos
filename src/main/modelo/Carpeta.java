@@ -11,7 +11,7 @@ public class Carpeta extends Elemento{
     
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, Carpeta padre){
+    public Carpeta(String nombre,String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre){
         super(nombre, tipo, fechaCreacion, fechaCreacion, padre);  
     }
 
@@ -43,13 +43,18 @@ public class Carpeta extends Elemento{
     }
 
     @Override
-    public List<Archivo> buscar(Criterio c) {
+    public List<Archivo> filtrar(Criterio c) {
     
         List<Archivo> cumplen = new ArrayList<>();
         for (Elemento elem : listaElementos ){
-            cumplen.addAll(elem.buscar(c));
+            cumplen.addAll(elem.filtrar(c));
         }
         return cumplen;
     }
+
+	@Override
+	public String getNombrePadre() {
+		return getPadre().split(":")[getPadre().length() - 2];
+	}
 
 }

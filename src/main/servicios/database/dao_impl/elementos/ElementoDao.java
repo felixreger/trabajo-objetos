@@ -89,7 +89,7 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String>{
 
             ptmt.setString(1, elem.getNombre());
             ptmt.setString(2, elem.getCatedra().getNombre());
-            ptmt.setString(3, elem.getPadre().getNombre()); 
+            ptmt.setString(3, elem.getPadre()); 
             ptmt.setString(4, elem.getPropietario());
             ptmt.setInt(5, elem.getTamanio());
             ptmt.setString(6, elem.getTipo());
