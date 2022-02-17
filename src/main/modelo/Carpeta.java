@@ -22,8 +22,6 @@ public class Carpeta extends Elemento {
     }
 
     public void addElemento(List<Elemento> listaElementos) {
-        System.out.println("");
-
         this.listaElementos.addAll(listaElementos);
     }
 

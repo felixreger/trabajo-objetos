@@ -28,19 +28,42 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 - [X] Agregar Padre al modelo de elemento
 - [ ] Admin para usuarios
 - [ ] Ordenamiento ascendente y descendente
-- [ ] Generalizar el getAll de catedraDao y archivo dao. Nos interesa solamente traer los elementos de la tabla elementos 
+- [ ] Generalizar el getAll de catedraDao y archivo dao. Nos interesa solamente traer los elementos de la tabla elementos
+- [ ] Generar naming para las carpetas y archivos al momento de insertarlo en la base de datos 
 
-## Preguntas
+## Reunion
 
-1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y en primera insatncia antes de realizar la operacion se verifica que el usaurio sea administrador.
-2. Como manejamos el tema de los filtros (Criterios)? 
+### To do
+
+- [X] Hacer diagrama de clases
+- [ ] Documentacion
+    - [ ] Estado actual del proyecto
+    - [ ] Decisiones tomadas 
+    - [ ] Conplicaciones
+
+### Perse
+
+
+1. Como venimos?
+1. Hay cambios necesarios (Agregados, correcciones)
+1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y se verifica que el usuario sea administrador. Esto como idea esta bien?
+1. Como manejamos el tema de los filtros (Criterios)? 
     * Filtros en servicio como parametro
-    * En el front (main) invocandolo a partir del resultado de los servicios
+    * En el front (main) invocandolo a partir del resultado de los servicios <-- Usamos esta
     * En sql usando stored procedures "getElementosById"
-3. ¿Cómo calculamos la catedra de la carpeta?
-No sabemos decidir qué camino tomar a la hora de retornar al usuario el catedra de un elemento. 
-    * La catedra de una carpeta se puede calcular a partir de la mayoria de catedras de sus hijos. I.E
-4. ¿Cómo hacemos para generar un servicio que agrega un comentario? 
-    * Generamos un objeto comentario que ya tengo un atributo con el id del elemento al que esta asociado (agregando este último porque antes no estaba)
+1. ¿Como encarar de por si este problema? 
+    
+    Por ejemplo :
+    
+    * Generamos un objeto comentario que ya este nutrido con los datos y lo actualizamos / agregamos en la bdd
     * Generamos un servicio con dos parámetros, uno comentario y otro elemento.
 
+    Basicamente la pregunta es si pasamos el objeto completo o dejamos que el servicio se encargue de construirlo a partir de los parametros
+
+
+#### Preguntas en caso de sobrar tiempo
+
+1. ¿Cómo calculamos la catedra de la carpeta?
+No sabemos decidir qué camino tomar a la hora de retornar al usuario el catedra de un elemento. 
+    * La catedra de una carpeta se puede calcular a partir de la mayoria de catedras de sus hijos. I.E
+2. Que pasa cuando vos estas diseniando y te ves afectado con la base de datos? 

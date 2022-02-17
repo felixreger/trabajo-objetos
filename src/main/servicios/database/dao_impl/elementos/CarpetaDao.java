@@ -33,10 +33,11 @@ public class CarpetaDao extends ElementoDao{
         List<Elemento> elementos = new ArrayList<>();
 
         try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid";
+			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid where e.eltipo = ?";
 		
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
+			ptmt.setString(1, "carpeta");
 			resultSet = ptmt.executeQuery();
 
             while (resultSet.next()) { // todo: ver si con el nombre del atributo solo alcanza o falta agregarle la tabla

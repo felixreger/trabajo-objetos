@@ -133,39 +133,44 @@ public class Servicios {
 
     // Obtener referencia de padre a partir de un elemento
     // cont = Optimiza busqueda acotando el rango
-    private int getPadreFromElementos(List<Elemento> elementos, Elemento elemento, int cont) {
+    private Elemento getPadreFromElementos(List<Elemento> elementos, Elemento elemento, int cont){
 
         // GetPadre de hijo retorna A:B:C:D --> El padre de D es C
-        int index = 0;
 
         String[] path = elemento.getPadre().split(":");
 
-        String nombrePadre = path[path.length - 2];
-
-        for (index = cont; index < elementos.size(); index++) {
+        String nombrePadre = path[path.length -2];
+        
+        Elemento padre = null;
+        
+        for (int index = cont; index < elementos.size(); index++) {
 
             Elemento elementoIndex = elementos.get(index);
 
-            if (elementoIndex.getNombre().equals(nombrePadre)) {
-                return index;
+            if(elementoIndex.getNombre().equals(nombrePadre)){
+                padre = elementoIndex;
             }
         }
-
-        return -1;
+        
+        if (padre == null)
+            return new Carpeta();
+        else
+            return padre;
     }
+    
 
     // A partir de el nombre de un directorio dado por parametro,
     // se retorna el subdirectorio asociado.
-    public Elemento getDirectorio(String raiz) {
+    public Carpeta getDirectorio(String raiz) {
 
-        // Obtener elementos de la base de datos
+        // Cargar en una lista de elementos todos los elementos que sean Carpetas 
         List<Elemento> elementos = accesodbCarpeta.getAll();
+
+        // Cargar en la lista de elementos todos los archivos
+        elementos.addAll(accesodbArchivo.getAll());
 
         // Ordenar la lista de elementos por longitud de nombre
         elementos.sort(new ComparadorDirectorio());
-
-        // Obtener el elemento raiz a partir del nombre
-        Elemento raizElemento = accesodbCarpeta.get(raiz);
 
         // Se utiliza un contador para acotar la busqueda de padres
         int cont = 0;
@@ -173,8 +178,8 @@ public class Servicios {
         // Por cada elementro asigno hijos a padres
         for (Elemento elemento : elementos) {
 
-            if (elemento.equals(raizElemento)) {
-                return raizElemento;
+            if (elemento.getNombre().equals(raiz)) {
+                return (Carpeta) elemento;
             }
 
             // Revisa que el elemento que estoy mirando en la lista sea
@@ -182,7 +187,7 @@ public class Servicios {
             // para ello, el nombre de la raiz debe estar contenido en el padre del elemento
             if (this.esPariente(elemento, raiz)) {
 
-                Carpeta padre = (Carpeta) elementos.get(getPadreFromElementos(elementos, elemento, cont));
+                Carpeta padre = (Carpeta) getPadreFromElementos(elementos, elemento, cont);
 
                 padre.addElemento(Collections.singletonList(elemento));
 
@@ -190,7 +195,7 @@ public class Servicios {
             cont++;
         }
 
-        return raizElemento;
+        return null;
     }
 
     // padre y elementoRaiz deben referenciar a la misma direccion de memoria
