@@ -2,15 +2,15 @@ package main.modelo.criterios;
 
 import main.modelo.Elemento;
 
-public class CriterioNombreElemento implements Criterio{
+public class CriterioContieneNombreElemento implements Criterio{
     private String nombre;
 
-    public CriterioNombreElemento(String nombre) {
+    public CriterioContieneNombreElemento(String nombre) {
         this.nombre = nombre;
     }
 
 	@Override
 	public Boolean cumple(Elemento e) {
-		return e.getNombre().equals(nombre);
+		return e.getNombre().contains(nombre);
 	}
 }

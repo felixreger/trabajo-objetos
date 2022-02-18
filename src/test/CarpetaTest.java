@@ -11,8 +11,6 @@ public class CarpetaTest {
         Elemento el = servicio.getDirectorio("carpeta1");
 
         System.out.println(el);
-    
-    
-    
+
     } 
 }

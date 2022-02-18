@@ -2,13 +2,13 @@ package main.modelo.comparadores.elementos;
 
 import main.modelo.Elemento;
 
-public class CompararNombre extends ComparadorElemento{
+public class ComparadorNombre extends ComparadorElemento{
 
-    public CompararNombre(){
+    public ComparadorNombre(){
         siguiente = null;
     }
 
-    public CompararNombre(ComparadorElemento comparadorArchivo){
+    public ComparadorNombre(ComparadorElemento comparadorArchivo){
         siguiente = comparadorArchivo;
     }
     

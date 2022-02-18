@@ -13,28 +13,30 @@ public abstract class Elemento {
     private LocalDate fechaModificacion;
     private LocalDate fechaCreacion;
     private Catedra catedra;
+    private Usuario propietario;
 
     public boolean isValid() {
-        return nombre == null
+        return nombre.isEmpty()
                 && fechaModificacion == null
                 && fechaCreacion == null
-                && catedra == null;
+                && catedra.isEmpty();
     }
 
     public Elemento() {
-        this.nombre = "";
-        this.tipo = "";
+        this.nombre = new String();
+        this.tipo = new String();
         this.fechaModificacion = null;
         this.fechaCreacion = null;
-        this.catedra = new Catedra(); // todo : verificar que funcione lo invalido
+        this.catedra = new Catedra();
     }
 
-    public Elemento(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre) {
+    public Elemento(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre, Usuario propietario, Catedra catedra) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.fechaModificacion = fechaModificacion;
         this.fechaCreacion = fechaCreacion;
         this.padre = padre;
+        this.propietario = propietario;
     }
 
     public void setNombre(String nombre) {
@@ -81,13 +83,21 @@ public abstract class Elemento {
         this.padre = carpeta;
     }
 
-    public abstract String getPropietario();
-
-    public abstract Catedra getCatedra();
-
     public abstract Integer getTamanio();
 
     public void setTamanio(int int1) {
+    }
+
+    public String getPropietario() {
+        return propietario.getMail();
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
+
+    public Catedra getCatedra(){
+        return catedra;
     }
 
     @Override

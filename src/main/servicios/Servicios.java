@@ -83,11 +83,7 @@ public class Servicios {
     // endregion
 
     // region Elemento
-    public List<Elemento> getElementos() { // todo: puede no estar
-        List<Elemento> elementos = new ArrayList<>(getArchivos());
-        // elementos.addAll(getCarpetas());
-        return elementos;
-    }
+
 
     public boolean deleteElemento(Elemento elemento) {
         return accesodbCarpeta.delete(elemento.getNombre());

@@ -22,7 +22,6 @@ public class CriterioFechaModificacion implements Criterio {
 
 	@Override
 	public Boolean cumple(Elemento e) {
-		// TODO Auto-generated method stub
-		return null;
+        return e.getFechaModificacion().isEqual(this.fechaModificacion);
 	}
 }

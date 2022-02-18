@@ -10,6 +10,7 @@ import java.util.List;
 import main.modelo.Carpeta;
 import main.modelo.Catedra;
 import main.modelo.Elemento;
+import main.modelo.Usuario;
 
 
 public class CarpetaDao extends ElementoDao{
@@ -33,23 +34,33 @@ public class CarpetaDao extends ElementoDao{
         List<Elemento> elementos = new ArrayList<>();
 
         try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid where e.eltipo = ?";
+			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid JOIN usuarios u on u.usmail = e.elpropietario where e.eltipo = ?";
 		
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, "carpeta");
 			resultSet = ptmt.executeQuery();
 
-            while (resultSet.next()) { // todo: ver si con el nombre del atributo solo alcanza o falta agregarle la tabla
+            while (resultSet.next()) { 
                 elementos.add(
-                    new Carpeta(resultSet.getString("elnombre"),
+                    new Carpeta(
+						resultSet.getString("elnombre"),
                         resultSet.getString("eltipo"),
                         LocalDate.parse(resultSet.getString("elfechamodificacion")),
                         LocalDate.parse(resultSet.getString("elfechacreacion")),
-						resultSet.getString("elelempadre"))
-						);
-                        // ver como agregar los elementos que contiene. 
+						resultSet.getString("elelempadre"),
+						new Usuario(
+							resultSet.getString("usmail"),
+							resultSet.getString("usnombre"),
+							resultSet.getInt("uspuntaje")
+						),
+						new Catedra(
+							resultSet.getString("caid"),
+							resultSet.getString("caurl")
+						)
+						));
 			}
+
             return elementos;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -76,7 +87,7 @@ public class CarpetaDao extends ElementoDao{
         
         Elemento elemento = new Carpeta(); 
         try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid WHERE elnombre = ?";
+			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid JOIN usuarios u on e.elpropietario = u.usmail WHERE elnombre = ?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, nombre);
@@ -86,8 +97,15 @@ public class CarpetaDao extends ElementoDao{
 				elemento.setTipo(resultSet.getString("eltipo"));
                 elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
                 elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
-				elemento.setCatedra(new Catedra(resultSet.getString("elcaId"), resultSet.getString("caurl"))); // revisar atributo
+				elemento.setCatedra(new Catedra(resultSet.getString("elcaid"), resultSet.getString("caurl"))); 
 				elemento.setPadre(resultSet.getString("elelempadre"));
+				elemento.setPropietario(
+					new Usuario(
+						resultSet.getString("usmail"),
+						resultSet.getString("usnombre"),
+						resultSet.getInt("uspuntaje")
+					)
+				);
 				
                 return elemento;
 			}

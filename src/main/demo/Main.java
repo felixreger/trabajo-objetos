@@ -6,23 +6,23 @@ import java.util.List;
 import main.modelo.Archivo;
 import main.modelo.Carpeta;
 import main.modelo.Elemento;
+import main.modelo.criterios.Criterio;
+import main.modelo.criterios.CriterioContieneNombreElemento;
+import main.modelo.criterios.CriterioTipo;
+import main.servicios.Servicios;
 
 public class Main {      
   
     public static void main(String[] args) {
 
-        Elemento a = new Archivo();
-        Elemento b = new Carpeta();
+        Servicios s = Servicios.getInstance();
 
-        List<Elemento> c = new ArrayList<>();
+        Elemento dir = s.getDirectorio("carpeta1");
 
-        c.add(a);
-        c.add(b);
+        Criterio c = new CriterioTipo("archivo");
 
-        Archivo d = (Archivo)c.get(0);
+        List<Archivo> arch = dir.filtrar(c);
 
-        System.out.println(a);
-        System.out.println(d);
-
+        System.out.println();
     }   
 }

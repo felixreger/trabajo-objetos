@@ -9,32 +9,16 @@ import main.modelo.criterios.Criterio;
 
 public class Archivo extends Elemento implements Comparator<Elemento> {
 
-    private Usuario propietario;
-    private Catedra catedra;
     private Integer tamanio;
 
     public Archivo(String nombre, String tipo, Integer tamanio, LocalDate fechaModificacion,
             LocalDate fechaCreacion, Catedra catedra, Usuario propietario, String padre) {
-        super(nombre, tipo, fechaModificacion, fechaCreacion, padre);
-        this.propietario = propietario;
-        this.catedra = catedra;
+        super(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
+        
         this.tamanio = tamanio;
     }
 
     public Archivo() {
-    }
-
-    public String getPropietario() {
-        return propietario.getMail();
-    }
-
-    public void setPropietario(Usuario propietario) {
-        this.propietario = propietario;
-    }
-
-    @Override
-    public Catedra getCatedra() {
-        return catedra;
     }
 
     @Override

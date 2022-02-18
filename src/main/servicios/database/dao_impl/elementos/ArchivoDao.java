@@ -32,13 +32,13 @@ public class ArchivoDao extends ElementoDao{
 
         List<Elemento> archivos = new ArrayList<>();
         try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid where e.eltipo != ?";
+			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid JOIN usuarios u on e.elpropietario = u.usmail where e.eltipo != ?";
 			connection = getConnection();
 
 			ptmt = connection.prepareStatement(queryString);
             ptmt.setString(1, "carpeta");
 			resultSet = ptmt.executeQuery();
-            while (resultSet.next()) { // todo: ver si con el nombre del atributo solo alcanza o falta agregarle la tabla
+            while (resultSet.next()) { 
                 archivos.add(
                     new Archivo(
                         resultSet.getString("elnombre"),
@@ -46,8 +46,15 @@ public class ArchivoDao extends ElementoDao{
                         resultSet.getInt("eltamanio"),
                         LocalDate.parse(resultSet.getString("elfechamodificacion")),
                         LocalDate.parse(resultSet.getString("elfechacreacion")), 
-                        new Catedra(),
-                        new Usuario(), //todo agregar params. 
+                        new Catedra(
+							resultSet.getString("caid"),
+							resultSet.getString("caurl")
+						),
+                        new Usuario(
+							resultSet.getString("usmail"),
+							resultSet.getString("usnombre"),
+							resultSet.getInt("uspuntaje")
+						), 
 						resultSet.getString("elelempadre")
 
                     ));

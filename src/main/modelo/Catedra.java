@@ -7,6 +7,10 @@ public class Catedra {
     public Catedra(){
 
     }
+    
+    public boolean isEmpty(){
+        return nombre.isEmpty();
+    }
 
     public Catedra(String nombre) {
         this.nombre = nombre;

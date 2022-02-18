@@ -12,8 +12,8 @@ public class Carpeta extends Elemento {
 
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre) {
-        super(nombre, tipo, fechaCreacion, fechaCreacion, padre);
+    public Carpeta(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre, Usuario propietario, Catedra catedra) {
+        super(nombre, tipo, fechaCreacion, fechaCreacion, padre, propietario, catedra);
         listaElementos = new HashSet<>();
     }
 
@@ -29,20 +29,15 @@ public class Carpeta extends Elemento {
         listaElementos.remove(elemento);
     }
 
-    @Override // todo: agregar el propietario
-    public String getPropietario() {
-        return null;
-    }
-
-    @Override // todo: calcular con la mayor presencia
-    public Catedra getCatedra() {
-        return new Catedra();
-    }
-
-    @Override // todo: calcular
+    @Override 
     public Integer getTamanio() {
-        // TODO Auto-generated method stub
-        return 0;
+		Integer suma = 0;
+
+        for (Elemento elemento : listaElementos) {
+            suma = suma + elemento.getTamanio();
+        }
+		return suma;
+
     }
 
     @Override

@@ -14,7 +14,6 @@ public class Administrador extends Usuario {
     }
     
     public void eliminarElemento(Elemento elemento){
-        // todo : verificar que cuando se elimine el elemento tambien se eliminen los comentarios
         if (!servicio.deleteElemento(elemento)){
             System.out.println("Fallo el borrado de " + elemento.toString());
             return;

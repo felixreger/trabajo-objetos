@@ -47,7 +47,8 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 1. Como venimos?
 1. Hay cambios necesarios (Agregados, correcciones)
 1. Como manejamos el tema de permisos? Se nos ocurre que el servicio tenga como parametro el usuario que realiza la solicitud al mismo y se verifica que el usuario sea administrador. Esto como idea esta bien?
-1. Como manejamos el tema de los filtros (Criterios)? 
+1. Debemos distinguir entre usuario y administrador a nivel clases? Consideramos que las operaciones deben estar disponibles eN servicios. El mismo servicio debe encargarse de verificar que el usuario tenga los permisos o no. El modelo es solamente una representacion de los datos en la base de datos
+1. Como manejamos el tema de los filtros (Criterios)?
     * Filtros en servicio como parametro
     * En el front (main) invocandolo a partir del resultado de los servicios <-- Usamos esta
     * En sql usando stored procedures "getElementosById"
@@ -67,3 +68,4 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 No sabemos decidir qué camino tomar a la hora de retornar al usuario el catedra de un elemento. 
     * La catedra de una carpeta se puede calcular a partir de la mayoria de catedras de sus hijos. I.E
 2. Que pasa cuando vos estas diseniando y te ves afectado con la base de datos? 
+3. Como escalaria si una carpeta tiene un usuario que tiene una direccion que tiene una ciudad que riene un pais etc
