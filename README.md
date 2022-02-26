@@ -8,6 +8,10 @@ Iniciar servicio con :     pg_ctlcluster 12 main start
 
 Crear base de datos :
 
+## Conexion a Tomcat
+
+Agregar en la carpeta lib el .jar del driver de PostgreSQL
+
 ## Link informe
 
 https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/edit#
@@ -25,21 +29,21 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 
 ## Cosas
 
-- [X] Agregar Padre al modelo de elemento
-- [ ] Admin para usuarios
-- [ ] Ordenamiento ascendente y descendente
-- [ ] Generalizar el getAll de catedraDao y archivo dao. Nos interesa solamente traer los elementos de la tabla elementos
-- [ ] Generar naming para las carpetas y archivos al momento de insertarlo en la base de datos 
+* [X] Agregar Padre al modelo de elemento
+* [ ] Admin para usuarios
+* [ ] Ordenamiento ascendente y descendente
+* [ ] Generalizar el getAll de catedraDao y archivo dao. Nos interesa solamente traer los elementos de la tabla elementos
+* [ ] Generar naming para las carpetas y archivos al momento de insertarlo en la base de datos 
 
 ## Reunion
 
 ### To do
 
-- [X] Hacer diagrama de clases
-- [ ] Documentacion
-    - [ ] Estado actual del proyecto
-    - [ ] Decisiones tomadas 
-    - [ ] Conplicaciones
+* [X] Hacer diagrama de clases
+* [ ] Documentacion
+    * [ ] Estado actual del proyecto
+    * [ ] Decisiones tomadas 
+    * [ ] Conplicaciones
 
 ### Perse
 
@@ -50,7 +54,7 @@ https://docs.google.com/document/d/1xIP2hrVo1Q5P4MqWCj3Xuxe8Xq_JSxhQw1IAQF5m_zE/
 1. Debemos distinguir entre usuario y administrador a nivel clases? Consideramos que las operaciones deben estar disponibles eN servicios. El mismo servicio debe encargarse de verificar que el usuario tenga los permisos o no. El modelo es solamente una representacion de los datos en la base de datos
 1. Como manejamos el tema de los filtros (Criterios)?
     * Filtros en servicio como parametro
-    * En el front (main) invocandolo a partir del resultado de los servicios <-- Usamos esta
+    * En el front (main) invocandolo a partir del resultado de los servicios <** Usamos esta
     * En sql usando stored procedures "getElementosById"
 1. ¿Como encarar de por si este problema? 
     
