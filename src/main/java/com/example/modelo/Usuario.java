@@ -1,5 +1,7 @@
 package com.example.modelo;
 
+import java.util.Objects;
+
 public class Usuario {
     private String mail;
     private String nombre;
@@ -18,7 +20,7 @@ public class Usuario {
     }
 
     public boolean isValid(){
-        return this.mail != "" && this.nombre != "" && this.puntaje != 0;
+        return !Objects.equals(this.mail, "");
     }
     
     public void setMail(String mail){

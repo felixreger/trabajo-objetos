@@ -5,6 +5,7 @@ public class Comentario {
     private String descripcion;
     private Usuario autor;
     private String nombreElemento;
+    private final int comentarioInvalido = -1;
     
     public Comentario(Integer id, String descripcion, Usuario autor, String nombreElemento) {
         this.id = id;
@@ -14,6 +15,7 @@ public class Comentario {
     }
     
     public Comentario() {
+        this.id = comentarioInvalido;
     }
 
     public String getDescripcion() {
@@ -42,6 +44,10 @@ public class Comentario {
 
     public String getNombreElemento(){
         return nombreElemento;
+    }
+
+    public boolean isValid() {
+        return this.id == comentarioInvalido;
     }
 
     @Override

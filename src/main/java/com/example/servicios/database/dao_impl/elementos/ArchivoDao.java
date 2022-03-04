@@ -27,98 +27,76 @@ public class ArchivoDao extends ElementoDao{
     }
 
     @Override
-    public List<Elemento> getAll() {
+    public List<Elemento> getAll() throws SQLException {
 
         List<Elemento> archivos = new ArrayList<>();
-        try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid JOIN usuarios u on e.elpropietario = u.usmail where e.eltipo != ?";
-			connection = getConnection();
 
-			ptmt = connection.prepareStatement(queryString);
-            ptmt.setString(1, "carpeta");
-			resultSet = ptmt.executeQuery();
-            while (resultSet.next()) { 
-                archivos.add(
-                    new Archivo(
-                        resultSet.getString("elnombre"),
-                        resultSet.getString("eltipo"),
-                        resultSet.getInt("eltamanio"),
-                        LocalDate.parse(resultSet.getString("elfechamodificacion")),
-                        LocalDate.parse(resultSet.getString("elfechacreacion")), 
-                        new Catedra(
-							resultSet.getString("caid"),
-							resultSet.getString("caurl")
-						),
-                        new Usuario(
-							resultSet.getString("usmail"),
-							resultSet.getString("usnombre"),
-							resultSet.getInt("uspuntaje")
-						), 
-						resultSet.getString("elelempadre")
+		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid JOIN usuarios u on e.elpropietario = u.usmail where e.eltipo != ?";
+		connection = getConnection();
 
-                    ));
-			}
-            return archivos;
-		} catch (SQLException e) {
-			e.printStackTrace();
-            return archivos;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, "carpeta");
+		resultSet = ptmt.executeQuery();
 
+		while (resultSet.next()) {
+			archivos.add(
+				new Archivo(
+					resultSet.getString("elnombre"),
+					resultSet.getString("eltipo"),
+					resultSet.getInt("eltamanio"),
+					LocalDate.parse(resultSet.getString("elfechamodificacion")),
+					LocalDate.parse(resultSet.getString("elfechacreacion")),
+					new Catedra(
+						resultSet.getString("caid"),
+						resultSet.getString("caurl")
+					),
+					new Usuario(
+						resultSet.getString("usmail"),
+						resultSet.getString("usnombre"),
+						resultSet.getInt("uspuntaje")
+					),
+					resultSet.getString("elelempadre")
+				));
 		}
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return archivos;
     }
 
     @Override
-    public Elemento get(String id) {
+    public Elemento get(String id) throws SQLException {
 
         Elemento archivo = new Archivo();
-        try {
-			String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid WHERE elnombre = ?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, id);
-			resultSet = ptmt.executeQuery();
-			if (resultSet.next()) {
-				archivo.setNombre(resultSet.getString("elnombre"));
-				archivo.setTipo(resultSet.getString("eltipo"));
-				archivo.setTamanio(resultSet.getInt("eltamanio"));
-                archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
-                archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
-				archivo.setCatedra(new Catedra(resultSet.getString("elcaid"), resultSet.getString("caurl"))); // revisar atributo
-				
-                return archivo;
-			}	
-            return archivo;
-		} catch (SQLException e) {
-			e.printStackTrace();
-            return archivo;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid WHERE elnombre = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		resultSet = ptmt.executeQuery();
+
+		if (resultSet.next()) {
+			archivo.setNombre(resultSet.getString("elnombre"));
+			archivo.setTipo(resultSet.getString("eltipo"));
+			archivo.setTamanio(resultSet.getInt("eltamanio"));
+			archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+			archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+			archivo.setCatedra(new Catedra(resultSet.getString("elcaid"), resultSet.getString("caurl"))); // revisar atributo
 		}
 
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
 
+		return archivo;
     }
 
 }

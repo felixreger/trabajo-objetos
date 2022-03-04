@@ -1,5 +1,6 @@
 package com.example.servicios;
 
+import com.example.exceptions.ExcepcionServicio;
 import com.example.modelo.*;
 import com.example.modelo.comparadores.elementos.ComparadorDirectorio;
 import com.example.servicios.database.dao_impl.CatedraDao;
@@ -8,6 +9,7 @@ import com.example.servicios.database.dao_impl.UsuarioDao;
 import com.example.servicios.database.dao_impl.elementos.ArchivoDao;
 import com.example.servicios.database.dao_impl.elementos.CarpetaDao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -17,11 +19,11 @@ import java.util.Collections;
 
 public class Servicios {
 
-    private CarpetaDao accesodbCarpeta = CarpetaDao.getInstance();
-    private ArchivoDao accesodbArchivo = ArchivoDao.getInstance();
-    private ComentarioDao accesodbComentario = ComentarioDao.getInstance();
-    private UsuarioDao accesodbUsuario = UsuarioDao.getInstance();
-    private CatedraDao accesodbCatedra = CatedraDao.getInstance();
+    private final CarpetaDao accesodbCarpeta = CarpetaDao.getInstance();
+    private final ArchivoDao accesodbArchivo = ArchivoDao.getInstance();
+    private final ComentarioDao accesodbComentario = ComentarioDao.getInstance();
+    private final UsuarioDao accesodbUsuario = UsuarioDao.getInstance();
+    private final CatedraDao accesodbCatedra = CatedraDao.getInstance();
 
     private static Servicios servicio = null;
 
@@ -35,78 +37,142 @@ public class Servicios {
     }
 
     // region Usuario
-    public List<Usuario> getUsuarios() {
-        return accesodbUsuario.getAll();
+    public List<Usuario> getUsuarios() throws ExcepcionServicio {
+        try {
+            return accesodbUsuario.getAll();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public Usuario getUsuario(String mail) {
-        return accesodbUsuario.get(mail);
+    public Usuario getUsuario(String mail) throws ExcepcionServicio {
+        try {
+            return accesodbUsuario.get(mail);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void addUsuario(Usuario usuario) {
-        accesodbUsuario.add(usuario);
+    public void addUsuario(Usuario usuario) throws ExcepcionServicio {
+        try {
+            accesodbUsuario.add(usuario);
+        }catch (Exception e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public boolean deleteUsuario(String mail) {
-        return accesodbUsuario.delete(mail);
+    public void deleteUsuario(String mail) throws ExcepcionServicio {
+        try {
+            accesodbUsuario.delete(mail);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+    public void updateUsuario(Usuario usuario) throws ExcepcionServicio {
+        try {
+            accesodbUsuario.update(usuario);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void updateUsuario(Usuario usuario) {
-        accesodbUsuario.update(usuario);
-    }
     // endregion
 
     // region Comentario
-    public Comentario getComentario(Integer nombre) {
-        return accesodbComentario.get(nombre);
+    public Comentario getComentario(Integer nombre) throws ExcepcionServicio {
+        try {
+            return accesodbComentario.get(nombre);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public List<Comentario> getComentarios(String nombreElem) {
-        return accesodbComentario.getComentarios(nombreElem);
+    public List<Comentario> getComentarios(String nombreElem) throws ExcepcionServicio {
+        try {
+            return accesodbComentario.getComentarios(nombreElem);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void addComentario(Comentario comentario) {
-        accesodbComentario.add(comentario);
+    public void addComentario(Comentario comentario) throws ExcepcionServicio {
+        try {
+            accesodbComentario.add(comentario);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void updateComentario(Comentario comentario) {
-        accesodbComentario.update(comentario);
+    public void updateComentario(Comentario comentario) throws ExcepcionServicio {
+        try {
+            accesodbComentario.update(comentario);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public boolean deleteComentario(Integer idCom) {
-        return accesodbComentario.delete(idCom);
+    public void deleteComentario(Integer idCom) throws ExcepcionServicio {
+        try {
+            accesodbComentario.delete(idCom);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
     // endregion
 
     // region Elemento
 
-
-    public boolean deleteElemento(Elemento elemento) {
-        return accesodbCarpeta.delete(elemento.getNombre());
+    public void deleteElemento(Elemento elemento) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.delete(elemento.getNombre());
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
     // endregion
 
     // region Archivo
-    public List<Elemento> getArchivos() {
-        return accesodbArchivo.getAll();
+    public List<Elemento> getArchivos() throws ExcepcionServicio {
+        try {
+            return accesodbArchivo.getAll();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public Elemento getArchivo(String id) {
-        return accesodbArchivo.get(id);
+    public Elemento getArchivo(String id) throws ExcepcionServicio {
+        try {
+            return accesodbArchivo.get(id);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public boolean deleteArchivo(Archivo archivo) {
-        return accesodbArchivo.delete(archivo.getNombre());
+    public void deleteArchivo(String nombreArchivo) throws ExcepcionServicio {
+        try {
+            accesodbArchivo.delete(nombreArchivo);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void updateArchivo(Archivo archivo) {
-        accesodbArchivo.update(archivo);
+    public void updateArchivo(Archivo archivo) throws ExcepcionServicio {
+        try {
+            accesodbArchivo.update(archivo);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void addArchivo(Archivo archivo) {
+    public void addArchivo(Archivo archivo) throws ExcepcionServicio {
+        try {
         accesodbArchivo.add(archivo);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
+
     // endregion
 
     // region Carpeta
@@ -143,23 +209,24 @@ public class Servicios {
                 padre = elementoIndex;
             }
         }
-        
+
         if (padre == null)
             return new Carpeta();
         else
             return padre;
     }
-    
 
     // A partir de el nombre de un directorio dado por parametro,
     // se retorna el subdirectorio asociado.
-    public Carpeta getDirectorio(String raiz) {
+    public Carpeta getDirectorio(String raiz) throws ExcepcionServicio {
+        List<Elemento> elementos;
 
-        // Cargar en una lista de elementos todos los elementos que sean Carpetas 
-        List<Elemento> elementos = accesodbCarpeta.getAll();
-
-        // Cargar en la lista de elementos todos los archivos
-        elementos.addAll(accesodbArchivo.getAll());
+        try {
+            elementos = accesodbCarpeta.getAll();
+            elementos.addAll(accesodbArchivo.getAll());
+        } catch (SQLException e) {
+            throw new ExcepcionServicio(e.getMessage());
+        }
 
         // Ordenar la lista de elementos por longitud de nombre
         elementos.sort(new ComparadorDirectorio());
@@ -191,39 +258,80 @@ public class Servicios {
     }
 
     // padre y elementoRaiz deben referenciar a la misma direccion de memoria
-    public boolean deleteCarpeta(Carpeta carpeta) {
-        return accesodbCarpeta.delete(carpeta.getNombre());
+    public void deleteCarpeta(Carpeta carpeta) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.delete(carpeta.getNombre());
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void updateCarpeta(Carpeta Carpeta) {
-        accesodbCarpeta.update(Carpeta);
+    public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.update(Carpeta);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void addCarpeta(Carpeta Carpeta) {
-        accesodbCarpeta.add(Carpeta);
+    public void addCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.add(Carpeta);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
     // endregion
 
     // region Catedra
-    public void addCatedra(Catedra catedra) {
-        accesodbCatedra.add(catedra);
+    public void addCatedra(Catedra catedra) throws ExcepcionServicio {
+        try {
+            accesodbCatedra.add(catedra);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void deleteCatedra(Catedra catedra) {
-        accesodbCatedra.delete(catedra.getNombre());
+    public void deleteCatedra(Catedra catedra) throws ExcepcionServicio {
+        try {
+            accesodbCatedra.delete(catedra.getNombre());
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public void updateCatedra(Catedra catedra) {
-        accesodbCatedra.update(catedra);
+    public void updateCatedra(Catedra catedra) throws ExcepcionServicio {
+        try {
+            accesodbCatedra.update(catedra);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public Catedra getCatedra(String nombre) {
-        return accesodbCatedra.get(nombre);
+    public Catedra getCatedra(String nombre) throws ExcepcionServicio {
+        try {
+            return accesodbCatedra.get(nombre);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
 
-    public List<Catedra> getCatedras() {
-        return accesodbCatedra.getAll();
+    public List<Catedra> getCatedras() throws ExcepcionServicio {
+        try {
+            return accesodbCatedra.getAll();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
     }
+
+    public boolean existeUsuario(String id) throws ExcepcionServicio {
+        try {
+            return accesodbUsuario.get(id).isValid();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
     // endregion
 }

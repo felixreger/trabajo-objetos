@@ -23,168 +23,109 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 	}
 
     @Override
-    public List<Catedra> getAll() {
+    public List<Catedra> getAll() throws SQLException {
         
         List<Catedra> catedras = new ArrayList<>();
-        try {
-			String queryString = "SELECT * FROM catedras";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			resultSet = ptmt.executeQuery();
-			while (resultSet.next()) {
-                catedras.add(new Catedra(resultSet.getString("caid")));
-			}
-            return catedras;
-		} catch (SQLException e) {
-			e.printStackTrace();
-            return catedras;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
+		String queryString = "SELECT * FROM catedras";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		resultSet = ptmt.executeQuery();
+
+		while (resultSet.next()) {
+			catedras.add(new Catedra(resultSet.getString("caid")));
 		}
 
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return catedras;
     }
 
 	@Override
-	public Catedra get(String id) {
+	public Catedra get(String id) throws SQLException {
 
 		Catedra catedra = new Catedra();
-        try {
-			String queryString = "SELECT * FROM catedras WHERE caid = ?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, id);
-			resultSet = ptmt.executeQuery();
-			if (resultSet.next()) {
-				catedra.setNombre(resultSet.getString("caid"));
-				catedra.setPaginaWeb(resultSet.getString("caurl"));
 
-				return catedra;
-			}
-            return catedra;
-		} catch (SQLException e) {
-			e.printStackTrace();
-            return catedra;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close(); 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		String queryString = "SELECT * FROM catedras WHERE caid = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		resultSet = ptmt.executeQuery();
+
+		if (resultSet.next()) {
+			catedra.setNombre(resultSet.getString("caid"));
+			catedra.setPaginaWeb(resultSet.getString("caurl"));
+
+			return catedra;
 		}
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return catedra;
 	}
 
 	@Override
-	public void update(Catedra elem) {
-		
-        try {
-			String queryString = "UPDATE catedras SET caid=?, caurl=? WHERE caid=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, elem.getNombre());
-			ptmt.setString(2, elem.getUrlPaginaWeb());
-			ptmt.setString(3, elem.getNombre());
-			ptmt.executeUpdate();
-			System.out.println("Table Updated Successfully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			}
+	public void update(Catedra elem) throws SQLException {
 
-			catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
+		String queryString = "UPDATE catedras SET caid=?, caurl=? WHERE caid=?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, elem.getNombre());
+		ptmt.setString(2, elem.getUrlPaginaWeb());
+		ptmt.setString(3, elem.getNombre());
+		ptmt.executeUpdate();
 
-			}
-		}
-		
+		System.out.println("Table Updated Successfully");
+
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
 	}
 
 	@Override
-	public boolean delete(String id) {
-		
-        try {
-			String queryString = "DELETE FROM catedras WHERE caid=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, id);
-			ptmt.executeUpdate();
-			System.out.println("Data deleted Successfully");
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			try {
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void delete(String id) throws SQLException {
 
-		}
+		String queryString = "DELETE FROM catedras WHERE caid=?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		ptmt.executeUpdate();
+		System.out.println("Data deleted Successfully");
 
-
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
 	}
 
 	@Override
-	public void add(Catedra elem) {
-		
-        try {
+	public void add(Catedra elem) throws SQLException {
 
-            String queryString = "INSERT INTO catedras(caid, caurl) VALUES(?,?)";
-            connection = getConnection();
-            ptmt = connection.prepareStatement(queryString);
+		String queryString = "INSERT INTO catedras(caid, caurl) VALUES(?,?)";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
 
-            ptmt.setString(1, elem.getNombre());
-            ptmt.setString(2, elem.getUrlPaginaWeb());
-            ptmt.executeUpdate();
+		ptmt.setString(1, elem.getNombre());
+		ptmt.setString(2, elem.getUrlPaginaWeb());
+		ptmt.executeUpdate();
 
-            System.out.println("Data Added Successfully");
-    
-            } catch (Exception e) {
-            	e.printStackTrace();
-            }finally{
-    
-            try {
-                    if (ptmt != null)
-                        ptmt.close();
-                    if (connection != null)
-                        connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-		
+		System.out.println("Data Added Successfully");
+
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
 	}
 }

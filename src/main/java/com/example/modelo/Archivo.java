@@ -12,8 +12,11 @@ public class Archivo extends Elemento implements Comparator<Elemento> {
 
     private Integer tamanio;
 
-    public Archivo(String nombre, String tipo, Integer tamanio, LocalDate fechaModificacion,
-            LocalDate fechaCreacion, Catedra catedra, Usuario propietario, String padre) {
+    public Archivo(String nombre, String tipo,
+                   Integer tamanio,
+                   LocalDate fechaModificacion,
+            LocalDate fechaCreacion, Catedra catedra,
+                   Usuario propietario, String padre) {
         super(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
         
         this.tamanio = tamanio;

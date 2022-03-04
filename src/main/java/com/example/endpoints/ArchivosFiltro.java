@@ -1,0 +1,55 @@
+package com.example.endpoints;
+
+import com.example.endpoints.utils.FabricaCriterio;
+import com.example.endpoints.utils.Utils;
+import com.example.exceptions.ExcepcionServicio;
+import com.example.modelo.Archivo;
+import com.example.modelo.Elemento;
+import com.example.modelo.criterios.Criterio;
+import com.example.servicios.Servicios;
+import com.google.gson.Gson;
+import org.json.JSONObject;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+
+@WebServlet(name="ArchivosConFiltro", value="/filtro")
+public class ArchivosFiltro extends HttpServlet {
+
+    private final Gson gson = new Gson();
+    private final Servicios servicio = Servicios.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        JSONObject body = Utils.getRequestBody(request);
+
+        JSONObject criterio = body.getJSONObject("criterios");
+        Map<String, Object> filtros = criterio.toMap();
+
+        String dir = request.getParameter("carpetaBase");
+        FabricaCriterio fabrica = new FabricaCriterio();
+        Criterio c = fabrica.getCriterio(filtros);
+
+        try {
+            Elemento directorio = servicio.getDirectorio(dir);
+            List<Archivo> archivos = directorio.filtrar(c);
+
+            String archivosJson = this.gson.toJson(archivos);
+            out.print(archivosJson);
+        } catch (ExcepcionServicio e) {
+            out.print("Error al filtrar los archivos");
+        }finally {
+            out.flush();
+        }
+    }
+}

@@ -13,8 +13,12 @@ public class Carpeta extends Elemento {
 
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre, String tipo, LocalDate fechaModificacion, LocalDate fechaCreacion, String padre, Usuario propietario, Catedra catedra) {
-        super(nombre, tipo, fechaCreacion, fechaCreacion, padre, propietario, catedra);
+    public Carpeta(String nombre, String tipo,
+                   LocalDate fechaModificacion,
+                   LocalDate fechaCreacion,
+                   String padre, Usuario propietario,
+                   Catedra catedra) {
+        super(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
         listaElementos = new HashSet<>();
     }
 

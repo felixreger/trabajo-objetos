@@ -1,7 +1,6 @@
 package com.example.modelo.criterios;
 
-
-import com.example.modelo.Elemento;
+import com.example.modelo.Archivo;
 
 public class CriterioContieneNombreElemento implements Criterio{
     private String nombre;
@@ -11,7 +10,7 @@ public class CriterioContieneNombreElemento implements Criterio{
     }
 
 	@Override
-	public Boolean cumple(Elemento e) {
+	public Boolean cumple(Archivo e) {
 		return e.getNombre().contains(nombre);
 	}
 }
