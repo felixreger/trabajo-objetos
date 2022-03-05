@@ -4,6 +4,7 @@ import com.example.modelo.criterios.Criterio;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 
 public abstract class Elemento {
@@ -38,6 +39,7 @@ public abstract class Elemento {
         this.fechaCreacion = fechaCreacion;
         this.padre = padre;
         this.propietario = propietario;
+        this.catedra = catedra;
     }
 
     public void setNombre(String nombre) {
@@ -112,4 +114,7 @@ public abstract class Elemento {
     public boolean equals(Object obj) {
         return this.nombre.equals(((Elemento) obj).getNombre());
     }
+
+    public abstract Set<String> getPalabrasClave();
+
 }

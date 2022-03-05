@@ -113,7 +113,28 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 
     }
 
-    @Override
+	@Override
+	public boolean exist(String id) throws SQLException {
+
+		String queryString = "SELECT usmail FROM usuarios WHERE usmail = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		resultSet = ptmt.executeQuery();
+
+		boolean resultado = resultSet.next();
+
+			if (resultSet != null)
+				resultSet.close();
+			if (ptmt != null)
+				ptmt.close();
+			if (connection != null)
+				connection.close();
+
+		return resultado;
+	}
+
+	@Override
     public void update(Usuario usuario) throws SQLException {
 
 		String queryString = "UPDATE usuarios SET usnombre=?, uspuntaje=? WHERE usmail=?";

@@ -60,8 +60,6 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 		if (resultSet.next()) {
 			catedra.setNombre(resultSet.getString("caid"));
 			catedra.setPaginaWeb(resultSet.getString("caurl"));
-
-			return catedra;
 		}
 
 		if (resultSet != null)
@@ -127,5 +125,26 @@ public class CatedraDao extends Dao implements IDao<Catedra, String> {
 		if (connection != null)
 			connection.close();
 
+	}
+
+	@Override
+	public boolean exist(String id) throws SQLException {
+
+		String queryString = "SELECT caid FROM catedras WHERE caid = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		resultSet = ptmt.executeQuery();
+
+		boolean resultado = resultSet.next();
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return resultado;
 	}
 }

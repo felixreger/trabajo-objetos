@@ -33,6 +33,4 @@ public class Conexion {
 		}
 		return connectionFactory;
 	}
-
-
 }

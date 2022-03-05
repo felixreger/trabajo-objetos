@@ -58,16 +58,18 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer> {
 
 		Comentario comentario = new Comentario();
 
-		String queryString = "SELECT * FROM comentarios c JOIN Elemento e on c.coid = e.elnombre where c.coid = ?";
+		String queryString = "SELECT * FROM comentarios c JOIN elementos e on c.coidelemento = e.elnombre JOIN usuarios u on c.coautor = u.usmail where c.coid = ?";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setInt(1, nombre);
 		resultSet = ptmt.executeQuery();
+
 		if (resultSet.next()) {
+			comentario.setId(nombre);
+			comentario.setNombreElemento(resultSet.getString("coidelemento"));
 			comentario.setDescripcion(resultSet.getString("codescripcion"));
 			comentario.setAutor(new Usuario(resultSet.getString("usmail"), resultSet.getString("usnombre"), resultSet.getInt("uspuntaje")));
 		}
-
 
 		if (resultSet != null)
 			resultSet.close();
@@ -82,7 +84,7 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer> {
     @Override
     public void update(Comentario comentario) throws SQLException {
 
-		String queryString = "UPDATE comentario c SET c.codescripcion=? WHERE c.coid=?";
+		String queryString = "UPDATE comentarios SET codescripcion=? WHERE coid=?";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setString(1, comentario.getDescripcion());
@@ -116,14 +118,14 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer> {
     @Override
     public void add(Comentario comentario) throws SQLException {
 
-		String queryString = "INSERT INTO comentarios (coid, coautor,codescripcion,coidelemento) VALUES(?,?,?,?)";
+		String queryString = "INSERT INTO comentarios (coid, coidelemento, coautor, codescripcion) VALUES(?,?,?,?)";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 
 		ptmt.setInt(1, comentario.getId());
-		ptmt.setString(2, comentario.getAutor().getMail());
-		ptmt.setString(3, comentario.getDescripcion());
-		ptmt.setString(4, comentario.getNombreElemento());
+		ptmt.setString(2, comentario.getNombreElemento());
+		ptmt.setString(3, comentario.getAutor().getMail());
+		ptmt.setString(4, comentario.getDescripcion());
 		ptmt.executeUpdate();
 
 		System.out.println("Data Added Successfully");
@@ -134,7 +136,28 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer> {
 			connection.close();
 	}
 
-    @Override
+	@Override
+	public boolean exist(Integer id) throws SQLException {
+
+		String queryString = "SELECT coid FROM comentarios where coid = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setInt(1, id);
+		resultSet = ptmt.executeQuery();
+
+		boolean resultado = resultSet.next();
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return resultado;
+	}
+
+	@Override
     public List<Comentario> getAll() throws SQLException {
 		List<Comentario> comentarios = new ArrayList<>();
 

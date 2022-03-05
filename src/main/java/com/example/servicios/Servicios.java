@@ -120,35 +120,7 @@ public class Servicios {
     }
     // endregion
 
-    // region Elemento
-
-    public void deleteElemento(Elemento elemento) throws ExcepcionServicio {
-        try {
-            accesodbCarpeta.delete(elemento.getNombre());
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    // endregion
-
     // region Archivo
-    public List<Elemento> getArchivos() throws ExcepcionServicio {
-        try {
-            return accesodbArchivo.getAll();
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public Elemento getArchivo(String id) throws ExcepcionServicio {
-        try {
-            return accesodbArchivo.get(id);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
     public void deleteArchivo(String nombreArchivo) throws ExcepcionServicio {
         try {
             accesodbArchivo.delete(nombreArchivo);
@@ -157,17 +129,9 @@ public class Servicios {
         }
     }
 
-    public void updateArchivo(Archivo archivo) throws ExcepcionServicio {
-        try {
-            accesodbArchivo.update(archivo);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
     public void addArchivo(Archivo archivo) throws ExcepcionServicio {
         try {
-        accesodbArchivo.add(archivo);
+            accesodbArchivo.add(archivo);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }
@@ -257,18 +221,9 @@ public class Servicios {
         return null;
     }
 
-    // padre y elementoRaiz deben referenciar a la misma direccion de memoria
-    public void deleteCarpeta(Carpeta carpeta) throws ExcepcionServicio {
+    public void deleteCarpeta(String carpeta) throws ExcepcionServicio {
         try {
-            accesodbCarpeta.delete(carpeta.getNombre());
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
-        try {
-            accesodbCarpeta.update(Carpeta);
+            accesodbCarpeta.delete(carpeta);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }
@@ -293,9 +248,9 @@ public class Servicios {
         }
     }
 
-    public void deleteCatedra(Catedra catedra) throws ExcepcionServicio {
+    public void deleteCatedra(String catedra) throws ExcepcionServicio {
         try {
-            accesodbCatedra.delete(catedra.getNombre());
+            accesodbCatedra.delete(catedra);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }
@@ -327,7 +282,66 @@ public class Servicios {
 
     public boolean existeUsuario(String id) throws ExcepcionServicio {
         try {
-            return accesodbUsuario.get(id).isValid();
+            return accesodbUsuario.exist(id);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public boolean existeComentario(Integer idComentario) throws ExcepcionServicio {
+        try {
+            return accesodbComentario.exist(idComentario);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public boolean existeCatedra(String idCatedra) throws ExcepcionServicio {
+        try {
+            return accesodbCatedra.exist(idCatedra);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public boolean existeCarpeta(String idCarpeta) throws ExcepcionServicio {
+        try {
+            return accesodbCarpeta.exist(idCarpeta);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public boolean existeArchivo(String nombre) throws ExcepcionServicio {
+        try {
+            return accesodbArchivo.exist(nombre);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    // endregion
+
+    // region desuso
+    public Elemento getArchivo(String id) throws ExcepcionServicio {
+        try {
+            return accesodbArchivo.get(id);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public void updateArchivo(Archivo archivo) throws ExcepcionServicio {
+        try {
+            accesodbArchivo.update(archivo);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.update(Carpeta);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }

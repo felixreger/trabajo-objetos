@@ -47,7 +47,7 @@ public class Comentario {
     }
 
     public boolean isValid() {
-        return this.id == comentarioInvalido;
+        return this.id != comentarioInvalido;
     }
 
     @Override
@@ -55,5 +55,8 @@ public class Comentario {
         
         return "Comentario : " + descripcion + " , " + autor;
     }
-    
+
+    public void setId(Integer nombre) {
+        this.id = nombre;
+    }
 }

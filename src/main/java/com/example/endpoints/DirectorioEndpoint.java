@@ -26,12 +26,13 @@ public class DirectorioEndpoint extends HttpServlet {
 
         String raiz = request.getParameter("carpetaBase");
         Elemento directorio;
-
+        //todo: corroborar si existe el directorio
         try {
             directorio = servicio.getDirectorio(raiz);
             String dirJson = this.gson.toJson(directorio);
             out.print(dirJson);
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al cargar el directorio " + raiz);
         }finally{
             out.flush();

@@ -10,6 +10,7 @@ import com.example.servicios.Servicios;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,21 +35,51 @@ public class ArchivosFiltro extends HttpServlet {
         JSONObject body = Utils.getRequestBody(request);
 
         JSONObject criterio = body.getJSONObject("criterios");
-        Map<String, Object> filtros = criterio.toMap();
 
-        String dir = request.getParameter("carpetaBase");
+        Map<String, Object> filtros = criterio.toMap();
+        String carpetaBase = request.getParameter("carpetaBase");
         FabricaCriterio fabrica = new FabricaCriterio();
         Criterio c = fabrica.getCriterio(filtros);
 
         try {
-            Elemento directorio = servicio.getDirectorio(dir);
-            List<Archivo> archivos = directorio.filtrar(c);
-
-            String archivosJson = this.gson.toJson(archivos);
-            out.print(archivosJson);
+            if(servicio.existeCarpeta(carpetaBase)) {
+                Elemento directorio = servicio.getDirectorio(carpetaBase);
+                List<Archivo> archivos = directorio.filtrar(c);
+                String archivosJson = this.gson.toJson(archivos);
+                out.print(archivosJson);
+            }else{
+                response.setStatus(422);
+                out.print("El directorio no existe!");
+            }
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al filtrar los archivos");
         }finally {
+            out.flush();
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String idArchivo = request.getParameter("nombre");
+
+        try {
+            if(!servicio.existeCarpeta(idArchivo)) {
+                response.setStatus(422);
+                out.print("No se puede eliminar el archivo " + idArchivo +", porque no existe!");
+                out.flush();
+                return;
+            }
+            servicio.deleteArchivo(idArchivo);
+            out.print("Archivo eliminado exitosamente!");
+        } catch (ExcepcionServicio e) {
+            response.setStatus(500);
+            out.print("Error al eliminar el archivo " + idArchivo);
+        }finally{
             out.flush();
         }
     }

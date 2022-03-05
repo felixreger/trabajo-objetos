@@ -35,6 +35,7 @@ public class UsuarioEndpoint extends HttpServlet {
                 usuarios.add(servicio.getUsuario(id));
 
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al cargar el/los usuario/s");
             out.flush();
             return;
@@ -62,20 +63,15 @@ public class UsuarioEndpoint extends HttpServlet {
                 out.flush();
                 return;
             }
-        } catch (ExcepcionServicio e) {
-            e.printStackTrace();
-        }
-
-        try{
             servicio.addUsuario(new Usuario(id, nombre, puntaje));
             out.print("Usuario guardado exitosamente!");
+
         } catch (ExcepcionServicio e) {
             response.setStatus(500);
             out.print("Error al guardar el usuario");
         }finally {
             out.flush();
         }
-
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -96,16 +92,13 @@ public class UsuarioEndpoint extends HttpServlet {
                 out.flush();
                 return;
             }
-        } catch (ExcepcionServicio e) {
-            e.printStackTrace();
-        }
-
-        try {
             servicio.updateUsuario(new Usuario(id, nombre, puntaje));
             out.print("Usuario actualizado exitosamente!");
+
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al actualizar el usuario " + id);
-        }finally{
+        } finally{
             out.flush();
         }
     }
@@ -115,13 +108,19 @@ public class UsuarioEndpoint extends HttpServlet {
         String id = String.valueOf(request.getParameter("id"));
 
         try {
+            if(!servicio.existeUsuario(id)){
+                response.setStatus(422);
+                out.print("No se puede eliminar usuario con id " + id +", porque no existe!");
+                out.flush();
+                return;
+            }
             servicio.deleteUsuario(id);
+            out.print("Usuario " + id + " eliminado exitosamente!");
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al eliminar el usuario " + id);
+        }finally {
             out.flush();
-            return;
         }
-        response.sendRedirect("usuarios");
     }
-
 }

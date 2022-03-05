@@ -10,5 +10,6 @@ public interface IDao<T, E>{
     void update(T elem) throws SQLException;
     void delete(E id) throws SQLException;
     void add(T elem) throws SQLException;
-     
+    boolean exist(E id) throws SQLException;
+
 }

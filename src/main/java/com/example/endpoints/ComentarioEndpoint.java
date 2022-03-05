@@ -6,15 +6,12 @@ import com.example.modelo.Comentario;
 import com.example.modelo.Usuario;
 import com.example.servicios.Servicios;
 import com.google.gson.Gson;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -34,11 +31,12 @@ public class ComentarioEndpoint extends HttpServlet {
         String idElemento = request.getParameter("idElemento");
         List<Comentario> comentarios;
 
-        try {
+        try { //todo: verificar que exista el elemento.
             comentarios = servicio.getComentarios(idElemento);
             String comentarioJson = this.gson.toJson(comentarios);
             out.print(comentarioJson);
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al buscar los comentarios ");
         }finally {
             out.flush();
@@ -59,23 +57,26 @@ public class ComentarioEndpoint extends HttpServlet {
         String nombreAutor = body.getString("nombreAutor");
 
         try {
-            if (servicio.getComentario(idComentario).isValid()){
+            if (servicio.existeComentario(idComentario)){
                 response.setStatus(422);
                 out.print("El comentario ya existe!");
                 out.flush();
                 return;
             }
-        } catch (ExcepcionServicio e) {
-            e.printStackTrace();
-        }
-
-        try {
             Usuario usuario = servicio.getUsuario(nombreAutor);
-            Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
-            servicio.addComentario(cm);
+            if (usuario.isValid()){
+                Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
+                servicio.addComentario(cm);
+                out.print("Comentario agregado correctamente");
+            }else{
+                response.setStatus(422); //todo: ver codigo
+                out.print("El usuario no existe!");
+            }
+
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al agregar el comentario " + contenido);
-        }finally {
+        } finally {
             out.flush();
         }
     }
@@ -102,15 +103,18 @@ public class ComentarioEndpoint extends HttpServlet {
                 return;
             }
             idElemento = tmp.getNombreElemento();
-        } catch (ExcepcionServicio e) {
-            e.printStackTrace();
-        }
-
-        try {
             Usuario usuario = servicio.getUsuario(nombreAutor);
-            Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
-            servicio.updateComentario(cm);
+
+            if(usuario.isValid()) {
+                Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
+                servicio.updateComentario(cm);
+                out.print("Comentario actualizado correctamente");
+            }else{
+                response.setStatus(422);
+                out.print("El usuario no existe");
+            }
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al actualizar el comentario " + contenido);
         }finally {
             out.flush();
@@ -126,20 +130,16 @@ public class ComentarioEndpoint extends HttpServlet {
         Integer idComentario =Integer.parseInt(request.getParameter("idComentario"));
 
         try {
-            Comentario tmp = servicio.getComentario(idComentario);
-            if (!tmp.isValid()){
+            if (!servicio.existeComentario(idComentario)){
                 response.setStatus(422);
                 out.print("El comentario no existe!");
                 out.flush();
                 return;
             }
-        } catch (ExcepcionServicio e) {
-            e.printStackTrace();
-        }
-
-        try {
             servicio.deleteComentario(idComentario);
+            out.print("Comentario eliminado correctamente");
         } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al eliminar el comentario");
         }finally{
             out.flush();

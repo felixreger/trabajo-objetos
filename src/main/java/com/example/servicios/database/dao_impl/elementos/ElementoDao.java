@@ -31,19 +31,11 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
 		ptmt.setDate(3, Date.valueOf(elem.getFechaCreacion()));
 		ptmt.setDate(4, Date.valueOf(elem.getFechaModificacion()));
 		ptmt.setString(5, elem.getNombre());
-		int rowsAffected = ptmt.executeUpdate();
-
-		//todo: es necesario ? puedo agregar el bool
-		if (rowsAffected > 0)
-			System.out.println("Tablas actualizadas exitosamente");
-		else
-			System.out.println("Error en la ejecucion de la query");
 
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)
 			connection.close();
-
     }
 
     @Override
@@ -64,19 +56,19 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
     
     @Override
     public void add(Elemento elem) throws SQLException {
-		String queryString = "INSERT INTO elementos (elnombre, elcaId, elelempadre, elpropietario, eltamanio, eltipo, elfechamodificacion, elfechacreacion)"
+		String queryString = "INSERT INTO elementos (elnombre, eltamanio, eltipo, elfechamodificacion, elfechacreacion, elcaid, elpropietario, elelempadre)"
 							+ "VALUES(?,?,?,?,?,?,?,?)";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 
 		ptmt.setString(1, elem.getNombre());
-		ptmt.setString(2, elem.getCatedra().getNombre());
-		ptmt.setString(3, elem.getPadre());
-		ptmt.setString(4, elem.getPropietario());
-		ptmt.setInt(5, elem.getTamanio());
-		ptmt.setString(6, elem.getTipo());
-		ptmt.setDate(7, Date.valueOf(elem.getFechaCreacion()));
-		ptmt.setDate(8, Date.valueOf(elem.getFechaModificacion()));
+		ptmt.setInt(2, elem.getTamanio());
+		ptmt.setString(3, elem.getTipo());
+		ptmt.setDate(4, Date.valueOf(elem.getFechaModificacion()));
+		ptmt.setDate(5, Date.valueOf(elem.getFechaCreacion()));
+		ptmt.setString(6, elem.getCatedra().getNombre());
+		ptmt.setString(7, elem.getPropietario());
+		ptmt.setString(8, elem.getPadre());
 
 		ptmt.executeUpdate();
 
@@ -86,7 +78,5 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
 			ptmt.close();
 		if (connection != null)
 			connection.close();
-
     }
-    
 }

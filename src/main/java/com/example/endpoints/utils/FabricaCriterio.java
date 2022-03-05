@@ -13,9 +13,6 @@ public class FabricaCriterio {
     private final Servicios servicio = Servicios.getInstance();
 
     public Criterio getCriterio(Map<String, Object> criterio) {
-        if (criterio == null) {
-            return null;
-        }
 
         ArrayList<Criterio> compuesto = new ArrayList<>();
 

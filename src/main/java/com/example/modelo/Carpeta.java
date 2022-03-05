@@ -36,7 +36,7 @@ public class Carpeta extends Elemento {
 
     @Override 
     public Integer getTamanio() {
-		Integer suma = 0;
+		int suma = 0;
 
         for (Elemento elemento : listaElementos) {
             suma = suma + elemento.getTamanio();
@@ -53,6 +53,15 @@ public class Carpeta extends Elemento {
             cumplen.addAll(elem.filtrar(c));
         }
         return cumplen;
+    }
+
+    @Override
+    public Set<String> getPalabrasClave() {
+        Set<String> retorno = new HashSet<>();
+        for (Elemento elem : listaElementos)
+            retorno.addAll(elem.getPalabrasClave());
+
+        return retorno;
     }
 
     @Override

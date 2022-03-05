@@ -3,23 +3,25 @@ package com.example.modelo;
 import com.example.modelo.criterios.Criterio;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 
 public class Archivo extends Elemento implements Comparator<Elemento> {
 
     private Integer tamanio;
+    private Set<String> palabrasClaves;
 
     public Archivo(String nombre, String tipo,
                    Integer tamanio,
                    LocalDate fechaModificacion,
-            LocalDate fechaCreacion, Catedra catedra,
+                   LocalDate fechaCreacion,
+                   Catedra catedra,
                    Usuario propietario, String padre) {
+
         super(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
         
         this.tamanio = tamanio;
+        this.palabrasClaves = new HashSet<>();
     }
 
     public Archivo() {
@@ -38,6 +40,15 @@ public class Archivo extends Elemento implements Comparator<Elemento> {
             retorno.add(this);
         }
         return retorno;
+    }
+
+    public void addPalabraClave(String palabra){
+        this.palabrasClaves.add(palabra);
+    }
+
+    @Override //todo: retornar una copia?
+    public Set<String> getPalabrasClave() {
+        return palabrasClaves;
     }
 
     @Override

@@ -19,7 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @WebServlet(name="Carpeta", value="/carpeta")
 public class CarpetaEndpoint extends HttpServlet {
@@ -36,8 +40,13 @@ public class CarpetaEndpoint extends HttpServlet {
 
         String nombre = body.getString("nombre");
         String tipo = body.getString("tipo");
-        LocalDate fechaModificacion = LocalDate.parse(body.getString("fechaModificacion"));
-        LocalDate fechaCreacion = LocalDate.parse(body.getString("fechaCreacion"));
+
+        //todo: acomodar fechas
+        String fechaC = body.getString("fechaCreacion");
+        String fechaM = body.getString("fechaModificacion");
+        LocalDate fechaModificacion = LocalDate.now();
+        LocalDate fechaCreacion = LocalDate.now();
+
         String padre = body.getString("padre");
         String usuarioParam = body.getString("propietario");
         String catedraParam = body.getString("catedra");
@@ -50,9 +59,12 @@ public class CarpetaEndpoint extends HttpServlet {
                 carpeta.setTamanio(0);
                 servicio.addCarpeta(carpeta);
                 out.print("Carpeta agregada");
-            }else
+            }else {
+                response.setStatus(422);
                 out.print("El usuario " + propietario + " no existe");
-            } catch (ExcepcionServicio e) {
+            }
+        } catch (ExcepcionServicio e) {
+            response.setStatus(500);
             out.print("Error al agregar la carpeta " + nombre);
         }finally{
             out.flush();
@@ -65,12 +77,20 @@ public class CarpetaEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String nombre = request.getParameter("nombre");
+        String idCarpeta = request.getParameter("nombre");
+
         try {
-            servicio.deleteArchivo(nombre);
+            if(!servicio.existeCarpeta(idCarpeta)) {
+                response.setStatus(422);
+                out.print("No se puede eliminar la carpeta " + idCarpeta +", porque no existe!");
+                out.flush();
+                return;
+            }
+            servicio.deleteCarpeta(idCarpeta);
             out.print("Carpeta eliminada exitosamente!");
         } catch (ExcepcionServicio e) {
-            out.print("Error al eliminar la carpeta " + nombre);
+            response.setStatus(500);
+            out.print("Error al eliminar la carpeta " + idCarpeta);
         }finally{
             out.flush();
         }
