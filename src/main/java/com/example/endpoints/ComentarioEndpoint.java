@@ -8,6 +8,8 @@ import com.example.servicios.Servicios;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
+import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,12 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name="Comentario", value="/comentario")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
+                        "tomcat"
+                })
+        })
 public class ComentarioEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -31,12 +39,17 @@ public class ComentarioEndpoint extends HttpServlet {
         String idElemento = request.getParameter("idElemento");
         List<Comentario> comentarios;
 
-        try { //todo: verificar que exista el elemento.
-            comentarios = servicio.getComentarios(idElemento);
-            String comentarioJson = this.gson.toJson(comentarios);
-            out.print(comentarioJson);
+        try {
+            if(servicio.existeElemento(idElemento)){
+                comentarios = servicio.getComentarios(idElemento);
+                String comentarioJson = this.gson.toJson(comentarios);
+                out.print(comentarioJson);
+            }else{
+                response.setStatus(Utils.NOT_FOUND);
+                out.print("No existe " + idElemento);
+            }
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al buscar los comentarios ");
         }finally {
             out.flush();
@@ -58,7 +71,7 @@ public class ComentarioEndpoint extends HttpServlet {
 
         try {
             if (servicio.existeComentario(idComentario)){
-                response.setStatus(422);
+                response.setStatus(Utils.UNPROCESSABLE_ENTITY);
                 out.print("El comentario ya existe!");
                 out.flush();
                 return;
@@ -69,12 +82,12 @@ public class ComentarioEndpoint extends HttpServlet {
                 servicio.addComentario(cm);
                 out.print("Comentario agregado correctamente");
             }else{
-                response.setStatus(422); //todo: ver codigo
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El usuario no existe!");
             }
 
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el comentario " + contenido);
         } finally {
             out.flush();
@@ -97,7 +110,7 @@ public class ComentarioEndpoint extends HttpServlet {
         try {
             Comentario tmp = servicio.getComentario(idComentario);
             if (!tmp.isValid()){
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El comentario no existe!");
                 out.flush();
                 return;
@@ -110,11 +123,11 @@ public class ComentarioEndpoint extends HttpServlet {
                 servicio.updateComentario(cm);
                 out.print("Comentario actualizado correctamente");
             }else{
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El usuario no existe");
             }
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar el comentario " + contenido);
         }finally {
             out.flush();
@@ -131,7 +144,7 @@ public class ComentarioEndpoint extends HttpServlet {
 
         try {
             if (!servicio.existeComentario(idComentario)){
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El comentario no existe!");
                 out.flush();
                 return;
@@ -139,7 +152,7 @@ public class ComentarioEndpoint extends HttpServlet {
             servicio.deleteComentario(idComentario);
             out.print("Comentario eliminado correctamente");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el comentario");
         }finally{
             out.flush();

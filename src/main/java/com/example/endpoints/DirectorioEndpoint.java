@@ -1,5 +1,6 @@
 package com.example.endpoints;
 
+import com.example.endpoints.utils.Utils;
 import com.example.exceptions.ExcepcionServicio;
 import com.example.modelo.Elemento;
 import com.example.servicios.Servicios;
@@ -26,13 +27,18 @@ public class DirectorioEndpoint extends HttpServlet {
 
         String raiz = request.getParameter("carpetaBase");
         Elemento directorio;
-        //todo: corroborar si existe el directorio
         try {
-            directorio = servicio.getDirectorio(raiz);
-            String dirJson = this.gson.toJson(directorio);
-            out.print(dirJson);
+            if(servicio.existeElemento(raiz)){
+                directorio = servicio.getDirectorio(raiz);
+                String dirJson = this.gson.toJson(directorio);
+                out.print(dirJson);
+            }else{
+                response.setStatus(Utils.NOT_FOUND);
+                out.print("El directorio no existe");
+            }
+
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al cargar el directorio " + raiz);
         }finally{
             out.flush();

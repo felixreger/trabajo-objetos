@@ -304,17 +304,9 @@ public class Servicios {
         }
     }
 
-    public boolean existeCarpeta(String idCarpeta) throws ExcepcionServicio {
+    public boolean existeElemento(String nombre) throws ExcepcionServicio {
         try {
-            return accesodbCarpeta.exist(idCarpeta);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public boolean existeArchivo(String nombre) throws ExcepcionServicio {
-        try {
-            return accesodbArchivo.exist(nombre);
+            return accesodbCarpeta.exist(nombre);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }

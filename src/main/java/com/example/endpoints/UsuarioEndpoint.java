@@ -15,6 +15,12 @@ import javax.servlet.annotation.*;
 
 
 @WebServlet(name = "Usuarios", value = "/usuarios")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
+                        "tomcat"
+                })
+        })
 public class UsuarioEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -35,7 +41,7 @@ public class UsuarioEndpoint extends HttpServlet {
                 usuarios.add(servicio.getUsuario(id));
 
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al cargar el/los usuario/s");
             out.flush();
             return;
@@ -58,7 +64,7 @@ public class UsuarioEndpoint extends HttpServlet {
 
         try {
             if(servicio.existeUsuario(id)){
-                response.setStatus(422);
+                response.setStatus(Utils.UNPROCESSABLE_ENTITY);
                 out.print("El usuario con id " + id +", ya existe!");
                 out.flush();
                 return;
@@ -67,7 +73,7 @@ public class UsuarioEndpoint extends HttpServlet {
             out.print("Usuario guardado exitosamente!");
 
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al guardar el usuario");
         }finally {
             out.flush();
@@ -87,7 +93,7 @@ public class UsuarioEndpoint extends HttpServlet {
 
         try {
             if(!servicio.existeUsuario(id)){
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("No se puede actualizar usuario con id " + id +", porque no existe!");
                 out.flush();
                 return;
@@ -96,7 +102,7 @@ public class UsuarioEndpoint extends HttpServlet {
             out.print("Usuario actualizado exitosamente!");
 
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar el usuario " + id);
         } finally{
             out.flush();
@@ -109,7 +115,7 @@ public class UsuarioEndpoint extends HttpServlet {
 
         try {
             if(!servicio.existeUsuario(id)){
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("No se puede eliminar usuario con id " + id +", porque no existe!");
                 out.flush();
                 return;
@@ -117,7 +123,7 @@ public class UsuarioEndpoint extends HttpServlet {
             servicio.deleteUsuario(id);
             out.print("Usuario " + id + " eliminado exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el usuario " + id);
         }finally {
             out.flush();

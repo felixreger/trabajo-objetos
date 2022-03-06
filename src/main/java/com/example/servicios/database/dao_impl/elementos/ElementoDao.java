@@ -79,4 +79,24 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
 		if (connection != null)
 			connection.close();
     }
+
+	@Override
+	public boolean exist(String id) throws SQLException {
+		String queryString = "SELECT elcaid FROM elementos WHERE elnombre = ?";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, id);
+		resultSet = ptmt.executeQuery();
+
+		boolean resultado = resultSet.next();
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return resultado;
+	}
 }

@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name="Catedra", value="/catedra")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
+                        "tomcat"
+                })
+        })
 public class CatedraEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -38,7 +46,7 @@ public class CatedraEndpoint extends HttpServlet {
             else
                 catedras.add(servicio.getCatedra(idCatedra));
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al cargar el/las catedra/s");
             out.flush();
             return;
@@ -62,7 +70,7 @@ public class CatedraEndpoint extends HttpServlet {
 
         try {
             if(servicio.existeCatedra(idCatedra)){
-                response.setStatus(422);
+                response.setStatus(Utils.UNPROCESSABLE_ENTITY);
                 out.print("La catedra " + idCatedra +", ya existe!");
                 out.flush();
                 return;
@@ -70,7 +78,7 @@ public class CatedraEndpoint extends HttpServlet {
             servicio.addCatedra(new Catedra(idCatedra, url));
             out.print("Catedra guardada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al guardar la catedra");
         }finally {
             out.flush();
@@ -89,7 +97,7 @@ public class CatedraEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         try {
             if(!servicio.existeCatedra(idCatedra)) {
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("No se puede actualizar la catedra " + idCatedra +", porque no existe!");
                 out.flush();
                 return;
@@ -97,7 +105,7 @@ public class CatedraEndpoint extends HttpServlet {
             servicio.updateCatedra(new Catedra(idCatedra, url));
             out.print("Catedra actualizada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar la catedra " + idCatedra);
         }finally{
             out.flush();
@@ -111,7 +119,7 @@ public class CatedraEndpoint extends HttpServlet {
 
         try {
             if(!servicio.existeCatedra(idCatedra)) {
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("No se puede eliminar la catedra " + idCatedra +", porque no existe!");
                 out.flush();
                 return;
@@ -119,7 +127,7 @@ public class CatedraEndpoint extends HttpServlet {
             servicio.deleteCatedra(idCatedra);
             response.sendRedirect("catedra");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar la catedra " + idCatedra);
         }finally{
             out.flush();

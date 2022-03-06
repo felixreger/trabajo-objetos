@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet(name="ArchivosConFiltro", value="/filtro")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
+                        "tomcat"
+                })
+        })
 public class ArchivosFiltro extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -42,17 +50,17 @@ public class ArchivosFiltro extends HttpServlet {
         Criterio c = fabrica.getCriterio(filtros);
 
         try {
-            if(servicio.existeCarpeta(carpetaBase)) {
+            if(servicio.existeElemento(carpetaBase)) {
                 Elemento directorio = servicio.getDirectorio(carpetaBase);
                 List<Archivo> archivos = directorio.filtrar(c);
                 String archivosJson = this.gson.toJson(archivos);
                 out.print(archivosJson);
             }else{
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El directorio no existe!");
             }
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al filtrar los archivos");
         }finally {
             out.flush();
@@ -68,8 +76,8 @@ public class ArchivosFiltro extends HttpServlet {
         String idArchivo = request.getParameter("nombre");
 
         try {
-            if(!servicio.existeCarpeta(idArchivo)) {
-                response.setStatus(422);
+            if(!servicio.existeElemento(idArchivo)) {
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("No se puede eliminar el archivo " + idArchivo +", porque no existe!");
                 out.flush();
                 return;
@@ -77,7 +85,7 @@ public class ArchivosFiltro extends HttpServlet {
             servicio.deleteArchivo(idArchivo);
             out.print("Archivo eliminado exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el archivo " + idArchivo);
         }finally{
             out.flush();

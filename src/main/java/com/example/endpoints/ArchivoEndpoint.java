@@ -8,19 +8,23 @@ import com.example.modelo.Usuario;
 import com.example.servicios.Servicios;
 import org.json.JSONObject;
 
+import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 @WebServlet(name="ArchivoEndpoint", value="/archivo")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
+                        "tomcat"
+                })
+        })
 public class ArchivoEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
@@ -36,7 +40,7 @@ public class ArchivoEndpoint extends HttpServlet {
         String nombre = body.getString("nombre");
 
         try {
-            if (servicio.existeArchivo(nombre)) {
+            if (servicio.existeElemento(nombre)) {
                 out.print("El archivo " + nombre + " ya existe!");
                 out.flush();
                 return;
@@ -61,10 +65,10 @@ public class ArchivoEndpoint extends HttpServlet {
                 servicio.addArchivo(archivo);
                 out.print("Archivo " + nombre + ", agregado correctamente");
             }else
-                response.setStatus(422);
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El propietario " + propietario + " no existe");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el archivo " + nombre);
         }finally {
             out.flush();
@@ -79,7 +83,8 @@ public class ArchivoEndpoint extends HttpServlet {
 
         String nombre = request.getParameter("nombre");
         try {
-            if (!servicio.existeArchivo(nombre)) {
+            if (!servicio.existeElemento(nombre)) {
+                response.setStatus(Utils.NOT_FOUND);
                 out.print("El archivo " + nombre + " no existe!");
                 out.flush();
                 return;
@@ -87,7 +92,7 @@ public class ArchivoEndpoint extends HttpServlet {
             servicio.deleteArchivo(nombre);
             out.print("Archivo eliminada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(500);
+            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el archivo " + nombre);
         }finally {
             out.flush();
