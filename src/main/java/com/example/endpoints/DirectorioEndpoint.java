@@ -30,6 +30,7 @@ public class DirectorioEndpoint extends HttpServlet {
         try {
             if(servicio.existeElemento(raiz)){
                 directorio = servicio.getDirectorio(raiz);
+                //todo: para tener un correcto funcionamiento del modelo deberia rellenar el campo de tamanio aca?
                 String dirJson = this.gson.toJson(directorio);
                 out.print(dirJson);
             }else{
