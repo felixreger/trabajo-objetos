@@ -8,8 +8,6 @@ import com.example.servicios.Servicios;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name="Comentario", value="/comentario")
-@ServletSecurity(
-        httpMethodConstraints = {
-                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
-                        "tomcat"
-                })
-        })
+@WebServlet(name="Comentario", value=Utils.URL_COMENTARIO)
 public class ComentarioEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();

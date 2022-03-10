@@ -13,6 +13,14 @@ public class Utils {
     public static int UNPROCESSABLE_ENTITY = 422;
     public static int INTERNAL_SERVER_ERROR = 500;
 
+    public static final String URL_USUARIO = "/usuarios";
+    public static final String URL_DIRECTORIO = "/directorio";
+    public static final String URL_COMENTARIO = "/comentario";
+    public static final String URL_CATEDRA = "/catedra";
+    public static final String URL_CARPETA = "/carpeta";
+    public static final String URL_ARCHIVO = "/archivo";
+    public static final String URL_FILTRO_ARCHIVOS = "/filtro";
+
     public static JSONObject getRequestBody(HttpServletRequest request) throws IOException {
 
         StringBuilder jb = new StringBuilder();

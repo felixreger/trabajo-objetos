@@ -14,13 +14,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 
-@WebServlet(name = "Usuarios", value = "/usuarios")
-@ServletSecurity(
-        httpMethodConstraints = {
-                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
-                        "tomcat"
-                })
-        })
+@WebServlet(name = "Usuarios", value = Utils.URL_USUARIO)
 public class UsuarioEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();

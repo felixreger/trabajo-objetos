@@ -11,8 +11,6 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +20,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name="ArchivosConFiltro", value="/filtro")
-@ServletSecurity(
-        httpMethodConstraints = {
-                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
-                        "tomcat"
-                })
-        })
+@WebServlet(name="ArchivosConFiltro", value=Utils.URL_FILTRO_ARCHIVOS)
 public class ArchivosFiltro extends HttpServlet {
 
     private final Gson gson = new Gson();

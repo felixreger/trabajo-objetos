@@ -8,8 +8,6 @@ import com.example.modelo.Usuario;
 import com.example.servicios.Servicios;
 import org.json.JSONObject;
 
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 
-@WebServlet(name="ArchivoEndpoint", value="/archivo")
-@ServletSecurity(
-        httpMethodConstraints = {
-                @HttpMethodConstraint(value = "DELETE", rolesAllowed = {
-                        "tomcat"
-                })
-        })
+@WebServlet(name="ArchivoEndpoint", value=Utils.URL_ARCHIVO)
 public class ArchivoEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();

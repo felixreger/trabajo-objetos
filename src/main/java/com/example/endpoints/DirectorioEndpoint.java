@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "Directorio", value = "/directorio")
+@WebServlet(name = "Directorio", value = Utils.URL_DIRECTORIO)
 public class DirectorioEndpoint extends HttpServlet {
 
     private final Gson gson = new Gson();
