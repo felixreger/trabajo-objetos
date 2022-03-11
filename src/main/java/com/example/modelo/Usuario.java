@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Usuario {
     private String mail;
+    private String password;
     private String nombre;
     private int puntaje;
 
@@ -11,6 +12,13 @@ public class Usuario {
         this.mail = mail;
         this.nombre = nombre;
         this.puntaje = puntaje;
+    }
+
+    public Usuario(String mail, String nombre, int puntaje, String password){
+        this.mail = mail;
+        this.nombre = nombre;
+        this.puntaje = puntaje;
+        this.password = password;
     }
 
     public Usuario(){
@@ -56,5 +64,11 @@ public class Usuario {
             "}";
     }
 
+    public String getPassword() {
+        return this.password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

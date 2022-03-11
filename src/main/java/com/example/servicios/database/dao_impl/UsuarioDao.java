@@ -66,6 +66,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 			usuario.setNombre(resultSet.getString("usnombre"));
 			usuario.setPuntaje(resultSet.getInt("uspuntaje"));
 			usuario.setMail(resultSet.getString("usmail"));
+			usuario.setPassword(resultSet.getString("password"));
 		}
 
 		if (resultSet != null)
@@ -99,16 +100,18 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
     @Override
     public void add(Usuario usuario) throws SQLException {
 
-		String queryString = "INSERT INTO usuarios(usmail, usnombre, uspuntaje) VALUES(?,?,?)";
+		String queryString = "INSERT INTO usuarios(usmail, usnombre, uspuntaje, usesadmin, password) VALUES(?,?,?,?,?)";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 
 		ptmt.setString(1, usuario.getMail());
 		ptmt.setString(2, usuario.getNombre());
 		ptmt.setInt(3, usuario.getPuntaje());
+		ptmt.setBoolean(4, false);
+		ptmt.setString(5, usuario.getPassword());
 		ptmt.executeUpdate();
 
-		System.out.println("Data Added Successfully");
+		System.out.println("Usuario dado de alta correctamente");
 
 		if (ptmt != null)
 			ptmt.close();
