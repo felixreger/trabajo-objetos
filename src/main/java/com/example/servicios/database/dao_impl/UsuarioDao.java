@@ -23,13 +23,11 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 		return usuarioDao;
 	}
 
-    @Override
-    public List<Usuario> getAll() throws SQLException {
+	private List<Usuario> getUsuarios(String query) throws SQLException {
 		List<Usuario> usuarios = new ArrayList<>();
 
-		String queryString = "SELECT * FROM usuarios";
 		connection = getConnection();
-		ptmt = connection.prepareStatement(queryString);
+		ptmt = connection.prepareStatement(query);
 		resultSet = ptmt.executeQuery();
 
 		while (resultSet.next()) {
@@ -48,6 +46,12 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 		return usuarios;
 	}
 
+    @Override
+    public List<Usuario> getAll() throws SQLException {
+		String query = "SELECT * FROM usuarios";
+		return this.getUsuarios(query);
+	}
+
     @Override 
     public Usuario get(String mail) throws SQLException {
 		Usuario usuario = new Usuario();
@@ -62,15 +66,15 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 			usuario.setNombre(resultSet.getString("usnombre"));
 			usuario.setPuntaje(resultSet.getInt("uspuntaje"));
 			usuario.setMail(resultSet.getString("usmail"));
-
-			if (resultSet != null)
-				resultSet.close();
-			if (ptmt != null)
-				ptmt.close();
-			if (connection != null)
-				connection.close();
-
 		}
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
 		return usuario;
 
 	}
@@ -152,4 +156,35 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 			connection.close();
 	}
 
+    public boolean esAdmin(String usuario) throws SQLException{
+
+		String queryString = "SELECT usesadmin FROM usuarios WHERE usmail = ?";
+		connection = getConnection();
+
+		ptmt = connection.prepareStatement(queryString);
+		ptmt.setString(1, usuario);
+		resultSet = ptmt.executeQuery();
+
+		boolean resultado;
+		if (resultSet.next()) {
+			resultado = resultSet.getBoolean("usesadmin");
+		}else
+			resultado = false;
+
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return resultado;
+    }
+
+	//todo: esta bien usar un metodo aux?
+	public List<Usuario> getTop() throws SQLException {
+
+		String queryString = "SELECT u.usmail, u.usnombre, u.uspuntaje FROM usuarios u JOIN elementos e on u.usmail = e.elpropietario\n" +
+				"GROUP BY u.usmail order by count(usmail) desc limit 10";
+
+		return this.getUsuarios(queryString);
+	}
 }

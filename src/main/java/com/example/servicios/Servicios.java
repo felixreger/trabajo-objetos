@@ -76,6 +76,21 @@ public class Servicios {
         }
     }
 
+    public boolean esAdmin(String usuario) throws ExcepcionServicio {
+        try {
+            return accesodbUsuario.esAdmin(usuario);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public List<Usuario> getTopUsuarios() throws ExcepcionServicio {
+        try {
+            return accesodbUsuario.getTop();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
     // endregion
 
     // region Comentario

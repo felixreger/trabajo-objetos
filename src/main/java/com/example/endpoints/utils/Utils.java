@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
 
@@ -20,6 +22,7 @@ public class Utils {
     public static final String URL_CARPETA = "/carpeta";
     public static final String URL_ARCHIVO = "/archivo";
     public static final String URL_FILTRO_ARCHIVOS = "/filtro";
+    public static final String URL_TOP = "/top";
 
     public static JSONObject getRequestBody(HttpServletRequest request) throws IOException {
 
@@ -40,4 +43,20 @@ public class Utils {
         return body;
     }
 
+    public static Map<String, String> getCriterios(HttpServletRequest request){
+
+        String criteriosParam = request.getParameter("criterios");
+
+        // autor&juan@gmail.com&tipo&png
+        String[] listaCriterios = criteriosParam.split("&");
+        Map<String, String> criterios = new HashMap<>();
+
+        int i = 0;
+        while (i < listaCriterios.length -1){
+            criterios.put(listaCriterios[i], listaCriterios[i+1]);
+            i = i + 2;
+        }
+
+        return criterios;
+    }
 }

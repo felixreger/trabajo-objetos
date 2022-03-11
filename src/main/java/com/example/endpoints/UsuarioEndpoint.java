@@ -25,7 +25,7 @@ public class UsuarioEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String id = request.getParameter("id");
+        String id = request.getParameter("idUsuario");
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
@@ -52,7 +52,7 @@ public class UsuarioEndpoint extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String id = body.getString("id");
+        String id = body.getString("idUsuario");
         String nombre = body.getString("nombre");
         int puntaje = body.getInt("puntaje");
 
@@ -78,7 +78,7 @@ public class UsuarioEndpoint extends HttpServlet {
         PrintWriter out = response.getWriter();
         JSONObject body = Utils.getRequestBody(request);
 
-        String id = body.getString("id");
+        String id = body.getString("idUsuario");
         String nombre = body.getString("nombre");
         int puntaje = body.getInt("puntaje");
 
@@ -105,7 +105,7 @@ public class UsuarioEndpoint extends HttpServlet {
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        String id = String.valueOf(request.getParameter("id"));
+        String id = String.valueOf(request.getParameter("idUsuario"));
 
         try {
             if(!servicio.existeUsuario(id)){

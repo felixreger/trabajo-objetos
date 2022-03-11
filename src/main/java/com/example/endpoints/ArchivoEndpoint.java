@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet(name="ArchivoEndpoint", value=Utils.URL_ARCHIVO)
 public class ArchivoEndpoint extends HttpServlet {
@@ -40,14 +41,16 @@ public class ArchivoEndpoint extends HttpServlet {
             String tipo = body.getString("tipo");
             Integer tamanio = body.getInt("tamanio");
 
-            //todo: acomodar fechas
-            String fechaC = body.getString("fechaCreacion");
-            String fechaM = body.getString("fechaModificacion");
-            LocalDate fechaModificacion = LocalDate.now();
-            LocalDate fechaCreacion = LocalDate.now();
+            String fechaCreacionParam = body.getString("fechaCreacion");
+            String fechaModificacionParam = body.getString("fechaModificacion");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+
+            LocalDate fechaCreacion = LocalDate.parse(fechaCreacionParam, formatter);
+            LocalDate fechaModificacion = LocalDate.parse(fechaModificacionParam, formatter);
 
             String catedraParam = body.getString("catedra");
-            String usuarioParam = body.getString("propietario");
+            String usuarioParam = body.getString("idUsuario");
             String padre = body.getString("padre");
 
             Usuario propietario = servicio.getUsuario(usuarioParam);

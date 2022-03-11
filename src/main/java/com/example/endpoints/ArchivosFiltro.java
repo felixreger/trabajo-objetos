@@ -8,9 +8,7 @@ import com.example.modelo.Elemento;
 import com.example.modelo.criterios.Criterio;
 import com.example.servicios.Servicios;
 import com.google.gson.Gson;
-import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +30,7 @@ public class ArchivosFiltro extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        JSONObject body = Utils.getRequestBody(request);
-
-        JSONObject criterio = body.getJSONObject("criterios");
-
-        Map<String, Object> filtros = criterio.toMap();
+        Map<String, String> filtros = Utils.getCriterios(request);
         String carpetaBase = request.getParameter("carpetaBase");
         FabricaCriterio fabrica = new FabricaCriterio();
         Criterio c = fabrica.getCriterio(filtros);
@@ -60,7 +54,7 @@ public class ArchivosFiltro extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -59,7 +59,7 @@ public class ComentarioEndpoint extends HttpServlet {
         String idElemento = body.getString("idElemento");
         Integer idComentario = body.getInt("idComentario");
         String contenido = body.getString("contenido");
-        String nombreAutor = body.getString("nombreAutor");
+        String nombreAutor = body.getString("idUsuario");
 
         try {
             if (servicio.existeComentario(idComentario)){
@@ -96,7 +96,7 @@ public class ComentarioEndpoint extends HttpServlet {
 
         Integer idComentario =body.getInt("idComentario");
         String contenido = body.getString("contenido");
-        String nombreAutor = body.getString("nombreAutor");
+        String nombreAutor = body.getString("idUsuario");
         String idElemento = "";
 
         try {
@@ -132,7 +132,7 @@ public class ComentarioEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        Integer idComentario =Integer.parseInt(request.getParameter("idComentario"));
+        Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
 
         try {
             if (!servicio.existeComentario(idComentario)){

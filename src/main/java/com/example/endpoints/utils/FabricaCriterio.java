@@ -12,14 +12,14 @@ public class FabricaCriterio {
 
     private final Servicios servicio = Servicios.getInstance();
 
-    public Criterio getCriterio(Map<String, Object> criterio) {
+    public Criterio getCriterio(Map<String, String> criterio) {
 
         ArrayList<Criterio> compuesto = new ArrayList<>();
 
-        for (Map.Entry<String, Object> entry : criterio.entrySet()) {
+        for (Map.Entry<String, String> entry : criterio.entrySet()) {
 
             if (entry.getKey().equalsIgnoreCase("autor")) {
-                String usuarioParam = (String) entry.getValue();
+                String usuarioParam = entry.getValue();
                 try {
                     Usuario u = servicio.getUsuario(usuarioParam);
                     compuesto.add(new CriterioAutor(u));
@@ -28,11 +28,11 @@ public class FabricaCriterio {
                 }
 
             } else if (entry.getKey().equalsIgnoreCase("tipo")) {
-                String tipoParam = (String) entry.getValue();
+                String tipoParam = entry.getValue();
                 compuesto.add(new CriterioTipo(tipoParam));
 
             } else if (entry.getKey().equalsIgnoreCase("contienenombre")) {
-                String nombreParam = (String) entry.getValue();
+                String nombreParam = entry.getValue();
                 compuesto.add(new CriterioContieneNombreElemento(nombreParam));
             }
         }
