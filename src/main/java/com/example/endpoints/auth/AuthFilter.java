@@ -8,6 +8,7 @@ import com.example.servicios.Servicios;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
+
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,5 +39,10 @@ public class AuthFilter extends HttpFilter {
             }
         }
         chain.doFilter(req, res);
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }
