@@ -7,6 +7,7 @@ public class Usuario {
     private String password;
     private String nombre;
     private int puntaje;
+    private boolean admin;
 
     public Usuario(String mail, String nombre, int puntaje){
         this.mail = mail;
@@ -70,5 +71,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean esAdmin() {
+        return this.admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

@@ -23,7 +23,7 @@ public class CarpetaEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
-    @Override
+    @Override //solo admins
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -39,11 +39,16 @@ public class CarpetaEndpoint extends HttpServlet {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 
-        LocalDate fechaCreacion = LocalDate.parse(fechaCreacionParam, formatter);
-        LocalDate fechaModificacion = LocalDate.parse(fechaModificacionParam, formatter);
+        //LocalDate fechaCreacion = LocalDate.parse(fechaCreacionParam, formatter);
+        //LocalDate fechaModificacion = LocalDate.parse(fechaModificacionParam, formatter);
 
+        LocalDate fechaCreacion = LocalDate.now();
+        LocalDate fechaModificacion = LocalDate.now();
+        //TODO: acomodar de nuevo las fechas ._.
         String padre = body.getString("padre");
-        String usuarioParam = body.getString("idUsuario");
+
+        //modificacion de la query
+        String usuarioParam =(String)request.getAttribute("idUsuario");
         String catedraParam = body.getString("catedra");
 
         try {
@@ -66,7 +71,7 @@ public class CarpetaEndpoint extends HttpServlet {
         }
     }
 
-    @Override
+    @Override //solo admins
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");

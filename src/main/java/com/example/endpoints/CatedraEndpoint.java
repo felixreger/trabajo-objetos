@@ -48,7 +48,7 @@ public class CatedraEndpoint extends HttpServlet {
         out.flush();
     }
 
-    @Override
+    @Override //Solo los admins
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         JSONObject body = Utils.getRequestBody(request);
@@ -76,7 +76,7 @@ public class CatedraEndpoint extends HttpServlet {
         }
     }
 
-    @Override
+    @Override // Solo los admins
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         JSONObject body = Utils.getRequestBody(request);
@@ -103,7 +103,7 @@ public class CatedraEndpoint extends HttpServlet {
         }
     }
 
-    @Override
+    @Override //Solo los admins
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         String idCatedra = String.valueOf(request.getParameter("idCatedra"));

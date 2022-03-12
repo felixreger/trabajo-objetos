@@ -92,34 +92,32 @@ public class ComentarioEndpoint extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        JSONObject body = Utils.getRequestBody(request);
+        //Solamente el usuario que lo creo, puede modificarlo
+        String idUsuario =(String)request.getAttribute("idUsuario");
 
+        JSONObject body = Utils.getRequestBody(request);
         Integer idComentario =body.getInt("idComentario");
         String contenido = body.getString("contenido");
-        String nombreAutor = body.getString("idUsuario");
         String idElemento = "";
 
         try {
             Comentario tmp = servicio.getComentario(idComentario);
             if (!tmp.isValid()){
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El comentario no existe!");
                 out.flush();
                 return;
             }
             idElemento = tmp.getNombreElemento();
-            Usuario usuario = servicio.getUsuario(nombreAutor);
+            Usuario usuario = servicio.getUsuario(idUsuario);
 
-            if(usuario.isValid()) {
-                Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
-                servicio.updateComentario(cm);
-                out.print("Comentario actualizado correctamente");
-            }else{
-                response.setStatus(Utils.NOT_FOUND);
-                out.print("El usuario no existe");
-            }
+            //El usuario valido y con credenciales ya se verifica en el filtro
+            Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
+            servicio.updateComentario(cm);
+            out.print("Comentario actualizado correctamente");
+
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar el comentario " + contenido);
         }finally {
             out.flush();
@@ -133,18 +131,11 @@ public class ComentarioEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
-
         try {
-            if (!servicio.existeComentario(idComentario)){
-                response.setStatus(Utils.NOT_FOUND);
-                out.print("El comentario no existe!");
-                out.flush();
-                return;
-            }
             servicio.deleteComentario(idComentario);
             out.print("Comentario eliminado correctamente");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el comentario");
         }finally{
             out.flush();

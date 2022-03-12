@@ -53,28 +53,4 @@ public class ArchivosFiltro extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        String idArchivo = request.getParameter("nombre");
-
-        try {
-            if(!servicio.existeElemento(idArchivo)) {
-                response.setStatus(Utils.NOT_FOUND);
-                out.print("No se puede eliminar el archivo " + idArchivo +", porque no existe!");
-                out.flush();
-                return;
-            }
-            servicio.deleteArchivo(idArchivo);
-            out.print("Archivo eliminado exitosamente!");
-        } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
-            out.print("Error al eliminar el archivo " + idArchivo);
-        }finally{
-            out.flush();
-        }
-    }
 }

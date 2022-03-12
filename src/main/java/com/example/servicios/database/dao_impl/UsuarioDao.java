@@ -67,6 +67,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 			usuario.setPuntaje(resultSet.getInt("uspuntaje"));
 			usuario.setMail(resultSet.getString("usmail"));
 			usuario.setPassword(resultSet.getString("password"));
+			usuario.setAdmin(resultSet.getBoolean("usesadmin"));
 		}
 
 		if (resultSet != null)

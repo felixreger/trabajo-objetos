@@ -22,7 +22,7 @@ public class ArchivoEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
-    @Override
+    @Override //todos pueden hacer
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         PrintWriter out = response.getWriter();
@@ -46,8 +46,9 @@ public class ArchivoEndpoint extends HttpServlet {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 
-            LocalDate fechaCreacion = LocalDate.parse(fechaCreacionParam, formatter);
-            LocalDate fechaModificacion = LocalDate.parse(fechaModificacionParam, formatter);
+            //TODO: acomodar de nuevo!!
+            LocalDate fechaCreacion = LocalDate.now();
+            LocalDate fechaModificacion = LocalDate.now();
 
             String catedraParam = body.getString("catedra");
             String usuarioParam = body.getString("idUsuario");
@@ -59,9 +60,10 @@ public class ArchivoEndpoint extends HttpServlet {
                 Archivo archivo = new Archivo(nombre, tipo, tamanio, fechaModificacion, fechaCreacion, catedra, propietario, padre);
                 servicio.addArchivo(archivo);
                 out.print("Archivo " + nombre + ", agregado correctamente");
-            }else
+            }else{
                 response.setStatus(Utils.NOT_FOUND);
                 out.print("El propietario " + propietario + " no existe");
+            }
         } catch (ExcepcionServicio e) {
             response.setStatus(Utils.INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el archivo " + nombre);
@@ -70,26 +72,27 @@ public class ArchivoEndpoint extends HttpServlet {
         }
     }
 
-    @Override
+    @Override //solo los admins
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String nombre = request.getParameter("nombre");
+        String idArchivo = request.getParameter("nombre");
+
         try {
-            if (!servicio.existeElemento(nombre)) {
+            if(!servicio.existeElemento(idArchivo)) {
                 response.setStatus(Utils.NOT_FOUND);
-                out.print("El archivo " + nombre + " no existe!");
+                out.print("No se puede eliminar el archivo " + idArchivo +", porque no existe!");
                 out.flush();
                 return;
             }
-            servicio.deleteArchivo(nombre);
-            out.print("Archivo eliminada exitosamente!");
+            servicio.deleteArchivo(idArchivo);
+            out.print("Archivo eliminado exitosamente!");
         } catch (ExcepcionServicio e) {
             response.setStatus(Utils.INTERNAL_SERVER_ERROR);
-            out.print("Error al eliminar el archivo " + nombre);
-        }finally {
+            out.print("Error al eliminar el archivo " + idArchivo);
+        }finally{
             out.flush();
         }
     }

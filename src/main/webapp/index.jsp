@@ -5,9 +5,7 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "API trabajo de objetos" %>
 </h1>
-<br/>
-<a href="usuarios">Hello Servlet</a>
 </body>
 </html>
