@@ -28,7 +28,7 @@ public class Usuario {
         this.puntaje = 0;
     }
 
-    public boolean isValid(){
+    public boolean esValido(){
         return !Objects.equals(this.mail, "");
     }
     

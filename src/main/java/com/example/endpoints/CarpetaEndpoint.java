@@ -30,7 +30,6 @@ public class CarpetaEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         JSONObject body = Utils.getRequestBody(request);
-
         String nombre = body.getString("nombre");
         String tipo = body.getString("tipo");
 
@@ -43,8 +42,8 @@ public class CarpetaEndpoint extends HttpServlet {
         //LocalDate fechaModificacion = LocalDate.parse(fechaModificacionParam, formatter);
 
         LocalDate fechaCreacion = LocalDate.now();
-        LocalDate fechaModificacion = LocalDate.now();
-        //TODO: acomodar de nuevo las fechas ._.
+        LocalDate fechaModificacion = LocalDate.now(); //TODO: acomodar de nuevo las fechas ._.
+
         String padre = body.getString("padre");
 
         //modificacion de la query
@@ -52,19 +51,25 @@ public class CarpetaEndpoint extends HttpServlet {
         String catedraParam = body.getString("catedra");
 
         try {
+            if(servicio.existeElemento(nombre)){
+                out.print("La carpeta " + nombre + " ya existe!");
+                out.flush();
+                return;
+            }
+
             Usuario propietario = servicio.getUsuario(usuarioParam);
-            if(propietario.isValid()){
+            if(propietario.esValido()){
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Carpeta carpeta = new Carpeta(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
-                carpeta.setTamanio(0);
+                carpeta.setTamanio(0); //todo: ver el tamanio
                 servicio.addCarpeta(carpeta);
                 out.print("Carpeta agregada");
             }else {
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El usuario " + propietario + " no existe");
             }
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al agregar la carpeta " + nombre);
         }finally{
             out.flush();
@@ -78,18 +83,16 @@ public class CarpetaEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String idCarpeta = request.getParameter("nombre");
-
         try {
             if(!servicio.existeElemento(idCarpeta)) {
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("No se puede eliminar la carpeta " + idCarpeta +", porque no existe!");
-                out.flush();
-                return;
+            }else{
+                servicio.deleteCarpeta(idCarpeta);
+                out.print("Carpeta eliminada exitosamente!");
             }
-            servicio.deleteCarpeta(idCarpeta);
-            out.print("Carpeta eliminada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar la carpeta " + idCarpeta);
         }finally{
             out.flush();

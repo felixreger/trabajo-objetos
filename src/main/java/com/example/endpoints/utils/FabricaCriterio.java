@@ -1,5 +1,9 @@
 package com.example.endpoints.utils;
 
+import com.example.endpoints.auth.control.criterio.CriterioCredencial;
+import com.example.endpoints.auth.control.criterio.CriterioEsAdmin;
+import com.example.endpoints.auth.control.criterio.CriterioUsuarioContraseniaAdmin;
+import com.example.endpoints.auth.control.criterio.CriterioUsuarioYContrasenia;
 import com.example.exceptions.ExcepcionServicio;
 import com.example.modelo.Usuario;
 import com.example.modelo.criterios.*;
@@ -12,7 +16,7 @@ public class FabricaCriterio {
 
     private final Servicios servicio = Servicios.getInstance();
 
-    public Criterio getCriterio(Map<String, String> criterio) {
+    public Criterio getCriterioArchivo(Map<String, String> criterio) {
 
         ArrayList<Criterio> compuesto = new ArrayList<>();
 

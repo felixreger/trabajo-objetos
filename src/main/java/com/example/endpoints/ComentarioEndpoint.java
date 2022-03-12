@@ -37,17 +37,18 @@ public class ComentarioEndpoint extends HttpServlet {
                 String comentarioJson = this.gson.toJson(comentarios);
                 out.print(comentarioJson);
             }else{
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("No existe " + idElemento);
             }
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al buscar los comentarios ");
         }finally {
             out.flush();
         }
     }
 
+    //todos pueden acceder
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -69,31 +70,30 @@ public class ComentarioEndpoint extends HttpServlet {
                 return;
             }
             Usuario usuario = servicio.getUsuario(nombreAutor);
-            if (usuario.isValid()){
+            if (usuario.esValido()){
                 Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
                 servicio.addComentario(cm);
                 out.print("Comentario agregado correctamente");
             }else{
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El usuario no existe!");
             }
-
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el comentario " + contenido);
         } finally {
             out.flush();
         }
     }
 
+    //solo el que hizo el comentario puede modificarlo
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        //Solamente el usuario que lo creo, puede modificarlo
-        String idUsuario =(String)request.getAttribute("idUsuario");
+        String idUsuario = (String)request.getAttribute("idUsuario"); //es el autor del comentario
 
         JSONObject body = Utils.getRequestBody(request);
         Integer idComentario =body.getInt("idComentario");
@@ -102,7 +102,7 @@ public class ComentarioEndpoint extends HttpServlet {
 
         try {
             Comentario tmp = servicio.getComentario(idComentario);
-            if (!tmp.isValid()){
+            if (!tmp.esValido()){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El comentario no existe!");
                 out.flush();
@@ -110,12 +110,9 @@ public class ComentarioEndpoint extends HttpServlet {
             }
             idElemento = tmp.getNombreElemento();
             Usuario usuario = servicio.getUsuario(idUsuario);
-
-            //El usuario valido y con credenciales ya se verifica en el filtro
             Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
             servicio.updateComentario(cm);
             out.print("Comentario actualizado correctamente");
-
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar el comentario " + contenido);
@@ -124,6 +121,7 @@ public class ComentarioEndpoint extends HttpServlet {
         }
     }
 
+    //los admins y los autores pueden eliminar
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();

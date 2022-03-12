@@ -22,24 +22,21 @@ public class TopEndpoint extends HttpServlet {
     private final Servicios servicio = Servicios.getInstance();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         List<Usuario> usuarios;
-
         try {
             usuarios = servicio.getTopUsuarios();
+            String listaUsuariosJson = this.gson.toJson(usuarios);
+            out.print(listaUsuariosJson);
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al cargar el/los usuario/s");
+        }finally {
             out.flush();
-            return;
         }
-
-        String listaUsuariosJson = this.gson.toJson(usuarios);
-        out.print(listaUsuariosJson);
-        out.flush();
     }
 }

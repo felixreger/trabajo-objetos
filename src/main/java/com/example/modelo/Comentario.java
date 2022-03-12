@@ -46,7 +46,7 @@ public class Comentario {
         return nombreElemento;
     }
 
-    public boolean isValid() {
+    public boolean esValido() {
         return this.id != comentarioInvalido;
     }
 

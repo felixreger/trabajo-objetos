@@ -24,7 +24,6 @@ public class ArchivoEndpoint extends HttpServlet {
 
     @Override //todos pueden hacer
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -46,26 +45,25 @@ public class ArchivoEndpoint extends HttpServlet {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 
-            //TODO: acomodar de nuevo!!
             LocalDate fechaCreacion = LocalDate.now();
-            LocalDate fechaModificacion = LocalDate.now();
+            LocalDate fechaModificacion = LocalDate.now();  //TODO: acomodar de nuevo!!
 
             String catedraParam = body.getString("catedra");
             String usuarioParam = body.getString("idUsuario");
             String padre = body.getString("padre");
 
             Usuario propietario = servicio.getUsuario(usuarioParam);
-            if(propietario.isValid()) {
+            if(propietario.esValido()) {
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Archivo archivo = new Archivo(nombre, tipo, tamanio, fechaModificacion, fechaCreacion, catedra, propietario, padre);
                 servicio.addArchivo(archivo);
                 out.print("Archivo " + nombre + ", agregado correctamente");
             }else{
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El propietario " + propietario + " no existe");
             }
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el archivo " + nombre);
         }finally {
             out.flush();
@@ -79,18 +77,16 @@ public class ArchivoEndpoint extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String idArchivo = request.getParameter("nombre");
-
         try {
             if(!servicio.existeElemento(idArchivo)) {
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("No se puede eliminar el archivo " + idArchivo +", porque no existe!");
-                out.flush();
-                return;
+            }else{
+                servicio.deleteArchivo(idArchivo);
+                out.print("Archivo eliminado exitosamente!");
             }
-            servicio.deleteArchivo(idArchivo);
-            out.print("Archivo eliminado exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar el archivo " + idArchivo);
         }finally{
             out.flush();

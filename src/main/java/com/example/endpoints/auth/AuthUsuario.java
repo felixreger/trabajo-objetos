@@ -1,10 +1,8 @@
 package com.example.endpoints.auth;
 
-import com.example.endpoints.utils.DecodeAndEncode;
+import com.example.endpoints.auth.control.Credencial;
+import com.example.endpoints.auth.control.utils.UtilsControl;
 import com.example.endpoints.utils.Utils;
-import com.example.exceptions.ExcepcionServicio;
-import com.example.modelo.Usuario;
-import com.example.servicios.Servicios;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,49 +16,20 @@ import java.io.PrintWriter;
 @WebFilter(filterName = "AuthUsuario", urlPatterns = Utils.URL_USUARIO)
 public class AuthUsuario extends HttpFilter {
 
-    private final Servicios servicio = Servicios.getInstance();
+    Credencial controlador = new Credencial();
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String method = request.getMethod();
         PrintWriter out = response.getWriter();
-        String user = "";
-        if(method.equalsIgnoreCase("DELETE") || method.equalsIgnoreCase("PUT") ){
-            final String authorization = request.getHeader("Authorization");
-            if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
-                String[] values = DecodeAndEncode.valuesAuth(authorization);
-                String usuarioParam = values[0]; // tomcat@gmail.com
-                String passwordParam = values[1]; // 1234
 
-                try {
-                    Usuario usuario = servicio.getUsuario(usuarioParam);
-                    if(usuario.isValid()){
-                        if(!credencialesValidas(usuario, usuarioParam, passwordParam)){
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                            return;
-                        }
-                        user = usuarioParam;
-                    }else{
-                        out.print("El usuario no existe!");
-                        response.setStatus(Utils.NOT_FOUND);
-                    }
-                } catch (ExcepcionServicio e) {
-                    out.print("Error al buscar al usuario");
-                    response.setStatus(Utils.INTERNAL_SERVER_ERROR);
-                }
-            }
+        if(method.equalsIgnoreCase("DELETE") || method.equalsIgnoreCase("PUT") ){
+            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_SIMPLE))
+                return;
         }
-        request.setAttribute("idUsuario", user);
+        request.setAttribute("idUsuario", controlador.getIdUsuario());
         out.flush();
         chain.doFilter(request, response);
-    }
-
-    //todo: es seguro de esta manera?
-    private boolean credencialesValidas(Usuario usuario, String usuarioParam, String passwordParam) {
-        String password = usuario.getPassword();
-        password = DecodeAndEncode.decode(password);
-
-        return usuarioParam.equalsIgnoreCase(usuario.getMail()) && passwordParam.equals(password);
     }
 
     @Override

@@ -20,7 +20,6 @@ public class DirectorioEndpoint extends HttpServlet {
     private final Servicios servicio = Servicios.getInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -30,20 +29,17 @@ public class DirectorioEndpoint extends HttpServlet {
         try {
             if(servicio.existeElemento(raiz)){
                 directorio = servicio.getDirectorio(raiz);
-                //todo: para tener un correcto funcionamiento del modelo deberia rellenar el campo de tamanio aca?
-                String dirJson = this.gson.toJson(directorio);
+                String dirJson = this.gson.toJson(directorio); //todo: para tener un correcto funcionamiento del modelo deberia rellenar el campo de tamanio aca?
                 out.print(dirJson);
             }else{
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El directorio no existe");
             }
-
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al cargar el directorio " + raiz);
         }finally{
             out.flush();
         }
     }
-
 }

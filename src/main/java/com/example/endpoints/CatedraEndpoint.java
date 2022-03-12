@@ -36,26 +36,24 @@ public class CatedraEndpoint extends HttpServlet {
                 catedras.addAll(servicio.getCatedras());
             else
                 catedras.add(servicio.getCatedra(idCatedra));
-        } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
-            out.print("Error al cargar el/las catedra/s");
-            out.flush();
-            return;
-        }
 
-        String listaUsuariosJson = this.gson.toJson(catedras);
-        out.print(listaUsuariosJson);
-        out.flush();
+            String listaUsuariosJson = this.gson.toJson(catedras);
+            out.print(listaUsuariosJson);
+        } catch (ExcepcionServicio e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("Error al cargar el/las catedra/s");
+        }finally {
+            out.flush();
+        }
     }
 
     @Override //Solo los admins
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        JSONObject body = Utils.getRequestBody(request);
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        JSONObject body = Utils.getRequestBody(request);
         String idCatedra = body.getString("idCatedra");
         String url = body.getString("url");
 
@@ -63,13 +61,12 @@ public class CatedraEndpoint extends HttpServlet {
             if(servicio.existeCatedra(idCatedra)){
                 response.setStatus(Utils.UNPROCESSABLE_ENTITY);
                 out.print("La catedra " + idCatedra +", ya existe!");
-                out.flush();
-                return;
+            }else{
+                servicio.addCatedra(new Catedra(idCatedra, url));
+                out.print("Catedra guardada exitosamente!");
             }
-            servicio.addCatedra(new Catedra(idCatedra, url));
-            out.print("Catedra guardada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al guardar la catedra");
         }finally {
             out.flush();
@@ -79,46 +76,44 @@ public class CatedraEndpoint extends HttpServlet {
     @Override // Solo los admins
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        JSONObject body = Utils.getRequestBody(request);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
+        JSONObject body = Utils.getRequestBody(request);
         String idCatedra = body.getString("idCatedra");
         String url = body.getString("url");
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         try {
             if(!servicio.existeCatedra(idCatedra)) {
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("No se puede actualizar la catedra " + idCatedra +", porque no existe!");
-                out.flush();
-                return;
+            }else{
+                servicio.updateCatedra(new Catedra(idCatedra, url));
+                out.print("Catedra actualizada exitosamente!");
             }
-            servicio.updateCatedra(new Catedra(idCatedra, url));
-            out.print("Catedra actualizada exitosamente!");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar la catedra " + idCatedra);
         }finally{
             out.flush();
         }
     }
 
-    @Override //Solo los admins
+    @Override //solo los admins
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         String idCatedra = String.valueOf(request.getParameter("idCatedra"));
 
         try {
             if(!servicio.existeCatedra(idCatedra)) {
-                response.setStatus(Utils.NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("No se puede eliminar la catedra " + idCatedra +", porque no existe!");
-                out.flush();
-                return;
+            }else{
+                servicio.deleteCatedra(idCatedra);
+                out.print("Catedra " +  idCatedra + " eliminada");
             }
-            servicio.deleteCatedra(idCatedra);
-            response.sendRedirect("catedra");
         } catch (ExcepcionServicio e) {
-            response.setStatus(Utils.INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al eliminar la catedra " + idCatedra);
         }finally{
             out.flush();

@@ -1,4 +1,4 @@
-package com.example.endpoints.utils;
+package com.example.endpoints.auth.control.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -16,7 +16,7 @@ public class DecodeAndEncode {
         return new String(b, StandardCharsets.UTF_8);
     }
 
-    public static String[] valuesAuth(String authorization){
+    public static String[] valuesAutentificacion(String authorization){
         String base64Credentials = authorization.substring("Basic".length()).trim();
         String credentials = DecodeAndEncode.decode(base64Credentials);
         return credentials.split(":", 2);
