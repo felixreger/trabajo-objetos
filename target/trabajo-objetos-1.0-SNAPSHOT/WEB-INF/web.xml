@@ -9,15 +9,6 @@
         <auth-method>BASIC</auth-method>
         <realm-name>default</realm-name>
     </login-config>
-
-    <filter>
-        <filter-name>CorsFilter</filter-name>
-        <filter-class>com.example.endpoints.auth.cors.CorsFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>CorsFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    
 
 </web-app>
