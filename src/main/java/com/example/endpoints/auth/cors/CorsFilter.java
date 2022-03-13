@@ -20,9 +20,10 @@ public class CorsFilter extends HttpFilter {
 
         // Authorize (allow) all domains to consume the content
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*");
-        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Access-Control-Request-Method, Access-Control-Request-Headers,Content-Type, Accept, Authorization");
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, DELETE, HEAD, PUT, POST");
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Credentials", "true");
+
 
         // pass the request along the filter chain
         chain.doFilter(servletRequest, servletResponse);
