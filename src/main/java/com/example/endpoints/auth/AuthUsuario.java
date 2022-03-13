@@ -24,7 +24,7 @@ public class AuthUsuario extends HttpFilter {
         PrintWriter out = response.getWriter();
 
         if(method.equalsIgnoreCase("DELETE") || method.equalsIgnoreCase("PUT") ){
-            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_SIMPLE))
+            if (!controlador.setUserAndPassword(request, response) || !controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_SIMPLE))
                 return;
         }
         request.setAttribute("idUsuario", controlador.getIdUsuario());

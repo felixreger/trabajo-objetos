@@ -22,6 +22,7 @@ public class ArchivoEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
+    //todo: modificar query, ya no se pasa el usuario en el body.
     @Override //todos pueden hacer
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -49,10 +50,10 @@ public class ArchivoEndpoint extends HttpServlet {
             LocalDate fechaModificacion = LocalDate.now();  //TODO: acomodar de nuevo!!
 
             String catedraParam = body.getString("catedra");
-            String usuarioParam = body.getString("idUsuario");
             String padre = body.getString("padre");
 
-            Usuario propietario = servicio.getUsuario(usuarioParam);
+            String idUsuario = (String) request.getAttribute("idUsuario");
+            Usuario propietario = servicio.getUsuario(idUsuario);
             if(propietario.esValido()) {
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Archivo archivo = new Archivo(nombre, tipo, tamanio, fechaModificacion, fechaCreacion, catedra, propietario, padre);

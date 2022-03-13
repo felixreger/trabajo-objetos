@@ -23,11 +23,13 @@ public class AuthCarpeta extends HttpFilter {
 
         String method = request.getMethod();
         PrintWriter out = response.getWriter();
-        if(!method.equalsIgnoreCase("GET")){//post y delete y se agrega un parametro.
-            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
+        if(method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE")){//post y delete y se agrega un parametro.
+            if (!controlador.setUserAndPassword(request, response))
+                return;
+            if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
                 return;
         }
-        request.setAttribute("idUsuario", controlador.getIdUsuario()); //todo: al ser estatico es el mismo nombre para todos!
+        request.setAttribute("idUsuario", controlador.getIdUsuario());
         out.flush();
         chain.doFilter(request, response);
     }

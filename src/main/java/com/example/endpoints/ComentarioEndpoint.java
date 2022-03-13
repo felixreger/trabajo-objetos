@@ -48,19 +48,20 @@ public class ComentarioEndpoint extends HttpServlet {
         }
     }
 
-    //todos pueden acceder
+    //todos pueden acceder, CON credencial basica!
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        String idUsuario = (String)request.getAttribute("idUsuario");
+
         JSONObject body = Utils.getRequestBody(request);
 
         String idElemento = body.getString("idElemento");
         Integer idComentario = body.getInt("idComentario");
         String contenido = body.getString("contenido");
-        String nombreAutor = body.getString("idUsuario");
 
         try {
             if (servicio.existeComentario(idComentario)){
@@ -69,7 +70,7 @@ public class ComentarioEndpoint extends HttpServlet {
                 out.flush();
                 return;
             }
-            Usuario usuario = servicio.getUsuario(nombreAutor);
+            Usuario usuario = servicio.getUsuario(idUsuario);
             if (usuario.esValido()){
                 Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
                 servicio.addComentario(cm);
@@ -87,32 +88,26 @@ public class ComentarioEndpoint extends HttpServlet {
     }
 
     //solo el que hizo el comentario puede modificarlo
+    //todo: la query cambio, ahora el idcomentario se pasa por param
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String idUsuario = (String)request.getAttribute("idUsuario"); //es el autor del comentario
+        Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
 
+        String idUsuario = (String)request.getAttribute("idUsuario"); //es el autor del comentario
         JSONObject body = Utils.getRequestBody(request);
-        Integer idComentario =body.getInt("idComentario");
         String contenido = body.getString("contenido");
-        String idElemento = "";
 
         try {
-            Comentario tmp = servicio.getComentario(idComentario);
-            if (!tmp.esValido()){
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print("El comentario no existe!");
-                out.flush();
-                return;
-            }
-            idElemento = tmp.getNombreElemento();
+            String idElemento =  servicio.getComentario(idComentario).getNombreElemento();
             Usuario usuario = servicio.getUsuario(idUsuario);
             Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
             servicio.updateComentario(cm);
             out.print("Comentario actualizado correctamente");
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al actualizar el comentario " + contenido);

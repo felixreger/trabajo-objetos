@@ -23,10 +23,15 @@ public class AuthArchivo extends HttpFilter {
         String method = request.getMethod();
         PrintWriter out = response.getWriter();
 
-        if(method.equalsIgnoreCase("DELETE")) { //solo DELETE
-            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
+        if(method.equalsIgnoreCase("DELETE") || method.equalsIgnoreCase("POST")) {
+            if (!controlador.setUserAndPassword(request, response))
                 return;
+            if(method.equalsIgnoreCase("DELETE")){
+                if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
+                    return;
+            }
         }
+        request.setAttribute("idUsuario", controlador.getIdUsuario());
         out.flush();
         chain.doFilter(request, response);
     }

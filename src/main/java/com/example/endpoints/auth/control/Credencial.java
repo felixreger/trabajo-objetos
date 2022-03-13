@@ -38,7 +38,7 @@ public class Credencial {
         this.autor = autor;
     }
 
-    public boolean credencial(HttpServletResponse response, PrintWriter out, String tipoCredencial) throws IOException {
+    public boolean verificarCredencial(HttpServletResponse response, PrintWriter out, String tipoCredencial) throws IOException {
         boolean resultado = true;
 
         try {

@@ -27,28 +27,43 @@ public class AuthComentario extends HttpFilter {
 
         String method = request.getMethod();
         PrintWriter out = response.getWriter();
-        if(method.equalsIgnoreCase("PUT")){
-            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_SIMPLE))
-                return;
-        }
 
-        if(method.equalsIgnoreCase("DELETE")){
-            try {
-                Comentario comentario = servicio.getComentario(Integer.parseInt(request.getParameter("idComentario")));
-                if (!comentario.esValido()){
-                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    out.print("El comentario no existe!");
-                    out.flush();
+        // entro por todos, menos el GET
+        if(!method.equalsIgnoreCase("GET")){
+            if (!controlador.setUserAndPassword(request, response))
+                return;
+
+            // si es POST, solo verifico credenciales correctas
+            if(method.equalsIgnoreCase("POST")){
+                if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_SIMPLE))
+                    return;
+            }else{
+                try {
+                    Comentario comentario = servicio.getComentario(Integer.parseInt(request.getParameter("idComentario")));
+                    if (!comentario.esValido()){
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        out.print("El comentario no existe!");
+                        out.flush();
+                        return;
+                    }
+                    controlador.setAutor(comentario.getAutor().getMail());
+
+                    //solamente quien lo hizo
+                    if(method.equalsIgnoreCase("PUT")){
+                        if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_SIMPLE_UNICA))
+                            return;
+                    }else{
+                        //si es un DELETE, cualquiera de los dos puede
+                        if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_COMPUESTA))
+                            return;
+                    }
+                } catch (ExcepcionServicio e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     return;
                 }
-                controlador.setAutor(comentario.getAutor().getMail());
-                if(!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_COMPUESTA))
-                    return;
-            } catch (ExcepcionServicio e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
             }
         }
+        request.setAttribute("idUsuario", controlador.getIdUsuario());
         out.flush();
         chain.doFilter(request, response);
     }

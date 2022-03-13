@@ -23,8 +23,10 @@ public class AuthCatedras extends HttpFilter {
 
         String method = request.getMethod();
         PrintWriter out = response.getWriter();
-        if(method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE")) { //post y delete.
-            if (!controlador.setUserAndPassword(request, response) || !controlador.credencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
+        if(!method.equalsIgnoreCase("GET")) { //post, put y delete.
+            if (!controlador.setUserAndPassword(request, response))
+                return;
+            if(!controlador.verificarCredencial(response, out, UtilsControl.CREDENCIAL_ADMIN))
                 return;
         }
         out.flush();
