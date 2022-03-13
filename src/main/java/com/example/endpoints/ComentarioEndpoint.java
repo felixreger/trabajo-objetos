@@ -70,15 +70,13 @@ public class ComentarioEndpoint extends HttpServlet {
                 out.flush();
                 return;
             }
+            System.out.println("Usuario"  + idUsuario);
             Usuario usuario = servicio.getUsuario(idUsuario);
-            if (usuario.esValido()){
-                Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
-                servicio.addComentario(cm);
-                out.print("Comentario agregado correctamente");
-            }else{
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print("El usuario no existe!");
-            }
+            Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
+            System.out.println("Comentario " + cm);
+            servicio.addComentario(cm);
+            out.print("Comentario agregado correctamente");
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al agregar el comentario " + contenido);

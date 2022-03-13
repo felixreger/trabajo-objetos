@@ -55,6 +55,7 @@ public class ArchivoEndpoint extends HttpServlet {
             String idUsuario = (String) request.getAttribute("idUsuario");
             Usuario propietario = servicio.getUsuario(idUsuario);
             if(propietario.esValido()) {
+                //todo: verificar si la carpeta existe!
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Archivo archivo = new Archivo(nombre, tipo, tamanio, fechaModificacion, fechaCreacion, catedra, propietario, padre);
                 servicio.addArchivo(archivo);
