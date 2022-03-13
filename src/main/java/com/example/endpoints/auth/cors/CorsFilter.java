@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "CorsFilter", urlPatterns = "/*")
+@WebFilter(asyncSupported = true, urlPatterns =  { "/*" })
 public class CorsFilter extends HttpFilter {
 
     @Override
@@ -19,14 +19,8 @@ public class CorsFilter extends HttpFilter {
         System.out.println("CORSFilter HTTP Request: " + servletRequest.getMethod());
 
         // Authorize (allow) all domains to consume the content
-        servletResponse.addHeader("Access-Control-Allow-Origin", "*");
-        servletResponse.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE");
-
-        // For HTTP OPTIONS verb/method reply with ACCEPTED status code -- per CORS handshake
-        if (servletRequest.getMethod().equals("OPTIONS")) {
-            servletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            return;
-        }
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*");
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, DELETE, HEAD, PUT, POST");
 
         // pass the request along the filter chain
         chain.doFilter(servletRequest, servletResponse);
