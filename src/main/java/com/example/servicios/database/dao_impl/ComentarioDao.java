@@ -127,7 +127,6 @@ public class ComentarioDao extends Dao implements IDao<Comentario, Integer> {
 		ptmt.setString(3, comentario.getAutor().getMail());
 		ptmt.setString(4, comentario.getDescripcion());
 
-		System.out.println("Antes de la ejecucion");
 		ptmt.executeUpdate();
 
 		System.out.println("Data Added Successfully");

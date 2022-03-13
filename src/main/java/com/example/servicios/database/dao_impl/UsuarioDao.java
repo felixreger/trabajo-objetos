@@ -31,9 +31,12 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 		resultSet = ptmt.executeQuery();
 
 		while (resultSet.next()) {
-			usuarios.add(new Usuario(resultSet.getString("usmail"),
+			Usuario u = new Usuario(resultSet.getString("usmail"),
 					resultSet.getString("usnombre"),
-					resultSet.getInt("uspuntaje")));
+					resultSet.getInt("uspuntaje"));
+
+			u.setAdmin(resultSet.getBoolean("usesadmin"));
+			usuarios.add(u);
 		}
 
 		if (resultSet != null)

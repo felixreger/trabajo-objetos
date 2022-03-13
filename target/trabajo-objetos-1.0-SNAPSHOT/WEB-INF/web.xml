@@ -10,7 +10,7 @@
         <realm-name>default</realm-name>
     </login-config>
 
-    <!-- CORS -->
+    <!--
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
@@ -19,5 +19,6 @@
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    -->
 
 </web-app>

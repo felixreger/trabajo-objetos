@@ -70,7 +70,12 @@ public class ComentarioEndpoint extends HttpServlet {
                 out.flush();
                 return;
             }
-            System.out.println("Usuario"  + idUsuario);
+            if(!servicio.existeElemento(idElemento)){
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.print("El archivo asociado al comentario no existe!");
+                out.flush();
+                return;
+            }
             Usuario usuario = servicio.getUsuario(idUsuario);
             Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
             System.out.println("Comentario " + cm);
@@ -79,8 +84,6 @@ public class ComentarioEndpoint extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.print(e.getMessage());
-            System.out.println(e.getMessage());
             out.print("Error al agregar el comentario " + contenido);
         } finally {
             out.flush();
@@ -88,7 +91,6 @@ public class ComentarioEndpoint extends HttpServlet {
     }
 
     //solo el que hizo el comentario puede modificarlo
-    //todo: la query cambio, ahora el idcomentario se pasa por param
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -104,6 +106,12 @@ public class ComentarioEndpoint extends HttpServlet {
         try {
             String idElemento =  servicio.getComentario(idComentario).getNombreElemento();
             Usuario usuario = servicio.getUsuario(idUsuario);
+            if(!servicio.existeElemento(idElemento)){
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.print("El archivo asociado al comentario no existe!");
+                out.flush();
+                return;
+            }
             Comentario cm = new Comentario(idComentario, contenido, usuario, idElemento);
             servicio.updateComentario(cm);
             out.print("Comentario actualizado correctamente");
