@@ -62,9 +62,9 @@ public class AuthComentario extends HttpFilter {
                     return;
                 }
             }
+            request.setAttribute("idUsuario", controlador.getIdUsuario());
         }
-        request.setAttribute("idUsuario", controlador.getIdUsuario());
-        out.flush();
+
         chain.doFilter(request, response);
     }
 
