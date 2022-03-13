@@ -79,6 +79,8 @@ public class ComentarioEndpoint extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print(e.getMessage());
+            System.out.println(e.getMessage());
             out.print("Error al agregar el comentario " + contenido);
         } finally {
             out.flush();
