@@ -1,4 +1,4 @@
-package com.example.endpoints;
+package com.example.endpoints.archivo;
 
 import com.example.endpoints.utils.FabricaCriterio;
 import com.example.endpoints.utils.Utils;
