@@ -11,6 +11,6 @@ public class CriterioTipo implements Criterio {
 
     @Override
     public Boolean cumple(Archivo e) {
-        return e.getTipo().equals(tipo);
+        return e.getExtension().equals(tipo);
     }
 }

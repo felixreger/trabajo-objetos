@@ -161,7 +161,7 @@ public class Servicios {
         // a b c d e f g
 
         // ruta: es el path anterior a mi.
-        String[] path = elemento.getPadre().split(":");
+        String[] path = elemento.getPath().split(":");
         List<String> ruta = new ArrayList<String>(Arrays.asList(path));
 
         // el nombre de la raiz debe estar contenido en el padre del elemento
@@ -174,7 +174,7 @@ public class Servicios {
 
         // GetPadre de hijo retorna A:B:C:D --> El padre de D es C
 
-        String[] path = elemento.getPadre().split(":");
+        String[] path = elemento.getPath().split(":");
 
         String nombrePadre = path[path.length -2];
         

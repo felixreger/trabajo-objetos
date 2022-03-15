@@ -7,8 +7,6 @@ import com.example.servicios.database.IDao;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import java.sql.SQLException;
 
 public class UsuarioDao extends Dao implements IDao<Usuario, String> {
@@ -32,8 +30,8 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 
 		while (resultSet.next()) {
 			Usuario u = new Usuario(resultSet.getString("usmail"),
-					resultSet.getString("usnombre"),
-					resultSet.getInt("uspuntaje"));
+									resultSet.getString("usnombre"),
+									resultSet.getInt("uspuntaje"));
 
 			u.setAdmin(resultSet.getBoolean("usesadmin"));
 			usuarios.add(u);
@@ -93,7 +91,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 		ptmt.setString(1, mail);
 		ptmt.executeUpdate();
 
-		System.out.println("Data deleted Successfully");
+		System.out.println("Usuario eliminado exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();
@@ -155,7 +153,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 		ptmt.setInt(2, usuario.getPuntaje());
 		ptmt.setString(3, usuario.getMail());
 		ptmt.executeUpdate();
-		System.out.println("Table Updated Successfully");
+		System.out.println("Usuario actualizado exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();
@@ -189,7 +187,7 @@ public class UsuarioDao extends Dao implements IDao<Usuario, String> {
 	//todo: esta bien usar un metodo aux?
 	public List<Usuario> getTop() throws SQLException {
 
-		String queryString = "SELECT u.usmail, u.usnombre, u.uspuntaje FROM usuarios u JOIN elementos e on u.usmail = e.elpropietario\n" +
+		String queryString = "SELECT u.usmail, u.usnombre, u.uspuntaje, u.usesadmin FROM usuarios u JOIN elementos e on u.usmail = e.elpropietario\n" +
 				"GROUP BY u.usmail order by count(usmail) desc limit 10";
 
 		return this.getUsuarios(queryString);

@@ -61,7 +61,8 @@ public class CarpetaEndpoint extends HttpServlet {
             if(propietario.esValido()){
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Carpeta carpeta = new Carpeta(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
-                carpeta.setTamanio(0); //todo: ver el tamanio
+                //todo: ver el tamanio
+                //todo: con la modificacion, no hace falta guardar tamanio
                 servicio.addCarpeta(carpeta);
                 out.print("Carpeta agregada");
             }else {

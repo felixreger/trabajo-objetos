@@ -2,6 +2,7 @@ package com.example.endpoints;
 
 import com.example.endpoints.utils.Utils;
 import com.example.exceptions.ExcepcionServicio;
+import com.example.modelo.Carpeta;
 import com.example.modelo.Elemento;
 import com.example.servicios.Servicios;
 import com.google.gson.Gson;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 @WebServlet(name = "Directorio", value = Utils.URL_DIRECTORIO)
 public class DirectorioEndpoint extends HttpServlet {
@@ -29,8 +32,15 @@ public class DirectorioEndpoint extends HttpServlet {
         try {
             if(servicio.existeElemento(raiz)){
                 directorio = servicio.getDirectorio(raiz);
-                String dirJson = this.gson.toJson(directorio); //todo: para tener un correcto funcionamiento del modelo deberia rellenar el campo de tamanio aca?
-                out.print(dirJson);
+                int tamanio = directorio.getTamanio();
+                String dirJson = this.gson.toJson(directorio);
+
+                Set<String> pClaves =  directorio.getPalabrasClave();
+
+                String pClavesJson = this.gson.toJson(pClaves);
+                String aux = agregarPalabrasClave(dirJson, pClavesJson);
+
+                out.print(this.agregarTamanio(aux, tamanio));
             }else{
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.print("El directorio no existe");
@@ -41,5 +51,17 @@ public class DirectorioEndpoint extends HttpServlet {
         }finally{
             out.flush();
         }
+    }
+
+    //se lo requiere aca en otro lado?
+    private String agregarTamanio(String json, int tamanio) {
+        String tam = ", \"tamanio\":  " + tamanio + "}";
+        return json + tam;
+    }
+
+    private String agregarPalabrasClave(String json, String palabras){
+        json = json.substring(0, json.length() - 1);
+
+        return json + ", \"palabrasClave\": " + palabras;
     }
 }

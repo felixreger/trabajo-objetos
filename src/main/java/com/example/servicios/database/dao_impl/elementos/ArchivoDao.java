@@ -31,6 +31,7 @@ public class ArchivoDao extends ElementoDao{
 
         List<Elemento> archivos = new ArrayList<>();
 
+		//todo: se pide todo a la talba de archivos
 		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid JOIN usuarios u on e.elpropietario = u.usmail where e.eltipo != ?";
 		connection = getConnection();
 
@@ -73,7 +74,7 @@ public class ArchivoDao extends ElementoDao{
     public Elemento get(String id) throws SQLException {
 
         Elemento archivo = new Archivo();
-
+		//todo: se pide a la tabla de archivos
 		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaid = c.caid WHERE elnombre = ?";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
@@ -82,7 +83,7 @@ public class ArchivoDao extends ElementoDao{
 
 		if (resultSet.next()) {
 			archivo.setNombre(resultSet.getString("elnombre"));
-			archivo.setTipo(resultSet.getString("eltipo"));
+			archivo.setExtension(resultSet.getString("eltipo"));
 			archivo.setTamanio(resultSet.getInt("eltamanio"));
 			archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
 			archivo.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());

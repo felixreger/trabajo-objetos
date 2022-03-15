@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Utils {
 
+    //TODO: acomodar mejor
     public static final String URL_USUARIO = "/usuarios";
     public static final String URL_DIRECTORIO = "/directorio";
     public static final String URL_COMENTARIO = "/comentario";
@@ -17,8 +18,16 @@ public class Utils {
     public static final String URL_ARCHIVO = "/archivo";
     public static final String URL_FILTRO_ARCHIVOS = "/filtro";
     public static final String URL_TOP = "/top";
+    public static final String URL_PALABRAS_CLAVE = "/palabrasclave";
 
     public static final int UNPROCESSABLE_ENTITY = 422;
+
+    public static final String AUTOR = "autor";
+    public static final String TIPO = "tipo";
+    public static final String CONTIENE_NOMBRE = "contienenombre";
+    public static final String FECHA_CREACION = "fechacreacion";
+    public static final String FECHA_MODIFICACION = "fechamodificacion";
+
 
     public static JSONObject getRequestBody(HttpServletRequest request) throws IOException {
         StringBuilder jb = new StringBuilder();

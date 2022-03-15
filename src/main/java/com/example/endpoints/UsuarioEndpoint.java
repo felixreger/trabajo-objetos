@@ -35,7 +35,6 @@ public class UsuarioEndpoint extends HttpServlet {
                 usuarios.addAll(servicio.getUsuarios());
             else
                 usuarios.add(servicio.getUsuario(id));
-
             String listaUsuariosJson = this.gson.toJson(usuarios);
             out.print(listaUsuariosJson);
 
@@ -82,7 +81,6 @@ public class UsuarioEndpoint extends HttpServlet {
         }
     }
 
-    // todo: cambiar parametros en la query
     // el mismo usuario puede hacer un update a si mismo
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -107,7 +105,6 @@ public class UsuarioEndpoint extends HttpServlet {
         }
     }
 
-    // todo: cambiar parametros en la query
     //solo el mismo puede eliminarse
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();

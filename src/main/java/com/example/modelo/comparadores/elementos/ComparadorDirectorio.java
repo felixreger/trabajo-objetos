@@ -16,10 +16,10 @@ public class ComparadorDirectorio extends ComparadorElemento {
 
     @Override
     public int comparar(Elemento a1, Elemento a2) {
-        if (a1.getPadre().length() - a2.getPadre().length() == 0 && siguiente != null) {
+        if (a1.getPath().length() - a2.getPath().length() == 0 && siguiente != null) {
             return siguiente.comparar(a1, a2);
         }
-        return a2.getPadre().length() - a1.getPadre().length();
+        return a2.getPath().length() - a1.getPath().length();
     }
 
 }

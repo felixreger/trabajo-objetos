@@ -31,7 +31,8 @@ public class CarpetaDao extends ElementoDao{
     public List<Elemento> getAll() throws SQLException {
 
         List<Elemento> elementos = new ArrayList<>();
-
+		//todo: aca cambiaria que ya no se pregunta por la carpeta, sino que se obtiene de una consulta
+		//donde se traen todas las tuplas de elmentos que no estan el archivo
 		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid JOIN usuarios u on u.usmail = e.elpropietario where e.eltipo = ?";
 		
 		connection = getConnection();
@@ -41,7 +42,7 @@ public class CarpetaDao extends ElementoDao{
 
 		while (resultSet.next()) {
 			elementos.add(
-				new Carpeta(
+				new Carpeta( //todo: hacer metodos aux que hagan esto
 					resultSet.getString("elnombre"),
 					resultSet.getString("eltipo"),
 					LocalDate.parse(resultSet.getString("elfechamodificacion")),
@@ -73,7 +74,7 @@ public class CarpetaDao extends ElementoDao{
     public Elemento get(String nombre) throws SQLException {
         
         Elemento elemento = new Carpeta(); 
-
+		//todo: aca directamente se accede a la tabla elemento y se saca todo.
 		String queryString = "SELECT * FROM elementos e JOIN catedras c on e.elcaId = c.caid JOIN usuarios u on e.elpropietario = u.usmail WHERE elnombre = ?";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
@@ -82,11 +83,11 @@ public class CarpetaDao extends ElementoDao{
 
 		if (resultSet.next()) {
 			elemento.setNombre(resultSet.getString("elnombre"));
-			elemento.setTipo(resultSet.getString("eltipo"));
+			elemento.setExtension(resultSet.getString("eltipo"));
 			elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechamodificacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
 			elemento.setFechaCreacion(Instant.ofEpochMilli(resultSet.getDate("elfechacreacion").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
 			elemento.setCatedra(new Catedra(resultSet.getString("elcaid"), resultSet.getString("caurl")));
-			elemento.setPadre(resultSet.getString("elelempadre"));
+			elemento.setPath(resultSet.getString("elelempadre"));
 			elemento.setPropietario(
 				new Usuario(
 					resultSet.getString("usmail"),

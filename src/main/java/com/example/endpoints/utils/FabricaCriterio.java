@@ -16,13 +16,14 @@ public class FabricaCriterio {
 
     private final Servicios servicio = Servicios.getInstance();
 
+    //todo: corroborar criterios nuevos.
     public Criterio getCriterioArchivo(Map<String, String> criterio) {
 
         ArrayList<Criterio> compuesto = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : criterio.entrySet()) {
 
-            if (entry.getKey().equalsIgnoreCase("autor")) {
+            if (entry.getKey().equalsIgnoreCase(Utils.AUTOR)) {
                 String usuarioParam = entry.getValue();
                 try {
                     Usuario u = servicio.getUsuario(usuarioParam);
@@ -31,11 +32,19 @@ public class FabricaCriterio {
                     e.printStackTrace();
                 }
 
-            } else if (entry.getKey().equalsIgnoreCase("tipo")) {
+            } else if (entry.getKey().equalsIgnoreCase(Utils.TIPO)) {
                 String tipoParam = entry.getValue();
                 compuesto.add(new CriterioTipo(tipoParam));
 
-            } else if (entry.getKey().equalsIgnoreCase("contienenombre")) {
+            } else if (entry.getKey().equalsIgnoreCase(Utils.CONTIENE_NOMBRE)) {
+                String nombreParam = entry.getValue();
+                compuesto.add(new CriterioContieneNombreElemento(nombreParam));
+
+            } else if (entry.getKey().equalsIgnoreCase(Utils.FECHA_CREACION)) {
+                String nombreParam = entry.getValue();
+                compuesto.add(new CriterioContieneNombreElemento(nombreParam));
+
+            }else if (entry.getKey().equalsIgnoreCase(Utils.FECHA_MODIFICACION)) {
                 String nombreParam = entry.getValue();
                 compuesto.add(new CriterioContieneNombreElemento(nombreParam));
             }

@@ -1,4 +1,4 @@
-package com.example.endpoints;
+package com.example.endpoints.archivo;
 
 import com.example.endpoints.utils.Utils;
 import com.example.exceptions.ExcepcionServicio;
@@ -6,6 +6,7 @@ import com.example.modelo.Archivo;
 import com.example.modelo.Catedra;
 import com.example.modelo.Usuario;
 import com.example.servicios.Servicios;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,13 +17,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 @WebServlet(name="ArchivoEndpoint", value=Utils.URL_ARCHIVO)
 public class ArchivoEndpoint extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
-    //todo: modificar query, ya no se pasa el usuario en el body.
     @Override //todos pueden hacer
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -41,6 +43,10 @@ public class ArchivoEndpoint extends HttpServlet {
             String tipo = body.getString("tipo");
             Integer tamanio = body.getInt("tamanio");
 
+            JSONArray palabrasClaveParam = body.getJSONArray("palabrasclave");
+
+            Set<String> palabrasClave = this.getPalabrasClave(palabrasClaveParam);
+
             String fechaCreacionParam = body.getString("fechaCreacion");
             String fechaModificacionParam = body.getString("fechaModificacion");
 
@@ -58,6 +64,8 @@ public class ArchivoEndpoint extends HttpServlet {
                 //todo: verificar si la carpeta existe!
                 Catedra catedra = servicio.getCatedra(catedraParam);
                 Archivo archivo = new Archivo(nombre, tipo, tamanio, fechaModificacion, fechaCreacion, catedra, propietario, padre);
+                //todo: esto impacata directamente sobre los atributos de la tabla de archivo
+                archivo.addPalabraClave(palabrasClave);
                 servicio.addArchivo(archivo);
                 out.print("Archivo " + nombre + ", agregado correctamente");
             }else{
@@ -70,6 +78,14 @@ public class ArchivoEndpoint extends HttpServlet {
         }finally {
             out.flush();
         }
+    }
+
+    private Set<String> getPalabrasClave(JSONArray palabrasClaveParam) {
+        Set<String> tmp = new HashSet<>();
+        for (Object j: palabrasClaveParam){
+            tmp.add(j.toString());
+        }
+        return tmp;
     }
 
     @Override //solo los admins

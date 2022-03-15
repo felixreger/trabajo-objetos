@@ -21,13 +21,13 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
 
     @Override
     public void update(Elemento elem) throws SQLException {
-
+		//todo: el update deberia ser dependiendo el tipo
 		String queryString = "UPDATE elementos SET(eltamanio, eltipo, elfechacreacion, elfechamodificacion) VALUES=(?,?,?,?) WHERE elnombre=?";
 
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setInt(1, elem.getTamanio());
-		ptmt.setString(2, elem.getTipo());
+		ptmt.setString(2, elem.getExtension());
 		ptmt.setDate(3, Date.valueOf(elem.getFechaCreacion()));
 		ptmt.setDate(4, Date.valueOf(elem.getFechaModificacion()));
 		ptmt.setString(5, elem.getNombre());
@@ -56,19 +56,23 @@ public abstract class ElementoDao extends Dao implements IDao<Elemento, String> 
     
     @Override
     public void add(Elemento elem) throws SQLException {
+
+		//todo: se discriminan los tipos!
 		String queryString = "INSERT INTO elementos (elnombre, eltamanio, eltipo, elfechamodificacion, elfechacreacion, elcaid, elpropietario, elelempadre)"
 							+ "VALUES(?,?,?,?,?,?,?,?)";
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 
-		ptmt.setString(1, elem.getNombre());
-		ptmt.setInt(2, elem.getTamanio());
-		ptmt.setString(3, elem.getTipo());
-		ptmt.setDate(4, Date.valueOf(elem.getFechaModificacion()));
-		ptmt.setDate(5, Date.valueOf(elem.getFechaCreacion()));
-		ptmt.setString(6, elem.getCatedra().getNombre());
-		ptmt.setString(7, elem.getPropietario());
-		ptmt.setString(8, elem.getPadre());
+		ptmt.setString(1, elem.getNombre()); //elnombre
+		ptmt.setInt(2, elem.getTamanio()); //todo: el tamanio no se deberia guardar para las carpetas!
+		ptmt.setString(3, elem.getExtension()); //todo: el tipo no se deberia guardar para las carpetas!
+		ptmt.setDate(4, Date.valueOf(elem.getFechaModificacion())); // elfechamodificacion
+		ptmt.setDate(5, Date.valueOf(elem.getFechaCreacion())); // elfechacreacion
+		ptmt.setString(6, elem.getCatedra().getNombre()); // elcaid
+		ptmt.setString(7, elem.getPropietario()); // elpropietario
+		ptmt.setString(8, elem.getPath()); // elelempadre
+		//todo: agregar palabras clave
+		//El archivo solo deberia guardar las palabras clave
 
 		ptmt.executeUpdate();
 

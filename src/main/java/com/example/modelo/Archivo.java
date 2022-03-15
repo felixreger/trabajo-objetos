@@ -9,6 +9,7 @@ import java.util.*;
 public class Archivo extends Elemento implements Comparator<Elemento> {
 
     private Integer tamanio;
+    private String extension;
     private Set<String> palabrasClaves;
 
     public Archivo(String nombre, String tipo,
@@ -42,8 +43,8 @@ public class Archivo extends Elemento implements Comparator<Elemento> {
         return retorno;
     }
 
-    public void addPalabraClave(String palabra){
-        this.palabrasClaves.add(palabra);
+    public void addPalabraClave(Set<String> palabras){
+        this.palabrasClaves.addAll(palabras);
     }
 
     @Override //todo: retornar una copia?

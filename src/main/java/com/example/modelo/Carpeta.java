@@ -13,15 +13,15 @@ public class Carpeta extends Elemento {
 
     private Set<Elemento> listaElementos;
 
-    public Carpeta(String nombre, String tipo,
-                   LocalDate fechaModificacion,
+    public Carpeta(String nombre, String tipo, //todo: tipo no deberia estar!
+                   LocalDate fechaModificacion, //todo: deberia ser la ultima que sus hijos modifico!, seria la ultima modificacion de un archivo.
                    LocalDate fechaCreacion,
                    String padre, Usuario propietario,
                    Catedra catedra) {
         super(nombre, tipo, fechaModificacion, fechaCreacion, padre, propietario, catedra);
         listaElementos = new HashSet<>();
     }
-
+    //todo: como guardar imangenes??
     public Carpeta() {
         listaElementos = new HashSet<>();
     }
