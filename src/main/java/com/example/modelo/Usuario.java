@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Usuario {
     private String mail;
-    private String password;
+    private transient String password;
     private String nombre;
     private int puntaje;
     private boolean admin;
