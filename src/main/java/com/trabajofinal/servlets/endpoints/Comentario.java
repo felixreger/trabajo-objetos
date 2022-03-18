@@ -76,7 +76,6 @@ public class Comentario extends HttpServlet {
             }
             Usuario usuario = servicio.getUsuario(idUsuario);
             com.trabajofinal.modelo.Comentario cm = new com.trabajofinal.modelo.Comentario(idComentario, contenido, usuario, pathElemento);
-            System.out.println("Comentario " + cm);
             servicio.addComentario(cm);
             out.print("Comentario agregado correctamente");
 
