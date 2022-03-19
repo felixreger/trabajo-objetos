@@ -8,6 +8,7 @@ import com.trabajofinal.servicios.database.dao_jdbc.ComentarioDao;
 import com.trabajofinal.servicios.database.dao_jdbc.UsuarioDao;
 import com.trabajofinal.servicios.database.dao_jdbc.elementos.ArchivoDao;
 import com.trabajofinal.servicios.database.dao_jdbc.elementos.CarpetaDao;
+import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -155,9 +156,9 @@ public class Servicios {
         }
     }
 
-    public byte[] getArchivoFuente(String pathArchivo, String extension) throws ExcepcionServicio {
+    public ArchivoBytes getArchivoFuente(String pathArchivo) throws ExcepcionServicio {
         try {
-            return accesodbArchivo.getArchivoFuente(pathArchivo, extension);
+            return accesodbArchivo.getArchivoFuente(pathArchivo);
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }

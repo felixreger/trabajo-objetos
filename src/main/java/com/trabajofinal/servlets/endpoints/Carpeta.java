@@ -42,14 +42,9 @@ public class Carpeta extends HttpServlet {
                 return;
             }
             Usuario propietario = servicio.getUsuario(usuarioParam);
-            if(propietario.esValido()){
-                com.trabajofinal.modelo.Carpeta carpeta = new com.trabajofinal.modelo.Carpeta(nombre, propietario, LocalDate.now(), LocalDate.now(),  path, descripcion);
-                servicio.addCarpeta(carpeta);
-                out.print("Carpeta agregada");
-            }else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print("El usuario " + propietario + " no existe");
-            }
+            com.trabajofinal.modelo.Carpeta carpeta = new com.trabajofinal.modelo.Carpeta(nombre, propietario, LocalDate.now(), LocalDate.now(),  path, descripcion);
+            servicio.addCarpeta(carpeta);
+            out.print("Carpeta agregada");
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("Error al agregar la carpeta " + nombre);

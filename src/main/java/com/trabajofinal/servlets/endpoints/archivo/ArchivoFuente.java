@@ -1,5 +1,6 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
+import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 import com.trabajofinal.utils.servlets.endpoints.Constantes;
 import com.trabajofinal.exceptions.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
@@ -19,16 +20,16 @@ public class ArchivoFuente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getParameter("path");
-        String extension = request.getParameter("extension");
+
         try {
-            byte[] file = servicio.getArchivoFuente(path, extension);
-            if(file == null){
+            ArchivoBytes file = servicio.getArchivoFuente(path);
+            if(!file.esValido()){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            response.setContentType(extension);
+            response.setContentType(file.getExtension());
             OutputStream o = response.getOutputStream();
-            o.write(file);
+            o.write(file.getArchivoFuente());
             o.flush();
             o.close();
         } catch (ExcepcionServicio e) {

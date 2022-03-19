@@ -1,6 +1,7 @@
 package com.trabajofinal.servicios.database.dao_jdbc.elementos;
 
 import com.trabajofinal.modelo.*;
+import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -150,20 +151,20 @@ public class ArchivoDao extends ElementoDao {
 		return sb.toString();
 	}
 
-	public byte[] getArchivoFuente(String pathArchivo, String extension) throws SQLException {
+	public ArchivoBytes getArchivoFuente(String pathArchivo) throws SQLException {
 
-		String queryString = "SELECT arfuente FROM archivos a WHERE elpath = ? AND arextension = ?";
+		String queryString = "SELECT arfuente, arextension FROM archivos a WHERE elpath = ?";
 
 		connection = getConnection();
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setString(1, pathArchivo);
-		ptmt.setString(2, extension);
 		resultSet = ptmt.executeQuery();
 
-		byte[] fileBytes = null;
+		ArchivoBytes archivoBytes = new ArchivoBytes();
 
 		if (resultSet.next()) {
-			fileBytes = resultSet.getBytes("arfuente");
+			archivoBytes.setArchivoFuente(resultSet.getBytes("arfuente"));
+			archivoBytes.setExtension(resultSet.getString("arextension"));
 		}
 
 		if (resultSet != null)
@@ -173,6 +174,6 @@ public class ArchivoDao extends ElementoDao {
 		if (connection != null)
 			connection.close();
 
-		return fileBytes;
+		return archivoBytes;
 	}
 }
