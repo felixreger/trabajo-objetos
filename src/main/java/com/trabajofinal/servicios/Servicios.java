@@ -1,6 +1,6 @@
 package com.trabajofinal.servicios;
 
-import com.trabajofinal.exceptions.ExcepcionServicio;
+import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.*;
 import com.trabajofinal.modelo.comparadores.elementos.ComparadorDirectorio;
 import com.trabajofinal.servicios.database.dao_jdbc.CatedraDao;
@@ -194,7 +194,7 @@ public class Servicios {
             throw new ExcepcionServicio(e.getMessage());
         }
 
-        // Ordenar la lista de elementos por longitud de de path todo: revisar con mas casos
+        // Ordenar la lista de elementos por longitud de de path
         elementos.sort(new ComparadorDirectorio());
 
         // Se utiliza un contador para acotar la busqueda de padres
@@ -297,7 +297,7 @@ public class Servicios {
         return this.existeDirectorio(path);
     }
 
-    // region desuso
+    // region desuso momentaneo
     public Elemento getArchivo(String id) throws ExcepcionServicio {
         try {
             return accesodbArchivo.get(id);
@@ -317,6 +317,14 @@ public class Servicios {
     public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
         try {
             accesodbCarpeta.update(Carpeta);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public int getUltimoComentarioId() throws ExcepcionServicio {
+        try {
+            return accesodbComentario.getUltimoId();
         }catch (SQLException e){
             throw new ExcepcionServicio(e.getMessage());
         }

@@ -1,8 +1,8 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
 import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
-import com.trabajofinal.utils.servlets.endpoints.Constantes;
-import com.trabajofinal.exceptions.ExcepcionServicio;
+import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
+import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
-@WebServlet(name="ArchivoFuente", value= Constantes.URL_FUENTE)
+@WebServlet(name="ArchivoFuente", value= ConstantesServlet.URL_FUENTE)
 public class ArchivoFuente extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();

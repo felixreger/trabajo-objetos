@@ -26,7 +26,6 @@ public class CarpetaDao extends ElementoDao {
         return carpetaDao;
     }
 
-	//todo: estos metodos de carga se podrian hacer con metodos estaticos
 	private Usuario cargarUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
 			resultSet.getString("usmail"),
@@ -98,7 +97,7 @@ public class CarpetaDao extends ElementoDao {
 
 	@Override
 	public void update(Elemento elem) throws SQLException {
-		//todo: implementar, segun lo que se plantee cambiar
+		//todo: implementar
 	}
 
 	@Override

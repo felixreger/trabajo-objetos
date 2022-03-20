@@ -1,8 +1,8 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
 import com.trabajofinal.servlets.endpoints.criterio.FabricaCriterio;
-import com.trabajofinal.utils.servlets.endpoints.Constantes;
-import com.trabajofinal.exceptions.ExcepcionServicio;
+import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
+import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.modelo.Elemento;
 import com.trabajofinal.modelo.criterios.Criterio;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name="ArchivosConFiltro", value= Constantes.URL_FILTRO_ARCHIVOS)
+@WebServlet(name="ArchivosConFiltro", value= ConstantesServlet.URL_FILTRO_ARCHIVOS)
 public class ArchivoFiltro extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -38,21 +38,18 @@ public class ArchivoFiltro extends HttpServlet {
         Criterio c = fabrica.getCriterioArchivo(filtros);
 
         try {
-            if(servicio.existeElemento(path)) {
-                Elemento directorio = servicio.getDirectorio(path);
-                List<Archivo> archivos = directorio.filtrar(c);
-                String archivosJson = this.gson.toJson(archivos);
-                out.print(archivosJson);
-            }else{
+            if(!servicio.existeElemento(path)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print("El directorio no existe!");
+                return;
             }
+            Elemento directorio = servicio.getDirectorio(path);
+            List<Archivo> archivos = directorio.filtrar(c);
+            String archivosJson = this.gson.toJson(archivos);
+            out.print(archivosJson);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.print("Error al filtrar los archivos");
-        }finally {
-            out.flush();
         }
+        out.flush();
     }
 
     private Map<String, String> getCriterios(HttpServletRequest request){

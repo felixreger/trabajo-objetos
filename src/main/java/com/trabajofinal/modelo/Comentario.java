@@ -1,6 +1,6 @@
 package com.trabajofinal.modelo;
 
-import com.trabajofinal.utils.modelo.Constantes;
+import com.trabajofinal.utils.modelo.ConstantesModelo;
 
 public class Comentario {
     private Integer id;
@@ -16,7 +16,7 @@ public class Comentario {
     }
     
     public Comentario() {
-        this.id = Constantes.COMENTARIO_INVALIDO;
+        this.id = ConstantesModelo.COMENTARIO_INVALIDO;
     }
 
     public String getDescripcion() {
@@ -48,7 +48,7 @@ public class Comentario {
     }
 
     public boolean esValido() {
-        return this.id != Constantes.COMENTARIO_INVALIDO;
+        return this.id != ConstantesModelo.COMENTARIO_INVALIDO;
     }
 
     @Override

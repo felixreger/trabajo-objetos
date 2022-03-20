@@ -8,8 +8,8 @@ public class Catedra {
         nombre = "";
     }
     
-    public boolean isEmpty(){
-        return nombre.equals("");
+    public boolean esValida(){
+        return !nombre.equals("");
     }
 
     public Catedra(String nombre) {

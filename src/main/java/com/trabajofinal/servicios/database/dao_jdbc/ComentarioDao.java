@@ -188,4 +188,26 @@ public class ComentarioDao extends Conexion implements IDao<Comentario, Integer>
 
 		return comentarios;
 	}
+
+    public int getUltimoId() throws SQLException {
+
+		String queryString = "SELECT coid FROM comentarios order by coid desc limit 1";
+		connection = getConnection();
+		ptmt = connection.prepareStatement(queryString);
+		resultSet = ptmt.executeQuery();
+
+		int result = 0;
+		if (resultSet.next()){
+			result =  resultSet.getInt("coid");
+		}
+
+		if (resultSet != null)
+			resultSet.close();
+		if (ptmt != null)
+			ptmt.close();
+		if (connection != null)
+			connection.close();
+
+		return result;
+    }
 }

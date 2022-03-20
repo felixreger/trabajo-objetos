@@ -1,10 +1,10 @@
 package com.trabajofinal.servlets.endpoints.criterio;
 
-import com.trabajofinal.exceptions.ExcepcionServicio;
+import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.modelo.criterios.*;
 import com.trabajofinal.servicios.Servicios;
-import com.trabajofinal.utils.servlets.endpoints.Constantes;
+import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +21,7 @@ public class FabricaCriterio {
 
         for (Map.Entry<String, String> entry : criterio.entrySet()) {
 
-            if (entry.getKey().equalsIgnoreCase(Constantes.AUTOR)) {
+            if (entry.getKey().equalsIgnoreCase(ConstantesServlet.AUTOR)) {
                 String usuarioParam = entry.getValue();
                 try {
                     Usuario u = servicio.getUsuario(usuarioParam);
@@ -30,19 +30,19 @@ public class FabricaCriterio {
                     e.printStackTrace();
                 }
 
-            } else if (entry.getKey().equalsIgnoreCase(Constantes.TIPO)) {
+            } else if (entry.getKey().equalsIgnoreCase(ConstantesServlet.TIPO)) {
                 String tipoParam = entry.getValue();
                 criterioCompuesto.add(new CriterioTipo(tipoParam));
 
-            } else if (entry.getKey().equalsIgnoreCase(Constantes.CONTIENE_NOMBRE)) {
+            } else if (entry.getKey().equalsIgnoreCase(ConstantesServlet.CONTIENE_NOMBRE)) {
                 String nombreParam = entry.getValue();
                 criterioCompuesto.add(new CriterioContieneNombreElemento(nombreParam));
 
-            } else if (entry.getKey().equalsIgnoreCase(Constantes.FECHA_CREACION)) {
+            } else if (entry.getKey().equalsIgnoreCase(ConstantesServlet.FECHA_CREACION)) {
                 String nombreParam = entry.getValue();
                 criterioCompuesto.add(new CriterioFechaCreacion(this.getFecha(nombreParam)));
 
-            }else if (entry.getKey().equalsIgnoreCase(Constantes.FECHA_MODIFICACION)) {
+            }else if (entry.getKey().equalsIgnoreCase(ConstantesServlet.FECHA_MODIFICACION)) {
                 String nombreParam = entry.getValue();
                 criterioCompuesto.add(new CriterioFechaModificacion(this.getFecha(nombreParam)));
             }

@@ -3,7 +3,7 @@ package com.trabajofinal.servlets.autentificacion.credencial;
 import com.trabajofinal.servlets.autentificacion.criterios.CriterioCredencial;
 import com.trabajofinal.servlets.autentificacion.criterios.FabricaCriterio;
 import com.trabajofinal.utils.servlets.autentificacion.DecodeAndEncode;
-import com.trabajofinal.exceptions.ExcepcionServicio;
+import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
 
@@ -18,6 +18,10 @@ public class Credencial {
     private String autor = "";
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Metodo para setear el nombre de usuario y contrasenia de la request que intenta acceder a algun recurso.
+     * @return true si el usuario y contraseña son validos, falso en otro caso(ademas se retorna en error de NO AUTORIZADO)
+     */
     public boolean setUserAndPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
@@ -38,6 +42,12 @@ public class Credencial {
         this.autor = autor;
     }
 
+    /**
+     * Este metodo verifica que el usuario que intenta acceder a un recurso pueda hacerlo, segun sus credenciales. Como
+     * para los distintos recursos, se tienen distintos tipos de condiciones para vericar la credencial de los usuarios
+     * se utilizan criterios para realizar la operacion.
+     * @return verdadero si puede acceder sin problemas, falso si no esta autorizado(ademas de un error en el response)
+     */
     public boolean verificarCredencial(HttpServletResponse response, String tipoCredencial) throws IOException {
         boolean resultado = true;
 

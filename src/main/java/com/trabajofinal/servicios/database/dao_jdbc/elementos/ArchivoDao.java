@@ -111,7 +111,7 @@ public class ArchivoDao extends ElementoDao {
 
 	@Override
 	public void update(Elemento elem) throws SQLException {
-		//todo: implementar, segun lo que se plantee cambiar
+		//todo: implementar
 	}
 
 	@Override

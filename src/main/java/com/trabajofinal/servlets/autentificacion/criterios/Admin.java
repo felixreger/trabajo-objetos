@@ -13,6 +13,11 @@ public class Admin implements CriterioCredencial{
         this.contrasenia = contrasenia;
     }
 
+    /**
+     * Criterio que verifica que el usuario y contraseña coincida con lo que se tiene almacenado.
+     * @param u que es el usuario que intenta acceder.
+     * @return verdadero si las credenciales son correctas, falso en otro caso.
+     */
     @Override
     public Boolean cumple(Usuario u) {
         String password = u.getPassword();
