@@ -1,5 +1,6 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
+import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.endpoints.criterio.FabricaCriterio;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
@@ -27,6 +28,8 @@ public class ArchivoFiltro extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!CorsFilter.habilitarCors(request, response)) return;
+
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
