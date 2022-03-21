@@ -20,6 +20,7 @@ public class CarpetaServlet extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -45,6 +46,11 @@ public class CarpetaServlet extends HttpServlet {
             Usuario propietario = servicio.getUsuario(usuarioParam);
             Carpeta carpeta = new Carpeta(nombre, propietario, LocalDate.now(), LocalDate.now(),  path, descripcion);
             servicio.addCarpeta(carpeta);
+
+            int puntaje = propietario.getPuntaje();
+            propietario.setPuntaje(++puntaje);
+            servicio.updateUsuario(propietario);
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

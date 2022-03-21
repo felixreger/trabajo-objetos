@@ -69,6 +69,10 @@ public class ArchivoServlet extends HttpServlet {
             archivo.addFuente(is);
             servicio.addArchivo(archivo);
 
+            int puntaje = propietario.getPuntaje();
+            propietario.setPuntaje(++puntaje);
+            servicio.updateUsuario(propietario);
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

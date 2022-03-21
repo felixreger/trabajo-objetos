@@ -58,14 +58,14 @@ public class UsuarioServlet extends HttpServlet {
             password = DecodeAndEncode.encode(password);
 
             String nombre = body.getString("nombre");
-            int puntaje = body.getInt("puntaje");
 
             try {
                 if(servicio.existeUsuario(idUsuario)) {
                     response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
                     return;
                 }
-                servicio.addUsuario(new Usuario(idUsuario, nombre, puntaje, password));
+                int puntajeInicial = 0;
+                servicio.addUsuario(new Usuario(idUsuario, nombre, puntajeInicial, password));
             } catch (ExcepcionServicio e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
