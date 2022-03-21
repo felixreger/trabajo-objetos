@@ -30,7 +30,7 @@ public class ArchivoFuente extends HttpServlet {
             response.setContentType(file.getExtension());
             OutputStream o = response.getOutputStream();
             o.write(file.getArchivoFuente());
-            o.flush();
+            //o.flush();
             o.close();
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
