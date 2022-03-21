@@ -32,7 +32,7 @@ public class CatedraDao extends Conexion implements IDao<Catedra, String> {
 		resultSet = ptmt.executeQuery();
 
 		while (resultSet.next()) {
-			catedras.add(new Catedra(resultSet.getString("caid")));
+			catedras.add(new Catedra(resultSet.getString("caid"), resultSet.getString("caurl")));
 		}
 
 		if (resultSet != null)
