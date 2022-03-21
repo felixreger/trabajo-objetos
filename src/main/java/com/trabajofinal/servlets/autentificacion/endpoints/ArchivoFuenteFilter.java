@@ -1,5 +1,6 @@
 package com.trabajofinal.servlets.autentificacion.endpoints;
 
+import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.autentificacion.credencial.Credencial;
 import com.trabajofinal.utils.servlets.autentificacion.ConstantesFilter;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
@@ -18,6 +19,8 @@ public class ArchivoFuenteFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (!CorsFilter.habilitarCors(request, response)) return;
+
         String method = request.getMethod();
 
         if(method.equalsIgnoreCase("GET")) {
