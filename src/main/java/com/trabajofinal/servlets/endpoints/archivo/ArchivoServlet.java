@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @WebServlet(name="ArchivoEndpoint", value= ConstantesServlet.URL_ARCHIVO)
-@MultipartConfig(maxFileSize = 16177216)
+@MultipartConfig(maxFileSize = 90177216)
 public class ArchivoServlet extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
