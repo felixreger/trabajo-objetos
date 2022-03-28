@@ -1,7 +1,9 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.endpoints.criterio.FabricaCriterio;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Archivo;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +36,20 @@ public class ArchivoFiltro extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
-        Map<String, String> filtros = this.getCriterios(request);
-
+        String criteriosParam = request.getParameter("criterios");
         String path = request.getParameter("pathCarpetaBase");
+        requestControl.agregarParametros(Arrays.asList(path,criteriosParam));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        Map<String, String> filtros = this.getCriterios(criteriosParam);
         FabricaCriterio fabrica = new FabricaCriterio();
         Criterio c = fabrica.getCriterioArchivo(filtros);
 
@@ -55,9 +68,7 @@ public class ArchivoFiltro extends HttpServlet {
         out.flush();
     }
 
-    private Map<String, String> getCriterios(HttpServletRequest request){
-
-        String criteriosParam = request.getParameter("criterios");
+    private Map<String, String> getCriterios(String criteriosParam){
 
         String[] listaCriterios = criteriosParam.split("&");
         Map<String, String> criterios = new HashMap<>();

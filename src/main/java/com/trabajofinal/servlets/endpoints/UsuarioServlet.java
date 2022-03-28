@@ -1,16 +1,20 @@
 package com.trabajofinal.servlets.endpoints;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Usuario;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.autentificacion.DecodeAndEncode;
-import com.trabajofinal.servlets.endpoints.body.RequestBody;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
 import com.google.gson.Gson;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -47,8 +51,9 @@ public class UsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
-        JSONObject body = RequestBody.getRequestBody(request);
+        JsonBody body = new JsonFromBuffer(request);
 
         final String autorizacion = request.getHeader("Authorization");
         if (autorizacion != null && autorizacion.toLowerCase().startsWith("basic")) {
@@ -58,6 +63,14 @@ public class UsuarioServlet extends HttpServlet {
             password = DecodeAndEncode.encode(password);
 
             String nombre = body.getString("nombre");
+            requestControl.agregarParametros(Collections.singletonList(nombre));
+
+            try {
+                requestControl.validarRequest();
+            } catch (ExcepcionRequest e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
 
             try {
                 if(servicio.existeUsuario(idUsuario)) {
@@ -69,18 +82,30 @@ public class UsuarioServlet extends HttpServlet {
             } catch (ExcepcionServicio e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
+
+        }else{
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
         String idUsuario =(String)request.getAttribute("idUsuario");
 
-        JSONObject body = RequestBody.getRequestBody(request);
+        JsonBody body = new JsonFromBuffer(request);
         String nombre = body.getString("nombre");
-        int puntaje = body.getInt("puntaje");
+        Integer puntaje = body.getInt("puntaje");
+        requestControl.agregarBody(Arrays.asList(nombre, puntaje));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje));
@@ -90,7 +115,7 @@ public class UsuarioServlet extends HttpServlet {
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idUsuario =(String)request.getAttribute("idUsuario");
+        String idUsuario =(String)request.getAttribute("idUsuario"); //siempre esta por el filter
 
         try {
             servicio.deleteUsuario(idUsuario);

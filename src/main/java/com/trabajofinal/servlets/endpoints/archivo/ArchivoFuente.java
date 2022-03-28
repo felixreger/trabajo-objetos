@@ -1,5 +1,7 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collections;
 
 @WebServlet(name="ArchivoFuente", value= ConstantesServlet.URL_FUENTE)
 public class ArchivoFuente extends HttpServlet {
@@ -19,7 +22,17 @@ public class ArchivoFuente extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestControl requestControl = new RequestControl();
+
         String path = request.getParameter("path");
+        requestControl.agregarParametros(Collections.singletonList(path));
+
+        try {
+            requestControl.validarRequest();
+        }catch (ExcepcionRequest e){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             ArchivoBytes file = servicio.getArchivoFuente(path);
@@ -30,10 +43,10 @@ public class ArchivoFuente extends HttpServlet {
             response.setContentType(file.getExtension());
             OutputStream o = response.getOutputStream();
             o.write(file.getArchivoFuente());
-            //o.flush();
             o.close();
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
 }

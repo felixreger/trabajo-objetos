@@ -1,14 +1,24 @@
-package com.trabajofinal.servlets.endpoints.body;
+package com.trabajofinal.servlets.endpoints.request.body;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.util.Set;
 
-public class RequestBody {
-    public static JSONObject getRequestBody(HttpServletRequest request) throws IOException {
+public class JsonFromBuffer extends JsonBody{
+
+    public JsonFromBuffer(HttpServletRequest request){
+        body = this.getRequestBody(request);
+    }
+
+    @Override
+    public Set<String> getSet(String key) {
+        return null;
+    }
+
+    private JSONObject getRequestBody(HttpServletRequest request) {
         StringBuilder jb = new StringBuilder();
         String line;
         JSONObject body;
@@ -21,8 +31,9 @@ public class RequestBody {
         try {
             body =  new JSONObject(jb.toString());
         } catch (JSONException e) {
-            throw new IOException("Error al obtener el body de la request");
+            body = new JSONObject();
         }
+
         return body;
     }
 }

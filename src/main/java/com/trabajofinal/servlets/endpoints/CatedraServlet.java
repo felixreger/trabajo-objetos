@@ -1,7 +1,10 @@
 package com.trabajofinal.servlets.endpoints;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Catedra;
-import com.trabajofinal.servlets.endpoints.body.RequestBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
@@ -15,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @WebServlet(name="Catedra", value= ConstantesServlet.URL_CATEDRA)
@@ -51,10 +56,19 @@ public class CatedraServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
-        JSONObject body = RequestBody.getRequestBody(request);
+        JsonBody body = new JsonFromBuffer(request);
         String idCatedra = body.getString("idCatedra");
         String url = body.getString("url");
+        requestControl.agregarBody(Arrays.asList(idCatedra, url));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             if(servicio.existeCatedra(idCatedra)) {
@@ -71,10 +85,19 @@ public class CatedraServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
-        JSONObject body = RequestBody.getRequestBody(request);
+        JsonBody body = new JsonFromBuffer(request);
         String idCatedra = body.getString("idCatedra");
         String url = body.getString("url");
+        requestControl.agregarBody(Arrays.asList(idCatedra, url));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             if(!servicio.existeCatedra(idCatedra)) {
@@ -89,7 +112,16 @@ public class CatedraServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestControl requestControl = new RequestControl();
         String idCatedra = request.getParameter("idCatedra");
+        requestControl.agregarParametros(Collections.singletonList(idCatedra));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             if(!servicio.existeCatedra(idCatedra)){

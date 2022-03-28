@@ -1,7 +1,10 @@
 package com.trabajofinal.servlets.endpoints;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Comentario;
-import com.trabajofinal.servlets.endpoints.body.RequestBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
@@ -16,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @WebServlet(name="Comentario", value= ConstantesServlet.URL_COMENTARIO)
@@ -39,10 +44,19 @@ public class ComentarioServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
         String pathElemento = request.getParameter("pathElemento");
-        List<Comentario> comentarios;
+        requestControl.agregarParametros(Collections.singletonList(pathElemento));
 
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        List<Comentario> comentarios;
         try {
             if(!servicio.existeElemento(pathElemento)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -61,13 +75,22 @@ public class ComentarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
-        String idUsuario = (String)request.getAttribute("idUsuario");
-        JSONObject body = RequestBody.getRequestBody(request);
+        String idUsuario = (String)request.getAttribute("idUsuario"); //esto siempre esta porque se saca de la auth.
 
+        JsonBody body = new JsonFromBuffer(request);
         String pathElemento = body.getString("pathElemento");
         Integer idComentario = ++ID_COMENTARIO;
         String contenido = body.getString("contenido");
+        requestControl.agregarBody(Arrays.asList(pathElemento, contenido));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             if (servicio.existeComentario(idComentario)){
@@ -90,12 +113,22 @@ public class ComentarioServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
         Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
 
         String idUsuario = (String)request.getAttribute("idUsuario");
-        JSONObject body = RequestBody.getRequestBody(request);
+
+        JsonBody body = new JsonFromBuffer(request);
         String contenido = body.getString("contenido");
+        requestControl.agregarBody(Collections.singletonList(contenido));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             Usuario usuario = servicio.getUsuario(idUsuario);
@@ -118,6 +151,7 @@ public class ComentarioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
+
         try {
             servicio.deleteComentario(idComentario);
         } catch (ExcepcionServicio e) {

@@ -1,8 +1,10 @@
 package com.trabajofinal.servlets.autentificacion.endpoints;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Comentario;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.autentificacion.credencial.Credencial;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.autentificacion.ConstantesFilter;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 @WebFilter(filterName = "AuthComentario", urlPatterns = ConstantesServlet.URL_COMENTARIO)
 public class ComentarioFilter extends HttpFilter {
@@ -38,7 +42,20 @@ public class ComentarioFilter extends HttpFilter {
                     return;
             }else{
                 try {
-                    Comentario comentario = servicio.getComentario(Integer.parseInt(request.getParameter("idComentario")));
+                    RequestControl requestControl = new RequestControl();
+                    String idComentarioString = request.getParameter("idComentario");
+                    requestControl.agregarParametros(Collections.singletonList(idComentarioString));
+
+                    try {
+                        requestControl.validarRequest();
+                    } catch (ExcepcionRequest e) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        return;
+                    }
+
+                    Integer idComentario = Integer.parseInt(idComentarioString);
+
+                    Comentario comentario = servicio.getComentario(idComentario);
                     if (!comentario.esValido()){
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         return;

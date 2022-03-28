@@ -1,12 +1,17 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
+import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Archivo;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
+import com.trabajofinal.servlets.endpoints.request.body.JsonFromString;
+import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Catedra;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -20,8 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @WebServlet(name="ArchivoEndpoint", value= ConstantesServlet.URL_ARCHIVO)
 @MultipartConfig(maxFileSize = 90177216)
@@ -33,20 +37,30 @@ public class ArchivoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
+
         String bodyRequest = request.getParameter("request");
-        JSONObject body = new JSONObject(bodyRequest);
+        Part filePart = request.getPart("data");
+        requestControl.agregarParametros(Arrays.asList(bodyRequest, filePart));
+
+        JsonBody body = new JsonFromString(bodyRequest);
 
         String nombre = body.getString("nombre");
         String path = body.getString("path");
-
-        JSONArray palabrasClaveParam = body.getJSONArray("palabrasclave");
-        Set<String> palabrasClave = this.getPalabrasClave(palabrasClaveParam);
         String catedraParam = body.getString("catedra");
+        Set<String> palabrasClave = body.getSet("palabrasclave");
+        requestControl.agregarBody(Arrays.asList(nombre, path, catedraParam, palabrasClave));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        InputStream is = filePart.getInputStream();
         String idUsuario = (String) request.getAttribute("idUsuario");
         String pathDelElemento = path + ":" + nombre;
-
-        Part filePart = request.getPart("data");
-        InputStream is = filePart.getInputStream();
 
         try {
             if(!servicio.existeDirectorio(path)){
@@ -78,20 +92,21 @@ public class ArchivoServlet extends HttpServlet {
         }
     }
 
-    private Set<String> getPalabrasClave(JSONArray palabrasClaveParam) {
-        Set<String> tmp = new HashSet<>();
-        for (Object j: palabrasClaveParam){
-            tmp.add(j.toString());
-        }
-        return tmp;
-    }
-
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        RequestControl requestControl = new RequestControl();
 
         String pathArchivo = request.getParameter("pathArchivo");
+        requestControl.agregarParametros(Collections.singletonList(pathArchivo));
+
+        try {
+            requestControl.validarRequest();
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         try {
             if(!servicio.existeElemento(pathArchivo)) {
