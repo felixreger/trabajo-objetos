@@ -1,14 +1,14 @@
 package com.trabajofinal.servlets.endpoints.archivo;
 
 import com.trabajofinal.excepciones.ExcepcionRequest;
+import com.trabajofinal.modelo.criterios.CriterioArchivo;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
-import com.trabajofinal.servlets.endpoints.criterio.FabricaCriterio;
+import com.trabajofinal.servlets.endpoints.criterio.FabCriterioArchivo;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.modelo.Elemento;
-import com.trabajofinal.modelo.criterios.Criterio;
 import com.trabajofinal.servicios.Servicios;
 import com.google.gson.Gson;
 
@@ -50,8 +50,13 @@ public class ArchivoFiltro extends HttpServlet {
         }
 
         Map<String, String> filtros = this.getCriterios(criteriosParam);
-        FabricaCriterio fabrica = new FabricaCriterio();
-        Criterio c = fabrica.getCriterioArchivo(filtros);
+        FabCriterioArchivo fabrica = new FabCriterioArchivo();
+        CriterioArchivo c = fabrica.getCriterio(filtros);
+
+        if(!fabrica.esCriterioValido()){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
         try {
             if(!servicio.existeElemento(path)) {

@@ -137,6 +137,15 @@ public class Servicios {
             throw new ExcepcionServicio(e.getMessage());
         }
     }
+
+    public int getUltimoComentarioId() throws ExcepcionServicio {
+        try {
+            return accesodbComentario.getUltimoId();
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
     // endregion
 
     // region Archivo
@@ -322,12 +331,5 @@ public class Servicios {
         }
     }
 
-    public int getUltimoComentarioId() throws ExcepcionServicio {
-        try {
-            return accesodbComentario.getUltimoId();
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
     // endregion
 }

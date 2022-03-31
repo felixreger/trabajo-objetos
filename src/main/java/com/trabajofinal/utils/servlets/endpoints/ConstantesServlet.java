@@ -20,6 +20,7 @@ public class ConstantesServlet {
     public static final String AUTOR = "autor";
     public static final String TIPO = "tipo";
     public static final String CONTIENE_NOMBRE = "contienenombre";
+    public static final String CONTIENE_PALABRA = "contienepalabra";
     public static final String FECHA_CREACION = "fechacreacion";
     public static final String FECHA_MODIFICACION = "fechamodificacion";
 

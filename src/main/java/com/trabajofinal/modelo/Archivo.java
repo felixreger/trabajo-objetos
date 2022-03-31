@@ -1,13 +1,14 @@
 package com.trabajofinal.modelo;
 
-import com.trabajofinal.modelo.criterios.Criterio;
+import com.trabajofinal.modelo.criterios.CriterioArchivo;
+import com.trabajofinal.utils.criterios.ICriterio;
 
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 
 
-public class Archivo extends Elemento implements Comparator<Elemento> {
+public class Archivo extends Elemento {
 
     private Long tamanio;
     private String extension;
@@ -32,7 +33,7 @@ public class Archivo extends Elemento implements Comparator<Elemento> {
     }
 
     @Override
-    public List<Archivo> filtrar(Criterio c) {
+    public List<Archivo> filtrar(CriterioArchivo c) {
 
         List<Archivo> retorno = new ArrayList<>();
         if (c.cumple(this)) {
@@ -48,12 +49,6 @@ public class Archivo extends Elemento implements Comparator<Elemento> {
     @Override
     public Set<String> getPalabrasClave() {
         return new HashSet<>(palabrasClaves);
-    }
-
-
-    @Override
-    public int compare(Elemento o1, Elemento o2) {
-        return o1.getNombre().compareTo(o2.getNombre());
     }
 
     public String getExtension() {

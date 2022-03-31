@@ -3,7 +3,6 @@ package com.trabajofinal.modelo.comparadores.elementos;
 
 import com.trabajofinal.modelo.Elemento;
 
-// Esta clase es utilitaria para comparar dos elementos al momento de generar el arbol de directorios.
 public class ComparadorDirectorio extends ComparadorElemento {
 
     public ComparadorDirectorio() {

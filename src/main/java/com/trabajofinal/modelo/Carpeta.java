@@ -1,6 +1,7 @@
 package com.trabajofinal.modelo;
 
-import com.trabajofinal.modelo.criterios.Criterio;
+import com.trabajofinal.modelo.criterios.CriterioArchivo;
+import com.trabajofinal.utils.criterios.ICriterio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,11 +13,6 @@ public class Carpeta extends Elemento {
 
     private final Set<Elemento> listaElementos;
     private String descripcion;
-
-    public Carpeta(String nombre) {
-        super(nombre);
-        listaElementos = new HashSet<>();
-    }
 
     public Carpeta(String nombre, Usuario propietario, LocalDate fechaCreacion, LocalDate fechaModificacion, String path, String descripcion) {
         super(nombre, propietario, fechaCreacion, fechaModificacion, path);
@@ -42,7 +38,7 @@ public class Carpeta extends Elemento {
     }
 
     @Override
-    public List<Archivo> filtrar(Criterio c) {
+    public List<Archivo> filtrar(CriterioArchivo c) {
         List<Archivo> cumplen = new ArrayList<>();
         for (Elemento elem : listaElementos) {
             cumplen.addAll(elem.filtrar(c));

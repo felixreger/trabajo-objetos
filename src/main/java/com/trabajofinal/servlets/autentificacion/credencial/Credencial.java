@@ -1,7 +1,7 @@
 package com.trabajofinal.servlets.autentificacion.credencial;
 
 import com.trabajofinal.servlets.autentificacion.criterios.CriterioCredencial;
-import com.trabajofinal.servlets.autentificacion.criterios.FabricaCriterio;
+import com.trabajofinal.servlets.autentificacion.criterios.FabCriterioCredencial;
 import com.trabajofinal.utils.servlets.autentificacion.DecodeAndEncode;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
@@ -54,8 +54,8 @@ public class Credencial {
         try {
             Usuario usuario = servicio.getUsuario(usuarioParam);
             if(usuario.esValido()){
-                FabricaCriterio fabrica = new FabricaCriterio();
-                CriterioCredencial c = fabrica.getCriterioCredencial(tipoCredencial, usuarioParam, passwordParam, this.autor);
+                FabCriterioCredencial fabrica = new FabCriterioCredencial(usuarioParam, passwordParam, this.autor);
+                CriterioCredencial c = fabrica.getCriterio(tipoCredencial);
                 if(!c.cumple(usuario)){
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     resultado = false;

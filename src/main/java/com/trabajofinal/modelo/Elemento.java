@@ -1,6 +1,7 @@
 package com.trabajofinal.modelo;
 
-import com.trabajofinal.modelo.criterios.Criterio;
+import com.trabajofinal.modelo.criterios.CriterioArchivo;
+import com.trabajofinal.utils.criterios.ICriterio;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,10 +25,6 @@ public abstract class Elemento {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.path = path;
-    }
-
-    public Elemento(String nombre) {
-        this.nombre = nombre;
     }
 
     public void setNombre(String nombre) {
@@ -68,11 +65,6 @@ public abstract class Elemento {
         return "nombre: " + nombre + " | padre " + this.getPath();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return this.nombre.equals(((Elemento) obj).getNombre());
-    }
-
     public boolean esValido() {
         return nombre.equals("");
     }
@@ -83,7 +75,7 @@ public abstract class Elemento {
 
     public abstract Long getTamanio();
 
-    public abstract List<Archivo> filtrar(Criterio c);
+    public abstract List<Archivo> filtrar(CriterioArchivo c);
 
     public abstract Set<String> getPalabrasClave();
 
