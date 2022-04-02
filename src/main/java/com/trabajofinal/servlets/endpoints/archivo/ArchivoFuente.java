@@ -25,17 +25,12 @@ public class ArchivoFuente extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         String path = request.getParameter("path");
-        requestControl.agregarParametros(Collections.singletonList(path));
+        requestControl.add(path);
 
         try {
             requestControl.validarRequest();
-        }catch (ExcepcionRequest e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        try {
             ArchivoBytes file = servicio.getArchivoFuente(path);
+
             if(!file.esValido()){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -46,6 +41,8 @@ public class ArchivoFuente extends HttpServlet {
             o.close();
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

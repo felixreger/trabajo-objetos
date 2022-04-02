@@ -40,7 +40,7 @@ public class ArchivoFiltro extends HttpServlet {
 
         String criteriosParam = request.getParameter("criterios");
         String path = request.getParameter("pathCarpetaBase");
-        requestControl.agregarParametros(Arrays.asList(path,criteriosParam));
+        requestControl.addAll(Arrays.asList(path, criteriosParam));
 
         try {
             requestControl.validarRequest();
@@ -59,10 +59,6 @@ public class ArchivoFiltro extends HttpServlet {
         }
 
         try {
-            if(!servicio.existeElemento(path)) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
             Elemento directorio = servicio.getDirectorio(path);
             List<Archivo> archivos = directorio.filtrar(c);
             String archivosJson = this.gson.toJson(archivos);

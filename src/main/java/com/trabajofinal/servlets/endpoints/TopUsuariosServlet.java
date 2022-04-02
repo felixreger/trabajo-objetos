@@ -30,9 +30,8 @@ public class TopUsuariosServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        List<Usuario> usuarios;
         try {
-            usuarios = servicio.getTopUsuarios(TOP);
+            List<Usuario> usuarios = servicio.getTopUsuarios(TOP);
             String listaUsuariosJson = this.gson.toJson(usuarios);
             out.print(listaUsuariosJson);
         } catch (ExcepcionServicio e) {

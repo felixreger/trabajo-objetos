@@ -3,7 +3,7 @@ package com.trabajofinal.servlets.endpoints;
 import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Carpeta;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
-import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
@@ -30,24 +30,19 @@ public class CarpetaServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         RequestControl requestControl = new RequestControl();
 
-        JsonBody body = new JsonFromBuffer(request);
+        JsonBody body = new JsonBodyBuffer(request);
 
         String nombre = body.getString("nombre");
         String path = body.getString("path");
         String descripcion = body.getString("descripcion");
-        requestControl.agregarBody(Arrays.asList(nombre, path, descripcion));
+        requestControl.addAll(Arrays.asList(nombre, path, descripcion));
 
-        try {
-            requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        String usuarioParam =(String)request.getAttribute("idUsuario");
+        String usuarioParam =(String)request.getAttribute("idUsuario"); //este atrib.siempre esta por el filter
         String pathDelElemento = path + ":" + nombre;
 
         try {
+            requestControl.validarRequest();
+
             if(!servicio.existeDirectorio(path)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -66,6 +61,8 @@ public class CarpetaServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -76,16 +73,11 @@ public class CarpetaServlet extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         String pathCarpeta = request.getParameter("pathCarpeta");
-        requestControl.agregarParametros(Collections.singletonList(pathCarpeta));
+        requestControl.add(pathCarpeta);
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        try {
             if(!servicio.existeElemento(pathCarpeta)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -93,6 +85,8 @@ public class CarpetaServlet extends HttpServlet {
             servicio.deleteCarpeta(pathCarpeta);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

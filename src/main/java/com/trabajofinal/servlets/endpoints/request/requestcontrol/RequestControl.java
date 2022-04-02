@@ -13,8 +13,12 @@ public class RequestControl {
         parametros = new ArrayList<>();
     }
 
-    public void agregarParametros(List<Object> parametros){
+    public void addAll(List<Object> parametros){
         this.parametros.addAll(parametros);
+    }
+
+    public void add(Object parametros){
+        this.parametros.add(parametros);
     }
 
     public void validarRequest() throws ExcepcionRequest {
@@ -23,10 +27,6 @@ public class RequestControl {
                 throw new ExcepcionRequest("Bad request");
             }
         }
-    }
-
-    public void agregarBody(List<Object> asList) {
-        this.parametros.addAll(asList);
     }
 }
 

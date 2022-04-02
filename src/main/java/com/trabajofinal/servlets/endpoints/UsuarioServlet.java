@@ -3,7 +3,7 @@ package com.trabajofinal.servlets.endpoints;
 import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
-import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.autentificacion.DecodeAndEncode;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
@@ -53,7 +53,7 @@ public class UsuarioServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         RequestControl requestControl = new RequestControl();
 
-        JsonBody body = new JsonFromBuffer(request);
+        JsonBody body = new JsonBodyBuffer(request);
 
         final String autorizacion = request.getHeader("Authorization");
         if (autorizacion != null && autorizacion.toLowerCase().startsWith("basic")) {
@@ -63,24 +63,21 @@ public class UsuarioServlet extends HttpServlet {
             password = DecodeAndEncode.encode(password);
 
             String nombre = body.getString("nombre");
-            requestControl.agregarParametros(Collections.singletonList(nombre));
+            requestControl.add(nombre);
 
             try {
                 requestControl.validarRequest();
-            } catch (ExcepcionRequest e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-
-            try {
                 if(servicio.existeUsuario(idUsuario)) {
                     response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
                     return;
                 }
-                int puntajeInicial = 0;
-                servicio.addUsuario(new Usuario(idUsuario, nombre, puntajeInicial, password));
+
+                servicio.addUsuario(new Usuario(idUsuario, nombre, 0, password));
+
             } catch (ExcepcionServicio e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            } catch (ExcepcionRequest e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
         }else{
@@ -95,27 +92,24 @@ public class UsuarioServlet extends HttpServlet {
 
         String idUsuario =(String)request.getAttribute("idUsuario");
 
-        JsonBody body = new JsonFromBuffer(request);
+        JsonBody body = new JsonBodyBuffer(request);
         String nombre = body.getString("nombre");
         Integer puntaje = body.getInt("puntaje");
-        requestControl.agregarBody(Arrays.asList(nombre, puntaje));
+        requestControl.addAll(Arrays.asList(nombre, puntaje));
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        try {
             servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje));
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idUsuario =(String)request.getAttribute("idUsuario"); //siempre esta por el filter
+        String idUsuario =(String)request.getAttribute("idUsuario"); //este atrib. siempre esta por el filter
 
         try {
             servicio.deleteUsuario(idUsuario);

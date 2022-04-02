@@ -17,7 +17,6 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 
 @WebFilter(filterName = "AuthComentario", urlPatterns = ConstantesServlet.URL_COMENTARIO)
@@ -33,6 +32,7 @@ public class ComentarioFilter extends HttpFilter {
         String method = request.getMethod();
 
         if(!method.equalsIgnoreCase("GET")){
+
             if (!controlador.setUserAndPassword(request, response))
                 return;
 
@@ -44,7 +44,7 @@ public class ComentarioFilter extends HttpFilter {
                 try {
                     RequestControl requestControl = new RequestControl();
                     String idComentarioString = request.getParameter("idComentario");
-                    requestControl.agregarParametros(Collections.singletonList(idComentarioString));
+                    requestControl.add(idComentarioString);
 
                     try {
                         requestControl.validarRequest();

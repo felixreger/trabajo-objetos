@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.util.Set;
 
-public class JsonFromBuffer extends JsonBody{
+public class JsonBodyBuffer extends JsonBody {
 
-    public JsonFromBuffer(HttpServletRequest request){
+    public JsonBodyBuffer(HttpServletRequest request){
         body = this.getRequestBody(request);
     }
 

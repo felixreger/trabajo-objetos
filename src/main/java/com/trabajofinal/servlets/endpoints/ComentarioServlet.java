@@ -3,14 +3,13 @@ package com.trabajofinal.servlets.endpoints;
 import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Comentario;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
-import com.trabajofinal.servlets.endpoints.request.body.JsonFromBuffer;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
 import com.google.gson.Gson;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,26 +46,23 @@ public class ComentarioServlet extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         String pathElemento = request.getParameter("pathElemento");
-        requestControl.agregarParametros(Collections.singletonList(pathElemento));
+        requestControl.add(pathElemento);
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        List<Comentario> comentarios;
-        try {
             if(!servicio.existeElemento(pathElemento)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            comentarios = servicio.getComentarios(pathElemento);
+            List<Comentario> comentarios = servicio.getComentarios(pathElemento);
             String comentarioJson = this.gson.toJson(comentarios);
             out.print(comentarioJson);
+
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         out.flush();
     }
@@ -79,20 +75,15 @@ public class ComentarioServlet extends HttpServlet {
 
         String idUsuario = (String)request.getAttribute("idUsuario"); //esto siempre esta porque se saca de la auth.
 
-        JsonBody body = new JsonFromBuffer(request);
+        JsonBody body = new JsonBodyBuffer(request);
         String pathElemento = body.getString("pathElemento");
         Integer idComentario = ++ID_COMENTARIO;
         String contenido = body.getString("contenido");
-        requestControl.agregarBody(Arrays.asList(pathElemento, contenido));
+        requestControl.addAll(Arrays.asList(pathElemento, contenido));
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        try {
             if (servicio.existeComentario(idComentario)){
                 response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
                 return;
@@ -106,6 +97,8 @@ public class ComentarioServlet extends HttpServlet {
             servicio.addComentario(cm);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -116,21 +109,15 @@ public class ComentarioServlet extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         Integer idComentario = Integer.parseInt(request.getParameter("idComentario"));
-
         String idUsuario = (String)request.getAttribute("idUsuario");
 
-        JsonBody body = new JsonFromBuffer(request);
+        JsonBody body = new JsonBodyBuffer(request);
         String contenido = body.getString("contenido");
-        requestControl.agregarBody(Collections.singletonList(contenido));
+        requestControl.add(contenido);
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        try {
             Usuario usuario = servicio.getUsuario(idUsuario);
             if(!servicio.existeComentario(idComentario)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -142,6 +129,8 @@ public class ComentarioServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

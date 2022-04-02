@@ -3,16 +3,13 @@ package com.trabajofinal.servlets.endpoints.archivo;
 import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
-import com.trabajofinal.servlets.endpoints.request.body.JsonFromString;
+import com.trabajofinal.servlets.endpoints.request.body.JsonBodyString;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Catedra;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -23,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -41,16 +37,15 @@ public class ArchivoServlet extends HttpServlet {
 
         String bodyRequest = request.getParameter("request");
         Part filePart = request.getPart("data");
-        requestControl.agregarParametros(Arrays.asList(bodyRequest, filePart));
 
-        JsonBody body = new JsonFromString(bodyRequest);
+        JsonBody body = new JsonBodyString(bodyRequest);
 
         String nombre = body.getString("nombre");
         String path = body.getString("path");
         String catedraParam = body.getString("catedra");
         Set<String> palabrasClave = body.getSet("palabrasclave");
-        requestControl.agregarBody(Arrays.asList(nombre, path, catedraParam, palabrasClave));
 
+        requestControl.addAll(Arrays.asList(bodyRequest, filePart, nombre, path, catedraParam, palabrasClave));
         try {
             requestControl.validarRequest();
         } catch (ExcepcionRequest e) {
@@ -59,7 +54,7 @@ public class ArchivoServlet extends HttpServlet {
         }
 
         InputStream is = filePart.getInputStream();
-        String idUsuario = (String) request.getAttribute("idUsuario");
+        String idUsuario = (String) request.getAttribute("idUsuario"); //este atrib. siempre esta por el filter
         String pathDelElemento = path + ":" + nombre;
 
         try {
@@ -99,16 +94,10 @@ public class ArchivoServlet extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         String pathArchivo = request.getParameter("pathArchivo");
-        requestControl.agregarParametros(Collections.singletonList(pathArchivo));
+        requestControl.add(pathArchivo);
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        try {
             if(!servicio.existeElemento(pathArchivo)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -116,6 +105,8 @@ public class ArchivoServlet extends HttpServlet {
             servicio.deleteArchivo(pathArchivo);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

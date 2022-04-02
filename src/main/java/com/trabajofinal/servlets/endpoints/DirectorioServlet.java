@@ -33,22 +33,17 @@ public class DirectorioServlet extends HttpServlet {
         RequestControl requestControl = new RequestControl();
 
         String pathCarpetaBase = request.getParameter("pathCarpetaBase");
-        requestControl.agregarParametros(Collections.singletonList(pathCarpetaBase));
+        requestControl.add(pathCarpetaBase);
 
         try {
             requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        Elemento directorio;
-        try {
             if(!servicio.existeElemento(pathCarpetaBase)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            directorio = servicio.getDirectorio(pathCarpetaBase);
+
+            Elemento directorio = servicio.getDirectorio(pathCarpetaBase);
             long tamanio = directorio.getTamanio();
             String dirJson = this.gson.toJson(directorio);
             Set<String> pClaves =  directorio.getPalabrasClave();
@@ -58,7 +53,10 @@ public class DirectorioServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ExcepcionRequest e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+
         out.flush();
     }
 

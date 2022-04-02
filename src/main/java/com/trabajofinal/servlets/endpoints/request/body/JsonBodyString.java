@@ -7,9 +7,9 @@ import org.json.JSONObject;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JsonFromString extends JsonBody{
+public class JsonBodyString extends JsonBody {
 
-    public JsonFromString(String bodyRequest) {
+    public JsonBodyString(String bodyRequest) {
         body = new JSONObject(bodyRequest);
     }
 
