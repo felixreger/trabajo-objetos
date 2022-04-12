@@ -2,7 +2,7 @@ package com.trabajofinal.servicios.database.dao_jdbc;
 
 import com.trabajofinal.modelo.Comentario;
 import com.trabajofinal.modelo.Usuario;
-import com.trabajofinal.servicios.database.conexion.Conexion;
+import com.trabajofinal.servicios.database.dao_jdbc.conn.DaoDbConeccion;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.util.List;
 
 
 
-public class ComentarioDao extends Conexion implements IDao<Comentario, Integer> {
+public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 
     private static ComentarioDao comentarioDao = null;
 

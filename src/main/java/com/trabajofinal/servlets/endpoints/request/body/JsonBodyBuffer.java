@@ -13,11 +13,6 @@ public class JsonBodyBuffer extends JsonBody {
         body = this.getRequestBody(request);
     }
 
-    @Override
-    public Set<String> getSet(String key) {
-        return null;
-    }
-
     private JSONObject getRequestBody(HttpServletRequest request) {
         StringBuilder jb = new StringBuilder();
         String line;

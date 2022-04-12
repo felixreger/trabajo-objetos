@@ -1,7 +1,7 @@
 package com.trabajofinal.servicios.database.dao_jdbc;
 
 import com.trabajofinal.modelo.Catedra;
-import com.trabajofinal.servicios.database.conexion.Conexion;
+import com.trabajofinal.servicios.database.dao_jdbc.conn.DaoDbConeccion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import java.sql.SQLException;
 
-public class CatedraDao extends Conexion implements IDao<Catedra, String> {
+public class CatedraDao extends DaoDbConeccion<Catedra, String> {
 
     private static CatedraDao catedraDao = null;
 

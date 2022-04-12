@@ -1,7 +1,7 @@
 package com.trabajofinal.servicios.database.dao_jdbc;
 
 import com.trabajofinal.modelo.Usuario;
-import com.trabajofinal.servicios.database.conexion.Conexion;
+import com.trabajofinal.servicios.database.dao_jdbc.conn.DaoDbConeccion;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import java.sql.SQLException;
 
-public class UsuarioDao extends Conexion implements IDao<Usuario, String> {
+public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 
 	private static UsuarioDao usuarioDao = null;
 

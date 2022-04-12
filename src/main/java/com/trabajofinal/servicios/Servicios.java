@@ -64,6 +64,7 @@ public class Servicios {
             throw new ExcepcionServicio(e.getMessage());
         }
     }
+
     public void updateUsuario(Usuario usuario) throws ExcepcionServicio {
         try {
             accesodbUsuario.update(usuario);

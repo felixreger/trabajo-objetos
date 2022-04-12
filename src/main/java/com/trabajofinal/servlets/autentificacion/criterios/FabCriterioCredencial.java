@@ -1,9 +1,10 @@
 package com.trabajofinal.servlets.autentificacion.criterios;
 
-import com.trabajofinal.utils.criterios.IFabricaCriterio;
+import com.trabajofinal.modelo.criterios.usuario.*;
+import com.trabajofinal.servlets.criterios.IFabricaCriterio;
 import com.trabajofinal.utils.servlets.autentificacion.ConstantesFilter;
 
-public class FabCriterioCredencial implements IFabricaCriterio<CriterioCredencial, String> {
+public class FabCriterioCredencial implements IFabricaCriterio<String> {
 
     private final String user;
     private final String password;
@@ -24,10 +25,10 @@ public class FabCriterioCredencial implements IFabricaCriterio<CriterioCredencia
             return new CredencialSimple(user, password);
 
         } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_COMPUESTA)){
-            return new AdminCredencialSimple(user, password, autor);
+            return new AdminOAutor(user, password, autor);
 
         } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_SIMPLE_UNICA)){
-            return new Autoria(user, password, autor);
+            return new AutorUnico(user, password, autor);
         }
         return null;
     }

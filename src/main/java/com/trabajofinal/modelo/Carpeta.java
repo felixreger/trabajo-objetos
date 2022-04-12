@@ -1,7 +1,6 @@
 package com.trabajofinal.modelo;
 
-import com.trabajofinal.modelo.criterios.CriterioArchivo;
-import com.trabajofinal.utils.criterios.ICriterio;
+import com.trabajofinal.modelo.criterios.archivo.CriterioArchivo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

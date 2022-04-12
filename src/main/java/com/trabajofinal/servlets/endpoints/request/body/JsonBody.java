@@ -25,8 +25,4 @@ public abstract class JsonBody {
         }
     }
 
-    public abstract Set<String> getSet(String key);
-
-
-
 }

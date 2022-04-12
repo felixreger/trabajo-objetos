@@ -1,6 +1,6 @@
 create table catedras(
-                         caid  varchar not null constraint catedras_pk primary key,
-                         caurl varchar
+     caid  varchar not null constraint catedras_pk primary key,
+     caurl varchar
 );
 
 alter table catedras
@@ -43,12 +43,6 @@ create table archivos
 alter table archivos
     owner to postgres;
 
-create trigger eliminar_comentario_carpeta
-    before delete
-    on archivos
-    for each row
-    execute procedure eliminar_comentario_archivo();
-
 create table carpetas
 (
     cadescripcion varchar,
@@ -58,11 +52,6 @@ create table carpetas
 alter table carpetas
     owner to postgres;
 
-create trigger eliminar_comentario_carpeta
-    before delete
-    on carpetas
-    for each row
-    execute procedure eliminar_comentario_carpeta();
 
 create table comentarios
 (
@@ -74,3 +63,34 @@ create table comentarios
 
 alter table comentarios
     owner to postgres;
+
+-- triggers --
+CREATE OR REPLACE FUNCTION eliminar_comentario() RETURNS trigger AS
+$$BEGIN
+delete from comentarios where old.elpath like coidelemento;
+return old;
+END;$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER eliminar_comentario_carpeta
+    BEFORE DELETE ON carpetas FOR each row
+    EXECUTE PROCEDURE eliminar_comentario();
+
+CREATE TRIGGER eliminar_comentario_carpeta
+    BEFORE DELETE ON archivos FOR each row
+    EXECUTE PROCEDURE eliminar_comentario();
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION actualizar_comentario() RETURNS trigger AS
+$$BEGIN
+update comentarios set coidelemento = new.elpath  where old.elpath like coidelemento;
+return new;
+END;$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER actualizar_comentario_carpeta
+    BEFORE UPDATE of elpath ON carpetas FOR each row
+    EXECUTE PROCEDURE actualizar_comentario();
+
+CREATE TRIGGER actualizar_comentario_archivo
+    BEFORE UPDATE of elpath ON archivos FOR each row
+    EXECUTE PROCEDURE actualizar_comentario();

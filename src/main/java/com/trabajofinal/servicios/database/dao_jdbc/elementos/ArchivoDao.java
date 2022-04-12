@@ -63,7 +63,7 @@ public class ArchivoDao extends ElementoDao {
 	@Override
     public List<Elemento> getAll() throws SQLException {
 
-        List<Elemento> archivos = new ArrayList<>();
+        List<Elemento> archivos = new ArrayList<>(); //todo: sacar el *, porque se trae el arch. fuente al dope
 		String queryString = "SELECT * FROM archivos a JOIN usuarios u on u.usmail = a.elpropietario JOIN catedras c on a.arcaid = c.caid";
 		connection = getConnection();
 

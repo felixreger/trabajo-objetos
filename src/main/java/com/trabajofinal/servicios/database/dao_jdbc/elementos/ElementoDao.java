@@ -1,15 +1,14 @@
 package com.trabajofinal.servicios.database.dao_jdbc.elementos;
 
 import com.trabajofinal.modelo.Elemento;
-import com.trabajofinal.servicios.database.conexion.Conexion;
-import com.trabajofinal.servicios.database.dao_jdbc.IDao;
+import com.trabajofinal.servicios.database.dao_jdbc.conn.DaoDbConeccion;
 
 import java.sql.ResultSet;
 import java.util.List;
 import java.sql.SQLException;
 
 
-public abstract class ElementoDao extends Conexion implements IDao<Elemento, String> {
+public abstract class ElementoDao extends DaoDbConeccion<Elemento, String> {
 
     @Override
     public abstract List<Elemento> getAll() throws SQLException;

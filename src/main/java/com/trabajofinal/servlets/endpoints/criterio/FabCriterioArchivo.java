@@ -2,16 +2,16 @@ package com.trabajofinal.servlets.endpoints.criterio;
 
 import com.trabajofinal.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
-import com.trabajofinal.modelo.criterios.*;
+import com.trabajofinal.modelo.criterios.archivo.*;
 import com.trabajofinal.servicios.Servicios;
-import com.trabajofinal.utils.criterios.IFabricaCriterio;
+import com.trabajofinal.servlets.criterios.IFabricaCriterio;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class FabCriterioArchivo implements IFabricaCriterio<CriterioArchivo, Map<String, String>> {
+public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>> {
 
     private final Servicios servicio = Servicios.getInstance();
     private boolean esValido = true;

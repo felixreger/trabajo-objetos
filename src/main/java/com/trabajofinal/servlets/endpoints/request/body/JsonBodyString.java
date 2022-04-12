@@ -13,17 +13,16 @@ public class JsonBodyString extends JsonBody {
         body = new JSONObject(bodyRequest);
     }
 
-    @Override
-    public Set<String> getSet(String key) {
+    public Set<String> getPalabrasClave(String key) {
         try {
             JSONArray palabrasClaveParam = body.getJSONArray(key);
-            return this.getPalabrasClave(palabrasClaveParam);
+            return this.getPalabras(palabrasClaveParam);
         }catch (JSONException e){
             return null;
         }
     }
 
-    private Set<String> getPalabrasClave(JSONArray palabrasClaveParam) {
+    private Set<String> getPalabras(JSONArray palabrasClaveParam) {
         Set<String> tmp = new HashSet<>();
         for (Object j: palabrasClaveParam){
             tmp.add(j.toString());
