@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RequestControl {
 
-    private List<Object> parametros;
+    private final List<Object> parametros;
 
     public RequestControl(){
         parametros = new ArrayList<>();

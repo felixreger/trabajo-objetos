@@ -24,6 +24,10 @@ public class CarpetaServlet extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para crear una instancia de Carpeta
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -66,6 +70,10 @@ public class CarpetaServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Luego, se elimina la carpeta especificado por el path a dicha carpeta
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

@@ -21,6 +21,9 @@ public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 		return usuarioDao;
 	}
 
+	/**
+	 * A partir de resultSet, se crea el usuario
+	 */
 	private Usuario getUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
 				resultSet.getString("usmail"),
@@ -164,6 +167,9 @@ public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 			connection.close();
 	}
 
+	/**
+	 * Obtiene los usuarios que mas aportes realizaron.
+	 */
 	public List<Usuario> getTop(int top) throws SQLException {
 
 		String queryString = "SELECT u.usmail, u.usnombre, u.uspuntaje, u.usesadmin FROM usuarios u JOIN elementos e on u.usmail = e.elpropietario\n" +

@@ -9,6 +9,9 @@ public class Tipo implements CriterioArchivo {
         this.tipo = tipo;
     }
 
+    /**
+     * Verifica que el archivo cumpla con la extension indicada, como por ejemplo png, pdf, etc.
+     */
     @Override
     public Boolean cumple(Archivo e) {
         return e.getExtension().equals(tipo);

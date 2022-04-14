@@ -16,11 +16,17 @@ public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>>
     private final Servicios servicio = Servicios.getInstance();
     private boolean esValido = true;
 
+    /**
+     * Se obtiene el criterio del archivo segun los criterios(Map) que se obtienen en la request
+     */
     @Override
     public CriterioArchivo getCriterio(Map<String, String> criterio)  {
 
+        //Destinado a contener la lista de objetos de criterios
         ArrayList<CriterioArchivo> criterioCompuesto = new ArrayList<>();
 
+        //Por cada criterio que se encuentre en el mapa, se crea un objeto correspondiente con
+        //los datos que se encuentran en el "value"
         for (Map.Entry<String, String> entry : criterio.entrySet()) {
 
             if (entry.getKey().equalsIgnoreCase(ConstantesServlet.AUTOR)) {
@@ -54,9 +60,19 @@ public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>>
             }
         }
 
+        //Si no tengo ningun criterio, entonces hubo un error en la especificacion de los
+        //nombres de los criterios, entonces la fabrica creó un criterio NO valido.
+        if(criterioCompuesto.isEmpty()){
+            esValido = false;
+            return null;
+        }
+
+        // Si tengo mas de 1 criterio, entonces significa que debo concatenar con el criterio AND
         if (criterioCompuesto.size() > 1) {
             CriterioArchivo anterior = criterioCompuesto.get(0);
             CriterioArchivo nuevo = null;
+
+            //Por cada 2 criterios, se concatenan
             for(int i = 1; i < criterioCompuesto.size(); i++){
                 nuevo = new And(anterior, criterioCompuesto.get(i));
                 anterior = nuevo;
@@ -64,14 +80,13 @@ public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>>
             return nuevo;
         }
 
-        if(criterioCompuesto.isEmpty()){
-            esValido = false;
-            return null;
-        }
-
         return criterioCompuesto.get(0);
     }
 
+    /**
+     * A partir de un string que tienen un simbolo separador ","
+     * obtengo que la lista de palabras claves.
+     */
     private Set<String> getPalabrasClave(String nombreParam) {
         String[] palabrasClaveParam = nombreParam.split(",");
         return new HashSet<>(Arrays.asList(palabrasClaveParam));

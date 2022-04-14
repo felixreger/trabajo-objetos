@@ -15,6 +15,9 @@ public class AutorUnico implements CriterioCredencial{
         this.autor = autor;
     }
 
+    /**
+     * Verifica que el usuario sea el mismo que creó el recurso.
+     */
     @Override
     public Boolean cumple(Usuario u) {
         String password = u.getPassword();

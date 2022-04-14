@@ -24,10 +24,10 @@ public class FabCriterioCredencial implements IFabricaCriterio<String> {
         } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_SIMPLE)){
             return new CredencialSimple(user, password);
 
-        } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_COMPUESTA)){
+        } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_ADMIN_O_AUTOR)){
             return new AdminOAutor(user, password, autor);
 
-        } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_SIMPLE_UNICA)){
+        } else if(nombre.equalsIgnoreCase(ConstantesFilter.CREDENCIAL_AUTOR_UNICO)){
             return new AutorUnico(user, password, autor);
         }
         return null;

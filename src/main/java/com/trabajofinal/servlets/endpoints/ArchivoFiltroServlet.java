@@ -29,6 +29,11 @@ public class ArchivoFiltroServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen los archivos que cumplan con los criterios y se retornan
+     * en formato json.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!CorsFilter.habilitarCors(request, response)) return;
@@ -69,6 +74,9 @@ public class ArchivoFiltroServlet extends HttpServlet {
         out.flush();
     }
 
+    /**
+     * Se obtiene el mapa de criterios a partir de un string dentro del parametro de la request
+     */
     private Map<String, String> getCriterios(String criteriosParam){
 
         String[] listaCriterios = criteriosParam.split("&");

@@ -18,6 +18,10 @@ public class CatedrasFilter extends HttpFilter {
 
     Credencial controlador = new Credencial();
 
+    /**
+     * Si el usuario o contrasenia es incorrecto, entonces, termina el metodo.
+     * Sino se verifica la credencial segun el tipo de metodo
+     */
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!CorsFilter.habilitarCors(request, response)) return;

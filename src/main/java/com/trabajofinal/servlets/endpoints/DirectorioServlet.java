@@ -24,6 +24,11 @@ public class DirectorioServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se retorna en formato json un directorio completo a partir de una
+     * carpeta base.
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!CorsFilter.habilitarCors(request, response)) return;
 
@@ -60,11 +65,17 @@ public class DirectorioServlet extends HttpServlet {
         out.flush();
     }
 
+    /**
+     * Se agrega el json el tamanio del directorio.
+     */
     private String agregarTamanio(String json, long tamanio) {
         String tam = ", \"tamanio\":  " + tamanio + "}";
         return json + tam;
     }
 
+    /**
+     * Se agrega al json las palabras clave asociadas al directorio.
+     */
     private String agregarPalabrasClave(String json, String palabras){
         json = json.substring(0, json.length() - 1);
         return json + ", \"palabrasClave\": " + palabras;

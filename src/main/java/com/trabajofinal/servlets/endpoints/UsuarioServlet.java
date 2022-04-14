@@ -26,6 +26,9 @@ public class UsuarioServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se retorna en formato json uno o varios usuarios segun sea especificado.
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -48,6 +51,10 @@ public class UsuarioServlet extends HttpServlet {
         out.flush();
     }
 
+    /**
+     * Se verifica que en la request se indique "usuario y contrasenia".
+     * Luego se obtienen todos los parametros necesarios para crear una instancia de Usuario
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -85,6 +92,10 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para modificar la instancia del usuario
+     */
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -108,6 +119,9 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se elimina al usuario, sabiendo de antemano que existe debido al filter.
+     */
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idUsuario =(String)request.getAttribute("idUsuario"); //este atrib. siempre esta por el filter
 

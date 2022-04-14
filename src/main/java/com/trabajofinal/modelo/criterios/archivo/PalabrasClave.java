@@ -12,6 +12,9 @@ public class PalabrasClave implements CriterioArchivo{
         this.palabrasClave = palabrasClave;
     }
 
+    /**
+     * Verifica que alguna palabra clave este dentro de el archivo.
+     */
     @Override
     public Boolean cumple(Archivo elem) {
 

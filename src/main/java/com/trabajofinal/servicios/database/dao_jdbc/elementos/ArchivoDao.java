@@ -23,6 +23,9 @@ public class ArchivoDao extends ElementoDao {
         return archivoDao;
     }
 
+	/**
+	 * A partir de resultSet, se crea el usuario
+	 */
 	private Usuario cargarUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
 			resultSet.getString("usmail"),
@@ -32,6 +35,9 @@ public class ArchivoDao extends ElementoDao {
 		);
 	}
 
+	/**
+	 * A partir de resultSet, se crea la catedra
+	 */
 	private Catedra cargarCatedra(ResultSet resultSet) throws SQLException {
 		return new Catedra(
 				resultSet.getString("caid"),
@@ -39,6 +45,9 @@ public class ArchivoDao extends ElementoDao {
 		);
 	}
 
+	/**
+	 * A partir de resultSet, se crea el archivo
+	 */
 	public Archivo getArchivo(ResultSet resultSet) throws SQLException {
 		Archivo tmp = new Archivo(
 			resultSet.getString("elnombre"),
@@ -56,6 +65,10 @@ public class ArchivoDao extends ElementoDao {
 		return tmp;
 	}
 
+	/**
+	 * Desde la base se reciben las palabras claves en un string concatenado con el simbolo $.
+	 * En este metodo, usando dicho simbolo, se crea un Set con las palabras claves.
+	 */
 	private Set<String> getListaPalabrasClave(String palabrasClave) {
 		return new HashSet<>(Arrays.asList(palabrasClave.split("\\$")));
 	}
@@ -142,6 +155,9 @@ public class ArchivoDao extends ElementoDao {
 			connection.close();
 	}
 
+	/**
+	 * Se convierte el Set de palabras claves a un string con el simbolo $ como separador.
+	 */
 	private String convertirAString(Set<String> palabrasClave) {
 		StringBuilder sb = new StringBuilder();
 		for(String s : palabrasClave) {

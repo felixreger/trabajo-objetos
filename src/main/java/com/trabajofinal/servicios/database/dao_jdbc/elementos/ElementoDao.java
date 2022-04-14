@@ -54,6 +54,9 @@ public abstract class ElementoDao extends DaoDbConeccion<Elemento, String> {
 		return resultado;
 	}
 
+	/**
+	 * Se quita el nombre del elemento del path que se obtiene de la base de datos
+	 */
 	protected String getPath(ResultSet resultSet) throws SQLException {
 		String tmp = resultSet.getString("elpath");
 		String[] path = tmp.split(":");

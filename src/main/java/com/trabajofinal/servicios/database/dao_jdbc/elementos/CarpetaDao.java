@@ -26,6 +26,9 @@ public class CarpetaDao extends ElementoDao {
         return carpetaDao;
     }
 
+	/**
+	 * A partir de resultSet, se crea el usuario
+	 */
 	private Usuario cargarUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
 			resultSet.getString("usmail"),
@@ -35,6 +38,9 @@ public class CarpetaDao extends ElementoDao {
 		);
 	}
 
+	/**
+	 * A partir de resultSet, se crea la carpeta
+	 */
 	private Carpeta getCarpeta(ResultSet resultSet) throws SQLException {
 		return new Carpeta(
 			resultSet.getString("elnombre"),

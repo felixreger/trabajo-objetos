@@ -17,7 +17,7 @@ public class ConstantesServlet {
     public static final int UNPROCESSABLE_ENTITY = 422;
 
     //criterios
-    public static final String AUTOR = "autor";//todo: creo que esto es lo que esta desacualizado.
+    public static final String AUTOR = "autor";
     public static final String TIPO = "tipo";
     public static final String CONTIENE_NOMBRE = "contienenombre";
     public static final String CONTIENE_PALABRA = "contienepalabra";

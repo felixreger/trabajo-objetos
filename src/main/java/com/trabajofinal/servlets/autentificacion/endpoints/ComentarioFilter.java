@@ -17,7 +17,6 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 @WebFilter(filterName = "AuthComentario", urlPatterns = ConstantesServlet.URL_COMENTARIO)
 public class ComentarioFilter extends HttpFilter {
@@ -78,9 +77,9 @@ public class ComentarioFilter extends HttpFilter {
 
     private String getCredencialAutor(String method){
         if(method.equals("PUT"))
-            return ConstantesFilter.CREDENCIAL_SIMPLE_UNICA;
+            return ConstantesFilter.CREDENCIAL_AUTOR_UNICO;
 
-        return ConstantesFilter.CREDENCIAL_COMPUESTA;
+        return ConstantesFilter.CREDENCIAL_ADMIN_O_AUTOR;
     }
 
     @Override

@@ -27,6 +27,9 @@ public class CatedraServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se retorna en formato json una catedra especifica o todas las existentes segun se lo indique
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -51,6 +54,10 @@ public class CatedraServlet extends HttpServlet {
 
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para crear una instancia de Catedra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -76,6 +83,10 @@ public class CatedraServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para modificar una instancia de Catedra
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -102,6 +113,10 @@ public class CatedraServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Luego, se elimina la catedra indicada por el id
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         RequestControl requestControl = new RequestControl();

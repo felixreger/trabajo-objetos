@@ -14,6 +14,10 @@ public class AdminOAutor implements CriterioCredencial{
         this.autor = autor;
     }
 
+    /**
+     * Primero se verica "usuario y contrasenia". Luego si esto es asi,
+     * retorna verdadero en caso de que sea autor o admin.
+     */
     @Override
     public Boolean cumple(Usuario u) {
         CriterioCredencial c = new CredencialSimple(usuario, contrasenia);

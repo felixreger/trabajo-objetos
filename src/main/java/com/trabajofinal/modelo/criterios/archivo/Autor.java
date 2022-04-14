@@ -10,6 +10,9 @@ public class Autor implements CriterioArchivo {
         autor = usuario;
     }
 
+    /**
+     Verifica que el archivo pertenezca al autor indicado
+     */
     @Override
     public Boolean cumple(Archivo elemento) {
         return elemento.getPropietario().equals(autor.getMail());

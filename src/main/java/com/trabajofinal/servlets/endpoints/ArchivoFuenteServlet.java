@@ -19,6 +19,11 @@ public class ArchivoFuenteServlet extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Luego a partir del path al archivo, se obtiene el archivo fuente
+     * y se retorna, especificando su tipo (pdf, png, ect)
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         RequestControl requestControl = new RequestControl();

@@ -13,6 +13,9 @@ public class CredencialSimple implements CriterioCredencial {
         this.contrasenia = contrasenia;
     }
 
+    /**
+     * Verifica unicamente "usuario y contraseña" correctas.
+     */
     public Boolean cumple(Usuario u) {
         String password = u.getPassword();
         password = DecodeAndEncode.decode(password);

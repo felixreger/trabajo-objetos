@@ -29,6 +29,10 @@ public class ComentarioServlet extends HttpServlet {
     private final Servicios servicio = Servicios.getInstance();
     private static int ID_COMENTARIO;
 
+    /**
+     * Se obtiene el id del ultimo comentario agregado, para luego
+     * autoincrementar este id con nuevos comentarios.
+     */
     @Override
     public void init() throws ServletException {
         try {
@@ -38,6 +42,10 @@ public class ComentarioServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Luego se retorna en formato json todos los cometarios asociados a un elemento
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -67,6 +75,10 @@ public class ComentarioServlet extends HttpServlet {
         out.flush();
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para crear una instancia de Comentario
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -102,6 +114,10 @@ public class ComentarioServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para modificar una instancia de Comentario
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -134,6 +150,10 @@ public class ComentarioServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se elimina el comentario indicada por el id. En este caso, el comentario
+     * existe si o si, debido a que antes se verifico el filtro asociado a este metodo
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

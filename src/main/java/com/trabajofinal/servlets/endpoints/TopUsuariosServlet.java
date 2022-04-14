@@ -22,6 +22,9 @@ public class TopUsuariosServlet extends HttpServlet {
     private final Servicios servicio = Servicios.getInstance();
     private final int TOP = 10;
 
+    /**
+     * Se retorna en formato json la lis
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!CorsFilter.habilitarCors(request, response)) return;

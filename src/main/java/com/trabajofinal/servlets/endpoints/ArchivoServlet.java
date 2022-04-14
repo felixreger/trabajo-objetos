@@ -28,6 +28,10 @@ public class ArchivoServlet extends HttpServlet {
 
     private final Servicios servicio = Servicios.getInstance();
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Se obtienen todos los parametros necesarios para crear una instancia de Archivo
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -86,6 +90,10 @@ public class ArchivoServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Se realiza un control de la especificacion de la request.
+     * Luego, se elimina el archivo especificado por el path a dicho archivo
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

@@ -181,7 +181,9 @@ public class Servicios {
         return elemento.getPath().contains(raiz);
     }
 
-    // Obtener referencia de padre a partir de un elemento
+    /**
+     * Obtiene la referencia de padre a partir de un elemento
+     */
     private Elemento getPadreFromElementos(List<Elemento> elementos, Elemento elemento, int cont){
         String path = elemento.getPath();
 
@@ -194,7 +196,9 @@ public class Servicios {
         return new Carpeta();
     }
 
-    // A partir de el nombre de un directorio dado por parametro,
+    /**
+     * Obtiene el direcotrio completo a partir de una carpeta base.
+     */
     public Carpeta getDirectorio(String directorioBase) throws ExcepcionServicio {
         List<Elemento> elementos;
         try {
@@ -307,7 +311,7 @@ public class Servicios {
         return this.existeDirectorio(path);
     }
 
-    // region desuso momentaneo
+    // region desuso momentaneo, todo
     public Elemento getArchivo(String id) throws ExcepcionServicio {
         try {
             return accesodbArchivo.get(id);

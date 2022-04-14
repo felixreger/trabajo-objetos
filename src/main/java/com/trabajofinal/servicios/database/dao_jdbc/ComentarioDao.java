@@ -24,6 +24,9 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
         return comentarioDao;
     }
 
+	/**
+	 * A partir de resultSet, se crea el comentario
+	 */
 	private Comentario getComentario(ResultSet resultSet) throws SQLException {
 		return new Comentario(
 				resultSet.getInt("coId"),
@@ -33,6 +36,9 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 		);
 	}
 
+	/**
+	 * A partir de resultSet, se crea el usuario
+	 */
 	private Usuario getUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(resultSet.getString("usmail"),
 				resultSet.getString("usnombre"),
@@ -189,6 +195,9 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 		return comentarios;
 	}
 
+	/**
+	 * Obtiene el ultimo id que se tiene almacenado
+	 */
     public int getUltimoId() throws SQLException {
 
 		String queryString = "SELECT coid FROM comentarios order by coid desc limit 1";
