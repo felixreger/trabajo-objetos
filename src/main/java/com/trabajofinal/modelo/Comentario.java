@@ -51,11 +51,6 @@ public class Comentario {
         return this.id != ConstantesModelo.COMENTARIO_INVALIDO;
     }
 
-    @Override
-    public String toString() {
-        return "Comentario : " + descripcion + " , " + autor;
-    }
-
     public void setId(Integer nombre) {
         this.id = nombre;
     }

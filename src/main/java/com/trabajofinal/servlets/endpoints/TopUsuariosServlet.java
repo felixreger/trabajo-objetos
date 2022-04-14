@@ -23,7 +23,7 @@ public class TopUsuariosServlet extends HttpServlet {
     private final int TOP = 10;
 
     /**
-     * Se retorna en formato json la lis
+     * Se retorna en formato json la lista de usuarios que mas aportaron
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

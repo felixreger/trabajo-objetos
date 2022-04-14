@@ -4,16 +4,10 @@ import java.util.Objects;
 
 public class Usuario {
     private String mail;
-    private transient String password;
+    private transient String password; //transient es un modificador usado para evitar que el atributo password sea serializado
     private String nombre;
     private int puntaje;
     private boolean admin;
-
-    public Usuario(String mail, String nombre, int puntaje){
-        this.mail = mail;
-        this.nombre = nombre;
-        this.puntaje = puntaje;
-    }
 
     public Usuario(String mail, String nombre, int puntaje, String password){
         this.mail = mail;
@@ -61,15 +55,6 @@ public class Usuario {
 
     public int getPuntaje(){
         return puntaje;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " mail='" + getMail() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", puntaje='" + getPuntaje() + "'" +
-            "}";
     }
 
     public String getPassword() {

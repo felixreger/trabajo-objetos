@@ -24,7 +24,7 @@ public class ArchivoDao extends ElementoDao {
     }
 
 	/**
-	 * A partir de resultSet, se crea el usuario
+	 * A partir de resultSet, se crea una instancia de  usuario
 	 */
 	private Usuario cargarUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
@@ -36,7 +36,7 @@ public class ArchivoDao extends ElementoDao {
 	}
 
 	/**
-	 * A partir de resultSet, se crea la catedra
+	 * A partir de resultSet, se crea una instancia de catedra
 	 */
 	private Catedra cargarCatedra(ResultSet resultSet) throws SQLException {
 		return new Catedra(
@@ -46,7 +46,7 @@ public class ArchivoDao extends ElementoDao {
 	}
 
 	/**
-	 * A partir de resultSet, se crea el archivo
+	 * A partir de resultSet, se crea una instancia de archivo
 	 */
 	public Archivo getArchivo(ResultSet resultSet) throws SQLException {
 		Archivo tmp = new Archivo(
@@ -75,8 +75,7 @@ public class ArchivoDao extends ElementoDao {
 
 	@Override
     public List<Elemento> getAll() throws SQLException {
-
-        List<Elemento> archivos = new ArrayList<>(); //todo: sacar el *, porque se trae el arch. fuente al dope
+        List<Elemento> archivos = new ArrayList<>();
 		String queryString = "SELECT * FROM archivos a JOIN usuarios u on u.usmail = a.elpropietario JOIN catedras c on a.arcaid = c.caid";
 		connection = getConnection();
 
@@ -121,11 +120,6 @@ public class ArchivoDao extends ElementoDao {
 
 		return archivo;
     }
-
-	@Override
-	public void update(Elemento elem) throws SQLException {
-		//todo: implementar
-	}
 
 	@Override
 	public void add(Elemento elem) throws SQLException {
@@ -191,5 +185,10 @@ public class ArchivoDao extends ElementoDao {
 			connection.close();
 
 		return archivoBytes;
+	}
+
+	@Override
+	public void update(Elemento elem) throws SQLException {
+		//todo
 	}
 }

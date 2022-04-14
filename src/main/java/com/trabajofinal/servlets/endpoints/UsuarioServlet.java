@@ -110,7 +110,7 @@ public class UsuarioServlet extends HttpServlet {
 
         try {
             requestControl.validarRequest();
-            servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje));
+            servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje, false));
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

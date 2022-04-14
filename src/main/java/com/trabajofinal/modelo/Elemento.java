@@ -59,11 +59,6 @@ public abstract class Elemento {
         this.propietario = propietario;
     }
 
-    @Override
-    public String toString() {
-        return "nombre: " + nombre + " | padre " + this.getPath();
-    }
-
     public boolean esValido() {
         return nombre.equals("");
     }

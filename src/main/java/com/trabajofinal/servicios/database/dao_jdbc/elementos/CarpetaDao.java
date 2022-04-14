@@ -27,7 +27,7 @@ public class CarpetaDao extends ElementoDao {
     }
 
 	/**
-	 * A partir de resultSet, se crea el usuario
+	 * A partir de resultSet, se crea una instancia de  usuario
 	 */
 	private Usuario cargarUsuario(ResultSet resultSet) throws SQLException {
 		return new Usuario(
@@ -39,7 +39,7 @@ public class CarpetaDao extends ElementoDao {
 	}
 
 	/**
-	 * A partir de resultSet, se crea la carpeta
+	 * A partir de resultSet, se crea una instancia de  carpeta
 	 */
 	private Carpeta getCarpeta(ResultSet resultSet) throws SQLException {
 		return new Carpeta(
@@ -102,11 +102,6 @@ public class CarpetaDao extends ElementoDao {
 	}
 
 	@Override
-	public void update(Elemento elem) throws SQLException {
-		//todo: implementar
-	}
-
-	@Override
 	public void add(Elemento elem) throws SQLException {
 
 		String queryString = "insert into carpetas(elnombre, elpropietario, elfechacreacion, elfechamodificacion, elpath, cadescripcion)\n" +
@@ -134,4 +129,8 @@ public class CarpetaDao extends ElementoDao {
 			connection.close();
 	}
 
+	@Override
+	public void update(Elemento elem) throws SQLException {
+		//todo
+	}
 }

@@ -38,8 +38,4 @@ public class Catedra {
         this.urlPaginaWeb = urlPaginaWeb;
     }
 
-    @Override
-    public String toString() {
-        return "Nombre catedra " + nombre + " y url " + urlPaginaWeb;
-    }
 }

@@ -13,6 +13,9 @@ import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Clase la cual contiene todas las operaciones que se pueden realizar respecto al modelo definido
+ */
 public class Servicios {
 
     private final CarpetaDao accesodbCarpeta = CarpetaDao.getInstance();
@@ -173,6 +176,22 @@ public class Servicios {
             throw new ExcepcionServicio(e.getMessage());
         }
     }
+
+    public Elemento getArchivo(String id) throws ExcepcionServicio {
+        try {
+            return accesodbArchivo.get(id);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public void updateArchivo(Archivo archivo) throws ExcepcionServicio {
+        try {
+            accesodbArchivo.update(archivo);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
     // endregion
 
     // region Carpeta
@@ -247,6 +266,26 @@ public class Servicios {
             throw new ExcepcionServicio(e.getMessage());
         }
     }
+
+    public boolean existeDirectorio(String path) throws ExcepcionServicio {
+        try {
+            return accesodbCarpeta.exist(path);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
+
+    public boolean existeElemento(String path) throws ExcepcionServicio {
+        return this.existeDirectorio(path);
+    }
+
+    public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
+        try {
+            accesodbCarpeta.update(Carpeta);
+        }catch (SQLException e){
+            throw new ExcepcionServicio(e.getMessage());
+        }
+    }
     // endregion
 
     // region Catedra
@@ -299,42 +338,4 @@ public class Servicios {
     }
     // endregion
 
-    public boolean existeDirectorio(String path) throws ExcepcionServicio {
-        try {
-            return accesodbCarpeta.exist(path);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public boolean existeElemento(String path) throws ExcepcionServicio {
-        return this.existeDirectorio(path);
-    }
-
-    // region desuso momentaneo, todo
-    public Elemento getArchivo(String id) throws ExcepcionServicio {
-        try {
-            return accesodbArchivo.get(id);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public void updateArchivo(Archivo archivo) throws ExcepcionServicio {
-        try {
-            accesodbArchivo.update(archivo);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    public void updateCarpeta(Carpeta Carpeta) throws ExcepcionServicio {
-        try {
-            accesodbCarpeta.update(Carpeta);
-        }catch (SQLException e){
-            throw new ExcepcionServicio(e.getMessage());
-        }
-    }
-
-    // endregion
 }

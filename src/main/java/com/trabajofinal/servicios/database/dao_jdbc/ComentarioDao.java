@@ -40,9 +40,11 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 	 * A partir de resultSet, se crea el usuario
 	 */
 	private Usuario getUsuario(ResultSet resultSet) throws SQLException {
-		return new Usuario(resultSet.getString("usmail"),
+		return new Usuario(
+				resultSet.getString("usmail"),
 				resultSet.getString("usnombre"),
-				resultSet.getInt("uspuntaje"));
+				resultSet.getInt("uspuntaje"),
+				resultSet.getBoolean("usesadmin"));
 	}
 
     public List<Comentario> getComentarios(String pathElem) throws SQLException {

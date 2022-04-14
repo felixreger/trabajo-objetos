@@ -34,9 +34,7 @@ public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>>
                 try {
                     Usuario u = servicio.getUsuario(usuarioParam);
                     criterioCompuesto.add(new Autor(u));
-                } catch (ExcepcionServicio e) {
-                    e.printStackTrace();
-                }
+                } catch (ExcepcionServicio ignored) {}
 
             } else if (entry.getKey().equalsIgnoreCase(ConstantesServlet.TIPO)) {
                 String tipoParam = entry.getValue();
@@ -61,7 +59,7 @@ public class FabCriterioArchivo implements IFabricaCriterio<Map<String, String>>
         }
 
         //Si no tengo ningun criterio, entonces hubo un error en la especificacion de los
-        //nombres de los criterios, entonces la fabrica creó un criterio NO valido.
+        //nombres de los criterios, por lo que la fabrica creó un criterio NO valido.
         if(criterioCompuesto.isEmpty()){
             esValido = false;
             return null;
