@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyString;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
@@ -49,9 +48,8 @@ public class ArchivoServlet extends HttpServlet {
         Set<String> palabrasClave = body.getPalabrasClave("palabrasclave");
 
         requestControl.addAll(Arrays.asList(bodyRequest, filePart, nombre, path, catedraParam, palabrasClave));
-        try {
-            requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
+
+        if(!requestControl.esRequestValida()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -103,8 +101,12 @@ public class ArchivoServlet extends HttpServlet {
         String pathArchivo = request.getParameter("pathArchivo");
         requestControl.add(pathArchivo);
 
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         try {
-            requestControl.validarRequest();
             if(!servicio.existeElemento(pathArchivo)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -112,8 +114,6 @@ public class ArchivoServlet extends HttpServlet {
             servicio.deleteArchivo(pathArchivo);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Comentario;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @WebServlet(name="Comentario", value= ConstantesServlet.URL_COMENTARIO)
@@ -56,9 +54,12 @@ public class ComentarioServlet extends HttpServlet {
         String pathElemento = request.getParameter("pathElemento");
         requestControl.add(pathElemento);
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeElemento(pathElemento)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -69,8 +70,6 @@ public class ComentarioServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         out.flush();
     }
@@ -93,9 +92,12 @@ public class ComentarioServlet extends HttpServlet {
         String contenido = body.getString("contenido");
         requestControl.addAll(Arrays.asList(pathElemento, contenido));
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if (servicio.existeComentario(idComentario)){
                 response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
                 return;
@@ -109,8 +111,6 @@ public class ComentarioServlet extends HttpServlet {
             servicio.addComentario(cm);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -131,9 +131,12 @@ public class ComentarioServlet extends HttpServlet {
         String contenido = body.getString("contenido");
         requestControl.add(contenido);
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             Usuario usuario = servicio.getUsuario(idUsuario);
             if(!servicio.existeComentario(idComentario)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -145,8 +148,6 @@ public class ComentarioServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

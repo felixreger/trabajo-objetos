@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
@@ -14,7 +13,6 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -63,32 +61,34 @@ public class UsuarioServlet extends HttpServlet {
         JsonBody body = new JsonBodyBuffer(request);
 
         final String autorizacion = request.getHeader("Authorization");
-        if (autorizacion != null && autorizacion.toLowerCase().startsWith("basic")) {
-            String[] usuarioYContrasenia = DecodeAndEncode.valuesAutentificacion(autorizacion);
-            String idUsuario = usuarioYContrasenia[0];
-            String password = usuarioYContrasenia[1];
-            password = DecodeAndEncode.encode(password);
 
-            String nombre = body.getString("nombre");
-            requestControl.add(nombre);
-
-            try {
-                requestControl.validarRequest();
-                if(servicio.existeUsuario(idUsuario)) {
-                    response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
-                    return;
-                }
-
-                servicio.addUsuario(new Usuario(idUsuario, nombre, 0, password));
-
-            } catch (ExcepcionServicio e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } catch (ExcepcionRequest e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-
-        }else{
+        if (autorizacion == null || !autorizacion.toLowerCase().startsWith("basic")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        String[] usuarioYContrasenia = DecodeAndEncode.valuesAutentificacion(autorizacion);
+        String idUsuario = usuarioYContrasenia[0];
+        String password = usuarioYContrasenia[1];
+        password = DecodeAndEncode.encode(password);
+
+        String nombre = body.getString("nombre");
+        requestControl.add(nombre);
+
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        try {
+            if(servicio.existeUsuario(idUsuario)) {
+                response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
+                return;
+            }
+            servicio.addUsuario(new Usuario(idUsuario, nombre, 0, password));
+
+        } catch (ExcepcionServicio e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -108,14 +108,15 @@ public class UsuarioServlet extends HttpServlet {
         Integer puntaje = body.getInt("puntaje");
         requestControl.addAll(Arrays.asList(nombre, puntaje));
 
-        try {
-            requestControl.validarRequest();
-            servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje, false));
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
+            servicio.updateUsuario(new Usuario(idUsuario, nombre, puntaje, false));
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

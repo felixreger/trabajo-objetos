@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.autentificacion.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Comentario;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.autentificacion.credencial.Credencial;
@@ -45,9 +44,7 @@ public class ComentarioFilter extends HttpFilter {
                     String idComentarioString = request.getParameter("idComentario");
                     requestControl.add(idComentarioString);
 
-                    try {
-                        requestControl.validarRequest();
-                    } catch (ExcepcionRequest e) {
+                    if(!requestControl.esRequestValida()){
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         return;
                     }

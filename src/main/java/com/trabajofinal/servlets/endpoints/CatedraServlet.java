@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Catedra;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @WebServlet(name="Catedra", value= ConstantesServlet.URL_CATEDRA)
@@ -69,8 +67,12 @@ public class CatedraServlet extends HttpServlet {
         String url = body.getString("url");
         requestControl.addAll(Arrays.asList(idCatedra, url));
 
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         try {
-            requestControl.validarRequest();
             if(servicio.existeCatedra(idCatedra)) {
                 response.setStatus(ConstantesServlet.UNPROCESSABLE_ENTITY);
                 return;
@@ -78,8 +80,6 @@ public class CatedraServlet extends HttpServlet {
             servicio.addCatedra(new Catedra(idCatedra, url));
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -98,9 +98,12 @@ public class CatedraServlet extends HttpServlet {
         String url = body.getString("url");
         requestControl.addAll(Arrays.asList(idCatedra, url));
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeCatedra(idCatedra)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -108,8 +111,6 @@ public class CatedraServlet extends HttpServlet {
             servicio.updateCatedra(new Catedra(idCatedra, url));
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -123,9 +124,12 @@ public class CatedraServlet extends HttpServlet {
         String idCatedra = request.getParameter("idCatedra");
         requestControl.add(idCatedra);
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeCatedra(idCatedra)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -133,8 +137,6 @@ public class CatedraServlet extends HttpServlet {
             servicio.deleteCatedra(idCatedra);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

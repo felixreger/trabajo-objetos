@@ -1,7 +1,5 @@
 package com.trabajofinal.servlets.endpoints.request.requestcontrol;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +19,13 @@ public class RequestControl {
         this.parametros.add(parametros);
     }
 
-    public void validarRequest() throws ExcepcionRequest {
+    public boolean esRequestValida() {
         for (Object o : parametros) {
             if(o == null){
-                throw new ExcepcionRequest("Bad request");
+                return false;
             }
         }
+        return true;
     }
 }
 

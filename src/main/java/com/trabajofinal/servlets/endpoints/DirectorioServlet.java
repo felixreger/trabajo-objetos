@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.Set;
 
 @WebServlet(name = "Directorio", value = ConstantesServlet.URL_DIRECTORIO)
@@ -40,9 +38,12 @@ public class DirectorioServlet extends HttpServlet {
         String pathCarpetaBase = request.getParameter("pathCarpetaBase");
         requestControl.add(pathCarpetaBase);
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeElemento(pathCarpetaBase)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -58,10 +59,7 @@ public class DirectorioServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-
         out.flush();
     }
 

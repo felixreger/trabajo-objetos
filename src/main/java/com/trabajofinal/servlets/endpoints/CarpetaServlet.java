@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.Carpeta;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBody;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyBuffer;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 
 @WebServlet(name="Carpeta", value= ConstantesServlet.URL_CARPETA)
 public class CarpetaServlet extends HttpServlet {
@@ -44,9 +42,12 @@ public class CarpetaServlet extends HttpServlet {
         String usuarioParam =(String)request.getAttribute("idUsuario"); //este atrib.siempre esta por el filter
         String pathDelElemento = path + ":" + nombre;
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeDirectorio(path)){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -65,8 +66,6 @@ public class CarpetaServlet extends HttpServlet {
 
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -83,9 +82,12 @@ public class CarpetaServlet extends HttpServlet {
         String pathCarpeta = request.getParameter("pathCarpeta");
         requestControl.add(pathCarpeta);
 
-        try {
-            requestControl.validarRequest();
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        try {
             if(!servicio.existeElemento(pathCarpeta)) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -93,8 +95,6 @@ public class CarpetaServlet extends HttpServlet {
             servicio.deleteCarpeta(pathCarpeta);
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

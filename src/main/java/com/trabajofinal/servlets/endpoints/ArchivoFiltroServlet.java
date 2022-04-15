@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.modelo.criterios.archivo.CriterioArchivo;
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.endpoints.criterio.FabCriterioArchivo;
@@ -47,9 +46,7 @@ public class ArchivoFiltroServlet extends HttpServlet {
         String path = request.getParameter("pathCarpetaBase");
         requestControl.addAll(Arrays.asList(path, criteriosParam));
 
-        try {
-            requestControl.validarRequest();
-        } catch (ExcepcionRequest e) {
+        if(!requestControl.esRequestValida()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }

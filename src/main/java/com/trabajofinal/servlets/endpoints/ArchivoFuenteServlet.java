@@ -1,6 +1,5 @@
 package com.trabajofinal.servlets.endpoints;
 
-import com.trabajofinal.excepciones.ExcepcionRequest;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
@@ -31,8 +30,12 @@ public class ArchivoFuenteServlet extends HttpServlet {
         String path = request.getParameter("path");
         requestControl.add(path);
 
+        if(!requestControl.esRequestValida()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         try {
-            requestControl.validarRequest();
             ArchivoBytes file = servicio.getArchivoFuente(path);
 
             if(!file.esValido()){
@@ -45,9 +48,6 @@ public class ArchivoFuenteServlet extends HttpServlet {
             o.close();
         } catch (ExcepcionServicio e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ExcepcionRequest e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
-
 }
