@@ -6,7 +6,7 @@ import com.trabajofinal.servlets.autentificacion.credencial.Credencial;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.autentificacion.ConstantesFilter;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
 
 import javax.servlet.FilterChain;

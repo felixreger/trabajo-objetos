@@ -1,6 +1,6 @@
 package com.trabajofinal.servicios;
 
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.*;
 import com.trabajofinal.modelo.comparadores.elementos.ComparadorDirectorio;
 import com.trabajofinal.servicios.database.dao_jdbc.CatedraDao;

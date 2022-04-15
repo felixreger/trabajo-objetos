@@ -5,7 +5,7 @@ import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.servlets.endpoints.criterio.FabCriterioArchivo;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.modelo.Elemento;
 import com.trabajofinal.servicios.Servicios;

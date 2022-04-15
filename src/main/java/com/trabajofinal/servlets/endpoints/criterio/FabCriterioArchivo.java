@@ -1,6 +1,6 @@
 package com.trabajofinal.servlets.endpoints.criterio;
 
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.modelo.criterios.archivo.*;
 import com.trabajofinal.servicios.Servicios;

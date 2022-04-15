@@ -3,7 +3,7 @@ package com.trabajofinal.servlets.endpoints;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ArchivoBytes;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.servicios.Servicios;
 
 import javax.servlet.annotation.WebServlet;

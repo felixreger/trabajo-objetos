@@ -4,7 +4,7 @@ import com.trabajofinal.modelo.Archivo;
 import com.trabajofinal.servlets.endpoints.request.body.JsonBodyString;
 import com.trabajofinal.servlets.endpoints.request.requestcontrol.RequestControl;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Catedra;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;

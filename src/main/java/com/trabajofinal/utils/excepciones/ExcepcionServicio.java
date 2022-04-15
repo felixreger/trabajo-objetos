@@ -1,4 +1,4 @@
-package com.trabajofinal.excepciones;
+package com.trabajofinal.utils.excepciones;
 
 public class ExcepcionServicio extends Exception{
     /**

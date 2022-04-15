@@ -2,7 +2,7 @@ package com.trabajofinal.servlets.endpoints;
 
 import com.trabajofinal.servlets.autentificacion.cors.CorsFilter;
 import com.trabajofinal.utils.servlets.endpoints.ConstantesServlet;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
 import com.google.gson.Gson;

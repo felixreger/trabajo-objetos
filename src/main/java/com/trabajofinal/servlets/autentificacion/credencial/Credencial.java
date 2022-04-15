@@ -3,7 +3,7 @@ package com.trabajofinal.servlets.autentificacion.credencial;
 import com.trabajofinal.modelo.criterios.usuario.CriterioCredencial;
 import com.trabajofinal.servlets.autentificacion.criterios.FabCriterioCredencial;
 import com.trabajofinal.utils.servlets.autentificacion.DecodeAndEncode;
-import com.trabajofinal.excepciones.ExcepcionServicio;
+import com.trabajofinal.utils.excepciones.ExcepcionServicio;
 import com.trabajofinal.modelo.Usuario;
 import com.trabajofinal.servicios.Servicios;
 
