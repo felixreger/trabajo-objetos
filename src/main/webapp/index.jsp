@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Trabajo-Objetos</title>
 </head>
 <body>
 <h1><%= "API trabajo de objetos" %>
