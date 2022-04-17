@@ -97,8 +97,6 @@ public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 		ptmt.setString(1, mail);
 		ptmt.executeUpdate();
 
-		System.out.println("Usuario eliminado exitosamente");
-
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)
@@ -118,8 +116,6 @@ public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 		ptmt.setBoolean(4, false);
 		ptmt.setString(5, usuario.getPassword());
 		ptmt.executeUpdate();
-
-		System.out.println("Usuario dado de alta correctamente");
 
 		if (ptmt != null)
 			ptmt.close();
@@ -159,7 +155,6 @@ public class UsuarioDao extends DaoDbConeccion<Usuario, String> {
 		ptmt.setInt(2, usuario.getPuntaje());
 		ptmt.setString(3, usuario.getMail());
 		ptmt.executeUpdate();
-		System.out.println("Usuario actualizado exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();

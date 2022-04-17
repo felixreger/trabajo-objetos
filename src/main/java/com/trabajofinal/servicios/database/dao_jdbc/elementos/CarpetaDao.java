@@ -121,8 +121,6 @@ public class CarpetaDao extends ElementoDao {
 
 		ptmt.executeUpdate();
 
-		System.out.println("Carpeta agregada correctamente");
-
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)

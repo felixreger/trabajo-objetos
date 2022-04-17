@@ -141,8 +141,6 @@ public class ArchivoDao extends ElementoDao {
 		ptmt.setBinaryStream(10, archivo.getFuente(), archivo.getTamanio());
 		ptmt.executeUpdate();
 
-		System.out.println("Archivo agregado correctamente");
-
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)

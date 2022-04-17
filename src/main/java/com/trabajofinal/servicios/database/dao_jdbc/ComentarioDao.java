@@ -107,8 +107,6 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 		ptmt.setInt(2, comentario.getId());
 		ptmt.executeUpdate();
 
-		System.out.println("Comentario actualizado correctamente");
-
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)
@@ -123,7 +121,6 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setInt(1, idCom);
 		ptmt.executeUpdate();
-		System.out.println("Comentario eliminado exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();
@@ -144,8 +141,6 @@ public class ComentarioDao extends DaoDbConeccion<Comentario, Integer> {
 		ptmt.setString(4, comentario.getDescripcion());
 
 		ptmt.executeUpdate();
-
-		System.out.println("Comentario agregado correctamente");
 
 		if (ptmt != null)
 			ptmt.close();

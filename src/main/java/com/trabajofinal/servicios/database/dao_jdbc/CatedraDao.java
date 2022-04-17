@@ -82,8 +82,6 @@ public class CatedraDao extends DaoDbConeccion<Catedra, String> {
 		ptmt.setString(3, elem.getNombre());
 		ptmt.executeUpdate();
 
-		System.out.println("Catedra actualizada exitosamente");
-
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)
@@ -98,7 +96,6 @@ public class CatedraDao extends DaoDbConeccion<Catedra, String> {
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setString(1, id);
 		ptmt.executeUpdate();
-		System.out.println("Catedra eliminada exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();
@@ -116,8 +113,6 @@ public class CatedraDao extends DaoDbConeccion<Catedra, String> {
 		ptmt.setString(1, elem.getNombre());
 		ptmt.setString(2, elem.getUrlPaginaWeb());
 		ptmt.executeUpdate();
-
-		System.out.println("Catedra agregada exitosamente");
 
 		if (ptmt != null)
 			ptmt.close();

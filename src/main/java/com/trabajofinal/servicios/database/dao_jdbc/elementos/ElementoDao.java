@@ -26,8 +26,7 @@ public abstract class ElementoDao extends DaoDbConeccion<Elemento, String> {
 		ptmt = connection.prepareStatement(queryString);
 		ptmt.setString(1, pathElemento);
 		ptmt.executeUpdate();
-		System.out.println("Elemento eliminado exitosamente");
-
+		
 		if (ptmt != null)
 			ptmt.close();
 		if (connection != null)
